@@ -1,70 +1,62 @@
 "use strict";
-function ahahaha111() {
-}
-exports.ahahaha111 = ahahaha111;
 function setupJsonSerialization(constructor) {
-    if (!constructor["__json__useCustomSerializer"]) {
-        constructor.prototype.toJSON = toJsonImpl;
+    if (!constructor.hasOwnProperty("toJSON")) {
+        constructor.toJSON = function () {
+            return toJsonImpl(this, constructor);
+        };
     }
 }
-function toJsonImpl() {
-    var jsonObject = new Object();
-    var constructor = this.constructor;
-    var decoratedProperties = constructor["__json__properties"];
-    var ignoredProperties = constructor["__json__ignoredProperties"];
-    var properties = {};
-    Object.keys(this).forEach(function (propertyName) {
-        properties[propertyName] = true;
-    });
-    if (decoratedProperties) {
-        for (var propertyName in decoratedProperties) {
-            properties[propertyName] = true;
+function toJsonImpl(object, prototype) {
+    var json = {};
+    var prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : null;
+    var properties = prototype["__json__properties"];
+    var ignoredProperties = prototype["__json__ignoredProperties"];
+    if (prototype && prototypeOfPrototype && prototypeOfPrototype["toJSON"]) {
+        var prototypeJson = prototypeOfPrototype.toJSON.call(object);
+        if (typeof prototypeJson === "object") {
+            json = prototypeJson;
         }
     }
     for (var propertyName in properties) {
         if (!ignoredProperties || ignoredProperties.indexOf(propertyName) < 0) {
-            var propertyInfo = decoratedProperties ? decoratedProperties[propertyName] : null;
-            var propertyDescriptor = Object.getOwnPropertyDescriptor(this, propertyName);
-            var propertyValue = propertyDescriptor && propertyDescriptor.get ? propertyDescriptor.get() : (propertyDescriptor ? propertyDescriptor.value : null);
-            var jsonName = propertyInfo && propertyInfo.jsonName ? propertyInfo.jsonName : propertyName;
-            jsonObject[jsonName] = propertyInfo && propertyInfo.jsonSerializer ? propertyInfo.jsonSerializer(propertyValue) : propertyValue;
+            var propertyConfig = properties[propertyName];
+            var propertyDescriptor = Object.getOwnPropertyDescriptor(object, propertyName);
+            //let propertyValue = propertyDescriptor && propertyDescriptor.get ? object[propertyName] : (propertyDescriptor ? propertyDescriptor.value : null);
+            var propertyValue = object[propertyName];
+            var jsonName = propertyConfig.name ? propertyConfig.name : propertyName;
+            json[jsonName] = propertyConfig.serializer ? propertyConfig.serializer.serialize(propertyValue) : propertyValue;
         }
     }
-    return jsonObject;
+    return json;
 }
-function JsonProperty(jsonName) {
+function JsonProperty(jsonConfig) {
     return function (target, propertyName, propertyDescriptor) {
-        setupJsonSerialization(target.constructor);
-        var propertiesArray = target.constructor["__json__properties"];
-        if (!propertiesArray) {
-            propertiesArray = target.constructor["__json__properties"] = {};
+        var constructor = target;
+        var config = (typeof jsonConfig === "string") ? { name: jsonConfig } : (jsonConfig ? jsonConfig : {});
+        setupJsonSerialization(constructor);
+        var properties;
+        if (constructor.hasOwnProperty("__json__properties")) {
+            properties = Object.getOwnPropertyDescriptor(constructor, "__json__properties").value;
         }
-        var propertyInfo = propertiesArray[propertyName];
-        if (!propertyInfo)
-            propertyInfo = propertiesArray[propertyName] = {
-                jsonName: jsonName,
-                jsonSerializer: null
-            };
-        else
-            propertyInfo.jsonName = jsonName;
+        else {
+            properties = {};
+            Object.defineProperty(constructor, "__json__properties", { value: properties, enumerable: false, configurable: false });
+        }
+        properties[propertyName] = config;
     };
 }
 exports.JsonProperty = JsonProperty;
-function JsonIgnore(name) {
-    return function (constructor) {
-        setupJsonSerialization(constructor);
-        var propertiesArray = constructor["__json__ignoredProperties"];
-        if (!propertiesArray) {
-            propertiesArray = constructor["__json__ignoredProperties"] = new Array();
-        }
-        if (name instanceof Array) {
-            name.forEach(function (property) {
-                propertiesArray.push(property);
-            });
-        }
-        else if (name) {
-            propertiesArray.push(name);
-        }
-    };
+function JsonIgnore(target, propertyName, propertyDescriptor) {
+    var constructor = target;
+    setupJsonSerialization(constructor);
+    var properties;
+    if (constructor.hasOwnProperty("__json__ignoreProperties")) {
+        properties = Object.getOwnPropertyDescriptor(constructor, "__json__ignoreProperties").value;
+    }
+    else {
+        properties = [];
+        Object.defineProperty(constructor, "__json__ignoreProperties", { value: properties, enumerable: false, configurable: false });
+    }
+    properties.push(propertyName);
 }
 exports.JsonIgnore = JsonIgnore;

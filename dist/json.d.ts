@@ -1,3 +1,9 @@
-export declare function ahahaha111(): void;
-export declare function JsonProperty(jsonName?: string): (target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) => void;
-export declare function JsonIgnore(name?: String | Array<String>): (constructor: Function) => void;
+import { JsonSerializer } from "./json-serializers";
+export interface JsonPropertyConfig {
+    name?: string;
+    serializer?: JsonSerializer;
+}
+export declare function JsonProperty(): any;
+export declare function JsonProperty(jsonConfig: JsonPropertyConfig): any;
+export declare function JsonProperty(jsonName: string): any;
+export declare function JsonIgnore(target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor): void;
