@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "author": "co.mmons",
   "private": false,
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --declaration --project ./src"
+  },
+  "main": "./dist/"
 }

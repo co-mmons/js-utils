@@ -1,4 +1,8 @@
-function setupJsonSerialization(constructor:Function) {
+function ahahaha333 () {
+
+}
+
+function setupJsonSerialization(constructor: Function) {
 
     if (!constructor["__json__useCustomSerializer"]) {
         constructor.prototype.toJSON = toJsonImpl;
@@ -48,9 +52,6 @@ interface JsonPropertyInfo {
     jsonSerializer:Function;
 }
 
-
-export function JsonSerialize(target:any) {
-}
 
 export function JsonProperty(jsonName?:string) {
 
