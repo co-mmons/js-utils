@@ -8,7 +8,13 @@
     "declaration": true
   },
   "filesGlob": [
-    "**/*.ts"
+    "**/*.ts",
+    "!node_modules/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "typings/global",
+    "typings/global.d.ts"
   ],
   "compileOnSave": true,
   "atom": {
