@@ -1,17 +1,12 @@
-export class JsonSerializer {
-
-	public serialize (object: any): any {
-		return object;
-	}
-
-}
+import {JsonSerializer} from "./json";
 
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
-export class EnumAsStringSerializer {
+export class EnumAsStringSerializer extends JsonSerializer {
 
 	constructor (enumClass: any) {
+		super();
 		this.enumClass = enumClass;
 	}
 

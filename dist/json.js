@@ -29,6 +29,15 @@ function toJsonImpl(object, prototype) {
     }
     return json;
 }
+var JsonSerializer = (function () {
+    function JsonSerializer() {
+    }
+    JsonSerializer.prototype.serialize = function (object) {
+        return object;
+    };
+    return JsonSerializer;
+}());
+exports.JsonSerializer = JsonSerializer;
 function JsonProperty(jsonConfig) {
     return function (target, propertyName, propertyDescriptor) {
         var constructor = target;

@@ -1,4 +1,6 @@
-import { JsonSerializer } from "./json-serializers";
+export declare class JsonSerializer {
+    serialize(object: any): any;
+}
 export interface JsonPropertyConfig {
     name?: string;
     serializer?: JsonSerializer;

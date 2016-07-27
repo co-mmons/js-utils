@@ -1,5 +1,3 @@
-import {JsonSerializer} from "./json-serializers";
-
 function setupJsonSerialization (constructor: any) {
 
 	if (!constructor.hasOwnProperty("toJSON")) {
@@ -41,6 +39,13 @@ function toJsonImpl (object: any, prototype: any) {
 	return json;
 }
 
+export class JsonSerializer {
+
+	public serialize (object: any): any {
+		return object;
+	}
+
+}
 
 export interface JsonPropertyConfig {
 	name?: string;
