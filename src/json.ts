@@ -1,4 +1,4 @@
-function ahahaha333 () {
+export function ahahaha111 () {
 
 }
 

@@ -1,6 +1,7 @@
 "use strict";
-function ahahaha333() {
+function ahahaha111() {
 }
+exports.ahahaha111 = ahahaha111;
 function setupJsonSerialization(constructor) {
     if (!constructor["__json__useCustomSerializer"]) {
         constructor.prototype.toJSON = toJsonImpl;
