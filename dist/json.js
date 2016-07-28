@@ -1,4 +1,7 @@
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 function setupJsonSerialization(constructor) {
     if (!constructor.hasOwnProperty("toJSON")) {
         constructor.toJSON = function () {
@@ -69,3 +72,4 @@ function JsonIgnore(target, propertyName, propertyDescriptor) {
     properties.push(propertyName);
 }
 exports.JsonIgnore = JsonIgnore;
+__export(require("./json-serializers"));

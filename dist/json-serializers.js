@@ -8,13 +8,13 @@ var json_1 = require("./json");
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
-var EnumAsStringSerializer = (function (_super) {
-    __extends(EnumAsStringSerializer, _super);
-    function EnumAsStringSerializer(enumClass) {
+var EnumAsStringJsonSerializer = (function (_super) {
+    __extends(EnumAsStringJsonSerializer, _super);
+    function EnumAsStringJsonSerializer(enumClass) {
         _super.call(this);
         this.enumClass = enumClass;
     }
-    EnumAsStringSerializer.prototype.serialize = function (enumValue) {
+    EnumAsStringJsonSerializer.prototype.serialize = function (enumValue) {
         if (enumValue) {
             return this.enumClass[enumValue];
         }
@@ -22,6 +22,6 @@ var EnumAsStringSerializer = (function (_super) {
             return null;
         }
     };
-    return EnumAsStringSerializer;
+    return EnumAsStringJsonSerializer;
 }(json_1.JsonSerializer));
-exports.EnumAsStringSerializer = EnumAsStringSerializer;
+exports.EnumAsStringJsonSerializer = EnumAsStringJsonSerializer;

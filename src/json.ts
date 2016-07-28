@@ -97,3 +97,5 @@ export function JsonIgnore (target: any, propertyName: string, propertyDescripto
 
 	properties.push(propertyName);
 }
+
+export * from "./json-serializers";
