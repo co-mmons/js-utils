@@ -25,7 +25,7 @@ export function getParentElementByClassName (element: Element, className: string
     return null;
 }
 
-export function getSelfOrParentElementByClassName (element: Element, className: string, topParentElementClassName?: string) : Element {
-    if (hasClassName(element, className)) return element;
-    return getParentElementByClassName(element, className, topParentElementClassName);
+export function getSelfOrParentElementByClassName (element: Element | EventTarget, className: string, topParentElementClassName?: string) : Element {
+    if (hasClassName(element as Element, className)) return element as Element;
+    return getParentElementByClassName(element as Element, className, topParentElementClassName);
 }

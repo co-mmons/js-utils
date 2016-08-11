@@ -5,18 +5,19 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "noImplicitAny": true,
+    "sourceMap": true
   },
-  "filesGlob": [
-    "**/*.ts",
-    "!node_modules/**/*"
-  ],
+
   "exclude": [
     "dist",
+    "test",
     "node_modules",
     "typings/global",
     "typings/global.d.ts"
   ],
+
   "compileOnSave": true,
   "atom": {
     "rewriteTsconfig": false

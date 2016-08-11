@@ -29,3 +29,4 @@ function getSelfOrParentElementByClassName(element, className, topParentElementC
     return getParentElementByClassName(element, className, topParentElementClassName);
 }
 exports.getSelfOrParentElementByClassName = getSelfOrParentElementByClassName;
+//# sourceMappingURL=index.js.map
