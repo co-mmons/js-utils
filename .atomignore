@@ -3,3 +3,4 @@
 *.imp
 dist
 .git
+node_modules

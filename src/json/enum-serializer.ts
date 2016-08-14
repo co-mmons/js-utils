@@ -3,7 +3,7 @@ import {Serializer, SerializationOptions} from "./index";
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
-export class EnumAsStringJsonSerializer extends Serializer {
+export class EnumAsStringSerializer extends Serializer {
 
 	constructor (enumClass: any) {
 		super();
