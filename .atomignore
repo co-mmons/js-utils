@@ -1,6 +1,5 @@
 .gitignore
 .DS_Store
 *.imp
-dist
 .git
 node_modules

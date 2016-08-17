@@ -5,6 +5,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var index_1 = require("./index");
+/**
+ * Serializes enum as a String. By default enums are serialized as numbers.
+ */
 var EnumAsStringSerializer = (function (_super) {
     __extends(EnumAsStringSerializer, _super);
     function EnumAsStringSerializer(enumClass) {

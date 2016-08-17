@@ -1,4 +1,7 @@
 import { Serializer, SerializationOptions } from "./index";
+/**
+ * Serializes enum as a String. By default enums are serialized as numbers.
+ */
 export declare class EnumAsStringSerializer extends Serializer {
     constructor(enumClass: any);
     private enumClass;

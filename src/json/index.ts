@@ -35,7 +35,7 @@ export interface SerializationOptions {
 import {StringSerializer} from "./string-serializer";
 import {NumberSerializer} from "./number-serializer";
 import {BooleanSerializer} from "./boolean-serializer";
-import {ArraySerializer} from "./array-serializer";
+import {ArrayOfAny} from "./array-serializer";
 
 
 function setupSerialization (constructor: any) {
@@ -114,7 +114,7 @@ function serializerForType (type: Function) : Serializer {
 	if (type === Boolean) return BooleanSerializer.INSTANCE;
 	if (type === Number) return NumberSerializer.INSTANCE;
 	if (type === String) return StringSerializer.INSTANCE;
-	if (type === Array) return ArraySerializer.INSTANCE;
+	if (type === Array) return ArrayOfAny;
 	return OBJECT_SERIALIZER;
 }
 
@@ -168,6 +168,10 @@ export function serialize (object: any) : any {
 }
 
 export function unserialize <T> (json: any, targetClass: Function) : T {
+
+	let serializer: Serializer = serializerForType(targetClass);
+	if (serializer && serializer !== OBJECT_SERIALIZER) return serializer.unserialize(json);
+
 	let prototype: any = targetClass.prototype;
 	if (prototype.hasOwnProperty("fromJSON")) {
 		let instance = Object.create(prototype);

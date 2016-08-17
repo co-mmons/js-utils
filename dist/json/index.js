@@ -92,7 +92,7 @@ function serializerForType(type) {
     if (type === String)
         return string_serializer_1.StringSerializer.INSTANCE;
     if (type === Array)
-        return array_serializer_1.ArraySerializer.INSTANCE;
+        return array_serializer_1.ArrayOfAny;
     return OBJECT_SERIALIZER;
 }
 var ObjectSerializer = (function (_super) {
@@ -131,6 +131,9 @@ function serialize(object) {
 }
 exports.serialize = serialize;
 function unserialize(json, targetClass) {
+    var serializer = serializerForType(targetClass);
+    if (serializer && serializer !== OBJECT_SERIALIZER)
+        return serializer.unserialize(json);
     var prototype = targetClass.prototype;
     if (prototype.hasOwnProperty("fromJSON")) {
         var instance = Object.create(prototype);

@@ -2,12 +2,12 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "outDir": "dist",
+    "rootDir": "src",
     "declaration": true,
     "noImplicitAny": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators": true
   },
 
   "exclude": [
@@ -18,7 +18,7 @@
     "typings/global.d.ts"
   ],
 
-  "compileOnSave": true,
+  "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
   }

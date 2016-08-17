@@ -1,14 +1,13 @@
-import {Serializer, SerializationOptions} from "./index";
+import {Serializer, SerializationOptions, unserialize, serialize} from "./index";
 
 export class ArraySerializer extends Serializer {
 
-    static get INSTANCE () : ArraySerializer {
-        return DEFAULT_INSTANCE;
-    }
-
     constructor (valueType?: Function | Serializer) {
     	super();
+        this.valueType = valueType;
     }
+
+    private valueType: Function | Serializer;
 
     public serialize (value: any, options?: SerializationOptions) : any {
         if (this.isUndefinedOrNull(value)) {
@@ -23,8 +22,30 @@ export class ArraySerializer extends Serializer {
 	}
 
 	public unserialize (value: any, options?: SerializationOptions) : any {
-		if (Array.isArray(value)) {
-			return value;
+
+        if (Array.isArray(value)) {
+
+            if (this.valueType) {
+                let array: any[] = [];
+
+                if (this.valueType instanceof Serializer) {
+
+                    for (let i of value) {
+                        array.push((this.valueType as Serializer).unserialize(i));
+                    }
+
+                } else {
+                    for (let i of value) {
+                        array.push(unserialize(i, this.valueType as Function));
+                    }
+                }
+
+                return array;
+
+            } else {
+			    return value;
+            }
+
         } else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);
         } else if (!options || !options.ignoreErrors) {
@@ -35,7 +56,6 @@ export class ArraySerializer extends Serializer {
 	}
 }
 
-const DEFAULT_INSTANCE = new ArraySerializer();
-
+export const ArrayOfAny = new ArraySerializer();
 export const ArrayOfString = new ArraySerializer(String);
 export const ArrayOfNumber = new ArraySerializer(Number);
