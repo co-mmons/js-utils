@@ -135,11 +135,11 @@ class ObjectSerializer extends Serializer {
 
 		if (this.isUndefinedOrNull(json)) return json;
 
-		if (options && typeof options["propertyType"] === "function") {
+		else if (options && typeof options["propertyType"] === "function") {
 			return unserialize(json, options["propertyType"]);
 		}
 
-		return undefined;
+		return json;
 	}
 }
 
@@ -177,11 +177,13 @@ export function unserialize <T> (json: any, targetClass: Function) : T {
 		let instance = Object.create(prototype);
 		instance.fromJSON(json);
 		return instance;
-	} else {
+	} else if (targetClass !== Object) {
 		let instance = Object.create(prototype);
 		targetClass.apply(instance, [json]);
 		return instance;
 	}
+
+	return json;
 }
 
 interface PropertyConfig extends SerializationOptions {

@@ -111,10 +111,10 @@ var ObjectSerializer = (function (_super) {
     ObjectSerializer.prototype.unserialize = function (json, options) {
         if (this.isUndefinedOrNull(json))
             return json;
-        if (options && typeof options["propertyType"] === "function") {
+        else if (options && typeof options["propertyType"] === "function") {
             return unserialize(json, options["propertyType"]);
         }
-        return undefined;
+        return json;
     };
     return ObjectSerializer;
 }(Serializer));
@@ -140,11 +140,12 @@ function unserialize(json, targetClass) {
         instance.fromJSON(json);
         return instance;
     }
-    else {
+    else if (targetClass !== Object) {
         var instance = Object.create(prototype);
         targetClass.apply(instance, [json]);
         return instance;
     }
+    return json;
 }
 exports.unserialize = unserialize;
 function Property(type, nameOrOptions, options) {

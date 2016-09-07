@@ -9,11 +9,15 @@ export declare class Currency {
     protected fromJSON(json: any): void;
 }
 export declare class Money implements Comparable<Money> {
-    constructor(currency: Currency, amount: BigNumber);
-    constructor(currency: string, amount: BigNumber);
+    constructor(currency: Currency, amount: BigNumber | number);
+    constructor(currency: string, amount: BigNumber | number);
     private _currency;
     currency: Currency;
     private _amount;
     amount: BigNumber;
-    compareTo(money: Money): number;
+    plus(amount: BigNumber | number | string): Money;
+    minus(amount: BigNumber | number | string): Money;
+    times(amount: BigNumber | number | string): Money;
+    dividedBy(amount: BigNumber | number | string): Money;
+    compareTo(money: Money | BigNumber | number): number;
 }

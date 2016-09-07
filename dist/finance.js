@@ -85,8 +85,27 @@ var Money = (function () {
         enumerable: true,
         configurable: true
     });
+    Money.prototype.plus = function (amount) {
+        return new Money(this._currency, this._amount.plus(amount));
+    };
+    Money.prototype.minus = function (amount) {
+        return new Money(this._currency, this._amount.minus(amount));
+    };
+    Money.prototype.times = function (amount) {
+        return new Money(this._currency, this._amount.times(amount));
+    };
+    Money.prototype.dividedBy = function (amount) {
+        return new Money(this._currency, this._amount.dividedBy(amount));
+    };
     Money.prototype.compareTo = function (money) {
-        return this._amount.comparedTo(money.amount);
+        if (typeof money === "number")
+            return this._amount.comparedTo(money);
+        else if (money instanceof bignumber_js_1.BigNumber)
+            return this._amount.comparedTo(money);
+        else if (money)
+            return this._amount.comparedTo(money.amount);
+        else
+            throw "Cannot compare empty value";
     };
     __decorate([
         json_1.Property(Currency, 'currency')
