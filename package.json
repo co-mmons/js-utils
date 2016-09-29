@@ -1,13 +1,16 @@
 {
-  "name": "co.mmons.typescript-utils",
-  "version": "1.0.0",
-  "author": "co.mmons",
-  "private": false,
-  "license": "MIT",
-  "scripts": {
-    "install": "cp ./dist/* ./ -R"
-  },
-  "dependencies": {
-    "bignumber.js": "^2.4.0"
-  }
+    "name": "co.mmons.typescript-utils",
+    "version": "1.0.0",
+    "author": "co.mmons",
+    "private": false,
+    "license": "MIT",
+
+    "scripts": {
+        "install": "cp ./dist/* ./ -R"
+    },
+
+    "dependencies": {
+        "bignumber.js": "^2.4.0",
+        "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js"
+    }
 }

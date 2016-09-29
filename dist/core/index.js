@@ -1,5 +1,4 @@
-"use strict";
-function enumValues(enumClass) {
+export function enumValues(enumClass) {
     var values = [];
     for (var key in enumClass) {
         values.push(enumClass[key]);
@@ -7,5 +6,4 @@ function enumValues(enumClass) {
     values.length = values.length / 2;
     return values;
 }
-exports.enumValues = enumValues;
 //# sourceMappingURL=index.js.map

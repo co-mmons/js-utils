@@ -1,17 +1,14 @@
-"use strict";
-function hasClassName(element, className) {
+export function hasClassName(element, className) {
     return element.classList.contains(className);
 }
-exports.hasClassName = hasClassName;
-function getElementByClassName(element, className) {
+export function getElementByClassName(element, className) {
     var nodes = element.getElementsByClassName(className);
     if (nodes.length > 0) {
         return nodes[0];
     }
     return null;
 }
-exports.getElementByClassName = getElementByClassName;
-function getParentElementByClassName(element, className, topParentElementClassName) {
+export function getParentElementByClassName(element, className, topParentElementClassName) {
     var parent = element.parentElement;
     while (parent) {
         if (hasClassName(parent, className))
@@ -22,11 +19,9 @@ function getParentElementByClassName(element, className, topParentElementClassNa
     }
     return null;
 }
-exports.getParentElementByClassName = getParentElementByClassName;
-function getSelfOrParentElementByClassName(element, className, topParentElementClassName) {
+export function getSelfOrParentElementByClassName(element, className, topParentElementClassName) {
     if (hasClassName(element, className))
         return element;
     return getParentElementByClassName(element, className, topParentElementClassName);
 }
-exports.getSelfOrParentElementByClassName = getSelfOrParentElementByClassName;
 //# sourceMappingURL=index.js.map

@@ -1,11 +1,10 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var index_1 = require("./index");
-var StringSerializer = (function (_super) {
+import { Serializer } from "./index";
+export var StringSerializer = (function (_super) {
     __extends(StringSerializer, _super);
     function StringSerializer() {
         _super.apply(this, arguments);
@@ -52,7 +51,6 @@ var StringSerializer = (function (_super) {
         }
     };
     return StringSerializer;
-}(index_1.Serializer));
-exports.StringSerializer = StringSerializer;
+}(Serializer));
 var DEFAULT_INSTANCE = new StringSerializer();
 //# sourceMappingURL=string-serializer.js.map

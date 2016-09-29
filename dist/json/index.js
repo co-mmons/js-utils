@@ -1,10 +1,9 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Serializer = (function () {
+export var Serializer = (function () {
     function Serializer() {
     }
     Serializer.prototype.serialize = function (object, options) {
@@ -26,11 +25,10 @@ var Serializer = (function () {
     };
     return Serializer;
 }());
-exports.Serializer = Serializer;
-var string_serializer_1 = require("./string-serializer");
-var number_serializer_1 = require("./number-serializer");
-var boolean_serializer_1 = require("./boolean-serializer");
-var array_serializer_1 = require("./array-serializer");
+import { StringSerializer } from "./string-serializer";
+import { NumberSerializer } from "./number-serializer";
+import { BooleanSerializer } from "./boolean-serializer";
+import { ArrayOfAny } from "./array-serializer";
 function setupSerialization(constructor) {
     constructor["__json__serialization"] = true;
     if (!constructor.hasOwnProperty("toJSON")) {
@@ -86,13 +84,13 @@ function fromJsonImpl(instance, prototype, json) {
 }
 function serializerForType(type) {
     if (type === Boolean)
-        return boolean_serializer_1.BooleanSerializer.INSTANCE;
+        return BooleanSerializer.INSTANCE;
     if (type === Number)
-        return number_serializer_1.NumberSerializer.INSTANCE;
+        return NumberSerializer.INSTANCE;
     if (type === String)
-        return string_serializer_1.StringSerializer.INSTANCE;
+        return StringSerializer.INSTANCE;
     if (type === Array)
-        return array_serializer_1.ArrayOfAny;
+        return ArrayOfAny;
     return OBJECT_SERIALIZER;
 }
 var ObjectSerializer = (function (_super) {
@@ -119,7 +117,7 @@ var ObjectSerializer = (function (_super) {
     return ObjectSerializer;
 }(Serializer));
 var OBJECT_SERIALIZER = new ObjectSerializer();
-function serialize(object) {
+export function serialize(object) {
     if (!object)
         return null;
     if (object.toJSON) {
@@ -129,8 +127,7 @@ function serialize(object) {
         return object;
     }
 }
-exports.serialize = serialize;
-function unserialize(json, targetClass) {
+export function unserialize(json, targetClass) {
     var serializer = serializerForType(targetClass);
     if (serializer && serializer !== OBJECT_SERIALIZER)
         return serializer.unserialize(json);
@@ -147,8 +144,7 @@ function unserialize(json, targetClass) {
     }
     return json;
 }
-exports.unserialize = unserialize;
-function Property(type, nameOrOptions, options) {
+export function Property(type, nameOrOptions, options) {
     return function (target, propertyName, propertyDescriptor) {
         var constructor = target;
         var config = { propertyType: type };
@@ -173,8 +169,7 @@ function Property(type, nameOrOptions, options) {
         properties[propertyName] = config;
     };
 }
-exports.Property = Property;
-function Ignore(target, propertyName, propertyDescriptor) {
+export function Ignore(target, propertyName, propertyDescriptor) {
     var constructor = target;
     setupSerialization(constructor);
     var properties;
@@ -187,5 +182,4 @@ function Ignore(target, propertyName, propertyDescriptor) {
     }
     properties.push(propertyName);
 }
-exports.Ignore = Ignore;
 //# sourceMappingURL=index.js.map

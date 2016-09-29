@@ -1,11 +1,10 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var index_1 = require("./index");
-var ArraySerializer = (function (_super) {
+import { Serializer, unserialize } from "./index";
+export var ArraySerializer = (function (_super) {
     __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
         _super.call(this);
@@ -29,7 +28,7 @@ var ArraySerializer = (function (_super) {
         if (Array.isArray(value)) {
             if (this.valueType) {
                 var array = [];
-                if (this.valueType instanceof index_1.Serializer) {
+                if (this.valueType instanceof Serializer) {
                     for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
                         var i = value_1[_i];
                         array.push(this.valueType.unserialize(i));
@@ -38,7 +37,7 @@ var ArraySerializer = (function (_super) {
                 else {
                     for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
                         var i = value_2[_a];
-                        array.push(index_1.unserialize(i, this.valueType));
+                        array.push(unserialize(i, this.valueType));
                     }
                 }
                 return array;
@@ -58,9 +57,8 @@ var ArraySerializer = (function (_super) {
         }
     };
     return ArraySerializer;
-}(index_1.Serializer));
-exports.ArraySerializer = ArraySerializer;
-exports.ArrayOfAny = new ArraySerializer();
-exports.ArrayOfString = new ArraySerializer(String);
-exports.ArrayOfNumber = new ArraySerializer(Number);
+}(Serializer));
+export var ArrayOfAny = new ArraySerializer();
+export var ArrayOfString = new ArraySerializer(String);
+export var ArrayOfNumber = new ArraySerializer(Number);
 //# sourceMappingURL=array-serializer.js.map
