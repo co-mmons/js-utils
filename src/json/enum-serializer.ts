@@ -1,4 +1,4 @@
-import {Serializer, SerializationOptions} from "./index";
+import {Serializer, SerializationOptions} from "./serializer";
 
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.

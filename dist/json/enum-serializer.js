@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Serializer } from "./index";
+import { Serializer } from "./serializer";
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */

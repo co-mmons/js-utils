@@ -1,4 +1,4 @@
-import {Serializer, SerializationOptions} from "./index";
+import {Serializer, SerializationOptions} from "./serializer";
 
 export class StringSerializer extends Serializer {
 

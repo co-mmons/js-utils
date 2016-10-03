@@ -3,28 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-export var Serializer = (function () {
-    function Serializer() {
-    }
-    Serializer.prototype.serialize = function (object, options) {
-        return object;
-    };
-    Serializer.prototype.isUndefinedOrNull = function (value) {
-        return value === undefined || value === null;
-    };
-    Serializer.prototype.serializeUndefinedOrNull = function (value, options) {
-        return value;
-    };
-    Serializer.prototype.unserializeUndefinedOrNull = function (value, options) {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        }
-        else {
-            return value;
-        }
-    };
-    return Serializer;
-}());
+import { Serializer } from "./serializer";
 import { StringSerializer } from "./string-serializer";
 import { NumberSerializer } from "./number-serializer";
 import { BooleanSerializer } from "./boolean-serializer";

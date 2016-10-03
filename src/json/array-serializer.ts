@@ -1,4 +1,5 @@
-import {Serializer, SerializationOptions, unserialize, serialize} from "./index";
+import {Serializer, SerializationOptions} from "./serializer";
+import {unserialize, serialize} from "./index";
 
 export class ArraySerializer extends Serializer {
 

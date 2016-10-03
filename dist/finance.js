@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Property } from './json';
-import { BigNumber } from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 export var Currency = (function () {
     function Currency(codeOrPrototype) {
         if (typeof codeOrPrototype === 'string') {

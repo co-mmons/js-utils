@@ -3,7 +3,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Serializer, unserialize } from "./index";
+import { Serializer } from "./serializer";
+import { unserialize } from "./index";
 export var ArraySerializer = (function (_super) {
     __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {

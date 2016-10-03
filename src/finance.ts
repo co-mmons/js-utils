@@ -1,5 +1,5 @@
 import {Property} from './json';
-import {BigNumber} from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import {Comparable} from './core/compare';
 
 export class Currency {

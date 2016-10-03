@@ -1,4 +1,4 @@
-import { Serializer, SerializationOptions } from "./index";
+import { Serializer, SerializationOptions } from "./serializer";
 export declare class ArraySerializer extends Serializer {
     constructor(valueType?: Function | Serializer);
     private valueType;
