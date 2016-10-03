@@ -6,7 +6,6 @@
     "license": "MIT",
 
     "scripts": {
-        "install": "cp ./dist/* ./ -R"
     },
 
     "dependencies": {
