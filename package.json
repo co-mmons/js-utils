@@ -14,7 +14,7 @@
         "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js"
     },
     
-    "devDependencies: {
+    "devDependencies": {
         "co.mmons.npm-git-helper": "git://github.com/co-mmons/npm-git-helper"
    }
 }
