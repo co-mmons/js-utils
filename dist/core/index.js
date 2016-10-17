@@ -6,4 +6,5 @@ export function enumValues(enumClass) {
     values.length = values.length / 2;
     return values;
 }
+export { BitFlags } from "./bit-flags";
 //# sourceMappingURL=index.js.map

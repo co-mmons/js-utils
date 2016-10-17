@@ -29,3 +29,24 @@ export function getSelfOrParentElementByClassName (element: Element | EventTarge
     if (hasClassName(element as Element, className)) return element as Element;
     return getParentElementByClassName(element as Element, className, topParentElementClassName);
 }
+
+export function isSelfOrChildOf (element: Element | EventTarget, parent: Element, topParent?: Element) {
+
+    if (element === parent) {
+        return true;
+    }
+
+    let par = (element as Element).parentElement;
+    while (par) {
+
+        if (par === parent) {
+            return true;
+        }
+
+        if (par === topParent) {
+            return false;
+        }
+
+        par = par.parentElement;
+    }
+}

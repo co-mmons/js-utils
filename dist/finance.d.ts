@@ -1,6 +1,7 @@
 /// <reference types="bignumber.js" />
 import BigNumber from 'bignumber.js';
 import { Comparable } from './core/compare';
+export declare type BigNumber = BigNumber;
 export declare class Currency {
     constructor(code: string);
     private _code;

@@ -2,6 +2,8 @@ import {Property} from './json';
 import BigNumber from 'bignumber.js';
 import {Comparable} from './core/compare';
 
+export type BigNumber = BigNumber;
+
 export class Currency {
 
 	constructor (code: string);

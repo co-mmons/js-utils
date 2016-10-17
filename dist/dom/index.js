@@ -24,4 +24,19 @@ export function getSelfOrParentElementByClassName(element, className, topParentE
         return element;
     return getParentElementByClassName(element, className, topParentElementClassName);
 }
+export function isSelfOrChildOf(element, parent, topParent) {
+    if (element === parent) {
+        return true;
+    }
+    var par = element.parentElement;
+    while (par) {
+        if (par === parent) {
+            return true;
+        }
+        if (par === topParent) {
+            return false;
+        }
+        par = par.parentElement;
+    }
+}
 //# sourceMappingURL=index.js.map
