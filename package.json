@@ -6,12 +6,12 @@
     "license": "MIT",
 
     "scripts": {
-        "install": "node -e \"require('co.mmons.npm-git-helper').dist()\""
+        "install": "node-utils-npm-install-dist"
     },
 
     "dependencies": {
         "bignumber.js": "^2.4.0",
         "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js",
-        "co.mmons.npm-git-helper": "git://github.com/co-mmons/npm-git-helper"
+        "co.mmons.node-utils": "git://github.com/co-mmons/node-utils"
    }
 }
