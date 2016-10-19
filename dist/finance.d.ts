@@ -1,15 +1,9 @@
 /// <reference types="bignumber.js" />
 import BigNumber from 'bignumber.js';
 import { Comparable } from './core/compare';
-export declare type BigNumber = BigNumber;
-export declare class Currency {
-    constructor(code: string);
-    private _code;
-    readonly code: string;
-    toString(): string;
-    toJSON(): any;
-    protected fromJSON(json: any): void;
-}
+import { Currency } from './intl/currency';
+export { Currency } from './intl/currency';
+export { BigNumber } from 'bignumber.js';
 export declare class Money implements Comparable<Money> {
     constructor(currency: Currency, amount: BigNumber | number);
     constructor(currency: string, amount: BigNumber | number);
