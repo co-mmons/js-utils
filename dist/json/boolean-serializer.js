@@ -1,10 +1,11 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Serializer } from "./serializer";
-export var BooleanSerializer = (function (_super) {
+var serializer_1 = require("./serializer");
+var BooleanSerializer = (function (_super) {
     __extends(BooleanSerializer, _super);
     function BooleanSerializer() {
         _super.apply(this, arguments);
@@ -51,6 +52,7 @@ export var BooleanSerializer = (function (_super) {
         }
     };
     return BooleanSerializer;
-}(Serializer));
+}(serializer_1.Serializer));
+exports.BooleanSerializer = BooleanSerializer;
 var DEFAULT_INSTANCE = new BooleanSerializer();
 //# sourceMappingURL=boolean-serializer.js.map

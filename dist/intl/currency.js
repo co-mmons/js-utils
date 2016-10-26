@@ -1,4 +1,5 @@
-export var Currency = (function () {
+"use strict";
+var Currency = (function () {
     function Currency(codeOrPrototype) {
         if (typeof codeOrPrototype === 'string') {
             this._code = codeOrPrototype;
@@ -36,4 +37,5 @@ export var Currency = (function () {
     };
     return Currency;
 }());
+exports.Currency = Currency;
 //# sourceMappingURL=currency.js.map

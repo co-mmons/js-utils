@@ -9,13 +9,15 @@ function setupSerialization (constructor: any) {
 
 	constructor["__json__serialization"] = true;
 
-	if (!constructor.hasOwnProperty("toJSON")) {
+	if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
+		constructor["__json__toJSON"] = true;
 		constructor.toJSON = function () {
 			return toJsonImpl(this, constructor);
 		}
 	}
 
-	if (!constructor.hasOwnProperty("fromJSON")) {
+	if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
+		constructor["__json__fromJSON"] = true;
 		constructor.fromJSON = function (json: any) {
 			return fromJsonImpl(this, constructor, json);
 		}
@@ -74,7 +76,6 @@ function fromJsonImpl (instance: any, prototype: any, json: any) {
 			instance[propertyName] = serializer.unserialize(json[jsonName], propertyConfig);
 		}
 	}
-
 }
 
 function serializerForType (type: Function) : Serializer {
@@ -123,15 +124,31 @@ const OBJECT_SERIALIZER = new ObjectSerializer();
 
 
 
+interface SubtypeInfo {
+	property: string;
+	value: any;
+	typeRef: Function;
+}
 
+export function Subtype (property: string, value: any, typeRef: Function) {
+	return function (target: Function) {
+		setupSerialization(target);
 
-export function serialize (object: any) : any {
-	if (!object) return null;
-	if (object.toJSON) {
-		return object.toJSON();
-	} else {
-		return object;
+		let types: SubtypeInfo[];
+
+		if (target.hasOwnProperty("__json__subtypes")) {
+			types = Object.getOwnPropertyDescriptor(target, "__json__subtypes").value as SubtypeInfo[];
+		} else {
+			types = [];
+			Object.defineProperty(target, "__json__subtypes", {value: types, enumerable: false, configurable: false});
+		}
+
+		types.push({property: property, value: value, typeRef: typeRef});
 	}
+}
+
+export function serialize (object: any, options?: SerializationOptions) : any {
+	return OBJECT_SERIALIZER.serialize(object, options);
 }
 
 export function unserialize <T> (json: any, targetClass: Function) : T {
@@ -140,7 +157,20 @@ export function unserialize <T> (json: any, targetClass: Function) : T {
 	if (serializer && serializer !== OBJECT_SERIALIZER) return serializer.unserialize(json);
 
 	let prototype: any = targetClass.prototype;
-	if (prototype.hasOwnProperty("fromJSON")) {
+
+	// if type has subtypes, find apropriate subtype
+	if (targetClass.hasOwnProperty("__json__subtypes")) {
+		let subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value as SubtypeInfo[];
+		for (let subtype of subtypes) {
+			if (json[subtype.property] == subtype.value) {
+				prototype = subtype.typeRef.call(null).prototype;
+				break;
+			}
+		}
+	}
+
+	if (prototype["fromJSON"]) {
+        console.log("called fromJSON");
 		let instance = Object.create(prototype);
 		instance.fromJSON(json);
 		return instance;
@@ -214,4 +244,11 @@ export function Ignore (target: any, propertyName: string, propertyDescriptor?: 
 	}
 
 	properties.push(propertyName);
+}
+
+/**
+ * Marks a class, that is to be serialized by json serialization engine.
+ */
+export function Serialize (target: Function) {
+	setupSerialization(target);
 }

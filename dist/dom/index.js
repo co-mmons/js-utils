@@ -1,14 +1,17 @@
-export function hasClassName(element, className) {
+"use strict";
+function hasClassName(element, className) {
     return element.classList.contains(className);
 }
-export function getElementByClassName(element, className) {
+exports.hasClassName = hasClassName;
+function getElementByClassName(element, className) {
     var nodes = element.getElementsByClassName(className);
     if (nodes.length > 0) {
         return nodes[0];
     }
     return null;
 }
-export function getParentElementByClassName(element, className, topParentElementClassName) {
+exports.getElementByClassName = getElementByClassName;
+function getParentElementByClassName(element, className, topParentElementClassName) {
     var parent = element.parentElement;
     while (parent) {
         if (hasClassName(parent, className))
@@ -19,12 +22,14 @@ export function getParentElementByClassName(element, className, topParentElement
     }
     return null;
 }
-export function getSelfOrParentElementByClassName(element, className, topParentElementClassName) {
+exports.getParentElementByClassName = getParentElementByClassName;
+function getSelfOrParentElementByClassName(element, className, topParentElementClassName) {
     if (hasClassName(element, className))
         return element;
     return getParentElementByClassName(element, className, topParentElementClassName);
 }
-export function isSelfOrChildOf(element, parent, topParent) {
+exports.getSelfOrParentElementByClassName = getSelfOrParentElementByClassName;
+function isSelfOrChildOf(element, parent, topParent) {
     if (element === parent) {
         return true;
     }
@@ -39,4 +44,5 @@ export function isSelfOrChildOf(element, parent, topParent) {
         par = par.parentElement;
     }
 }
+exports.isSelfOrChildOf = isSelfOrChildOf;
 //# sourceMappingURL=index.js.map

@@ -1,11 +1,12 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Serializer } from "./serializer";
-import { unserialize, serialize } from "./index";
-export var ObjectAsMapSerializer = (function (_super) {
+var serializer_1 = require("./serializer");
+var index_1 = require("./index");
+var ObjectAsMapSerializer = (function (_super) {
     __extends(ObjectAsMapSerializer, _super);
     function ObjectAsMapSerializer(valueType) {
         _super.call(this);
@@ -18,7 +19,7 @@ export var ObjectAsMapSerializer = (function (_super) {
         else if (typeof value === "object") {
             var json = {};
             for (var i in value) {
-                json[i] = this.valueType instanceof Serializer ? this.valueType.serialize(value) : serialize(value);
+                json[i] = this.valueType instanceof serializer_1.Serializer ? this.valueType.serialize(value) : index_1.serialize(value);
             }
             return json;
         }
@@ -34,7 +35,7 @@ export var ObjectAsMapSerializer = (function (_super) {
             if (this.valueType) {
                 var object = [];
                 for (var i in value) {
-                    object[i] = this.valueType instanceof Serializer ? this.valueType.unserialize(value[i]) : unserialize(value[i], this.valueType);
+                    object[i] = this.valueType instanceof serializer_1.Serializer ? this.valueType.unserialize(value[i]) : index_1.unserialize(value[i], this.valueType);
                 }
                 return object;
             }
@@ -53,5 +54,6 @@ export var ObjectAsMapSerializer = (function (_super) {
         }
     };
     return ObjectAsMapSerializer;
-}(Serializer));
+}(serializer_1.Serializer));
+exports.ObjectAsMapSerializer = ObjectAsMapSerializer;
 //# sourceMappingURL=object-serializer.js.map

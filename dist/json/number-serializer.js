@@ -1,10 +1,11 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Serializer } from "./serializer";
-export var NumberSerializer = (function (_super) {
+var serializer_1 = require("./serializer");
+var NumberSerializer = (function (_super) {
     __extends(NumberSerializer, _super);
     function NumberSerializer() {
         _super.apply(this, arguments);
@@ -51,6 +52,7 @@ export var NumberSerializer = (function (_super) {
         }
     };
     return NumberSerializer;
-}(Serializer));
+}(serializer_1.Serializer));
+exports.NumberSerializer = NumberSerializer;
 var DEFAULT_INSTANCE = new NumberSerializer();
 //# sourceMappingURL=number-serializer.js.map

@@ -1,9 +1,10 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-export var BitFlags = (function () {
+var BitFlags = (function () {
     function BitFlags(value) {
         this._value = value !== undefined ? value : 0;
     }
@@ -31,7 +32,8 @@ export var BitFlags = (function () {
     };
     return BitFlags;
 }());
-export var BitFlagsMutable = (function (_super) {
+exports.BitFlags = BitFlags;
+var BitFlagsMutable = (function (_super) {
     __extends(BitFlagsMutable, _super);
     function BitFlagsMutable(value) {
         _super.call(this, value);
@@ -50,4 +52,5 @@ export var BitFlagsMutable = (function (_super) {
     };
     return BitFlagsMutable;
 }(BitFlags));
+exports.BitFlagsMutable = BitFlagsMutable;
 //# sourceMappingURL=bit-flags.js.map

@@ -1,4 +1,5 @@
-export var Country = (function () {
+"use strict";
+var Country = (function () {
     function Country(codeOrPrototype) {
         if (typeof codeOrPrototype === 'string') {
             this._code = codeOrPrototype;
@@ -36,4 +37,5 @@ export var Country = (function () {
     };
     return Country;
 }());
+exports.Country = Country;
 //# sourceMappingURL=country.js.map

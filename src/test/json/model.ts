@@ -1,6 +1,6 @@
-import {Property} from "../../src/json";
-import {StringSerializer} from "../../src/json/string-serializer";
-import {ArrayOfString} from "../../src/json/array-serializer";
+import {Property, Subtype, Serialize} from "../../json";
+import {StringSerializer} from "../../json/string-serializer";
+import {ArrayOfString} from "../../json/array-serializer";
 
 export class ModelA {
 
@@ -9,11 +9,17 @@ export class ModelA {
 
 }
 
+@Subtype("type", "D", () => ModelD)
 export class ModelB extends ModelA {
 
     constructor () {
         super();
+        this.type = "B";
+        console.log("called constructor b");
     }
+
+    @Property(String)
+    type: string;
 
     @Property(String, "jsonFieldString")
     fieldString: string;
@@ -39,4 +45,16 @@ export class ModelC {
     @Property(ModelB)
     fieldModelB: ModelB;
 
+}
+
+@Serialize
+export class ModelD extends ModelB {
+    constructor () {
+        super();
+        this.type = "D";
+        console.log("called constructor d");
+    }
+
+    @Property(Boolean)
+    fieldModelD: boolean;
 }

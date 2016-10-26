@@ -1,4 +1,5 @@
-export var Serializer = (function () {
+"use strict";
+var Serializer = (function () {
     function Serializer() {
     }
     Serializer.prototype.serialize = function (object, options) {
@@ -20,4 +21,5 @@ export var Serializer = (function () {
     };
     return Serializer;
 }());
+exports.Serializer = Serializer;
 //# sourceMappingURL=serializer.js.map
