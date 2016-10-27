@@ -12,7 +12,6 @@ var array_serializer_1 = require("./array-serializer");
 function setupSerialization(constructor) {
     constructor["__json__serialization"] = true;
     if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
-        console.log("define toJSON:" + constructor);
         constructor["__json__toJSON"] = true;
         constructor.toJSON = function () {
             return toJsonImpl(this, constructor);
