@@ -135,7 +135,6 @@ function unserialize(json, targetClass) {
         }
     }
     if (prototype["fromJSON"]) {
-        console.log("called fromJSON");
         var instance = Object.create(prototype);
         instance.fromJSON(json);
         return instance;

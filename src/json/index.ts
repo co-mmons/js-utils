@@ -170,7 +170,6 @@ export function unserialize <T> (json: any, targetClass: Function) : T {
 	}
 
 	if (prototype["fromJSON"]) {
-        console.log("called fromJSON");
 		let instance = Object.create(prototype);
 		instance.fromJSON(json);
 		return instance;
