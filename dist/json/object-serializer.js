@@ -6,6 +6,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var serializer_1 = require("./serializer");
 var index_1 = require("./index");
+/**
+ * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
+ */
 var ObjectAsMapSerializer = (function (_super) {
     __extends(ObjectAsMapSerializer, _super);
     function ObjectAsMapSerializer(valueType) {

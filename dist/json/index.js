@@ -8,22 +8,88 @@ var serializer_1 = require("./serializer");
 var string_serializer_1 = require("./string-serializer");
 var number_serializer_1 = require("./number-serializer");
 var boolean_serializer_1 = require("./boolean-serializer");
-var array_serializer_1 = require("./array-serializer");
-function setupSerialization(constructor) {
-    constructor["__json__serialization"] = true;
-    if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
-        constructor["__json__toJSON"] = true;
-        constructor.toJSON = function () {
-            return toJsonImpl(this, constructor);
-        };
+var ArraySerializer = (function (_super) {
+    __extends(ArraySerializer, _super);
+    function ArraySerializer(valueType) {
+        _super.call(this);
+        this.valueType = valueType;
     }
-    if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
-        constructor["__json__fromJSON"] = true;
-        constructor.fromJSON = function (json) {
-            return fromJsonImpl(this, constructor, json);
-        };
+    ArraySerializer.prototype.serialize = function (value, options) {
+        if (this.isUndefinedOrNull(value)) {
+            return this.serializeUndefinedOrNull(value, options);
+        }
+        else if (Array.isArray(value)) {
+            return value;
+        }
+        else if (!options || !options.ignoreErrors) {
+            throw 'Cannot serialize "' + value + " as array";
+        }
+        else {
+            return undefined;
+        }
+    };
+    ArraySerializer.prototype.unserialize = function (value, options) {
+        if (Array.isArray(value)) {
+            if (this.valueType) {
+                var array = [];
+                if (this.valueType instanceof serializer_1.Serializer) {
+                    for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                        var i = value_1[_i];
+                        array.push(this.valueType.unserialize(i));
+                    }
+                }
+                else {
+                    for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
+                        var i = value_2[_a];
+                        array.push(unserialize(i, this.valueType));
+                    }
+                }
+                return array;
+            }
+            else {
+                return value;
+            }
+        }
+        else if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+        }
+        else if (!options || !options.ignoreErrors) {
+            throw 'Cannot unserialize "' + value + " to array.";
+        }
+        else {
+            return undefined;
+        }
+    };
+    return ArraySerializer;
+}(serializer_1.Serializer));
+exports.ArraySerializer = ArraySerializer;
+exports.ArrayOfAny = new ArraySerializer();
+exports.ArrayOfString = new ArraySerializer(String);
+exports.ArrayOfNumber = new ArraySerializer(Number);
+var ObjectSerializer = (function (_super) {
+    __extends(ObjectSerializer, _super);
+    function ObjectSerializer() {
+        _super.apply(this, arguments);
     }
-}
+    ObjectSerializer.prototype.serialize = function (object, options) {
+        if (object === null || object === undefined)
+            return object;
+        if (object.toJSON) {
+            return object.toJSON();
+        }
+        return object;
+    };
+    ObjectSerializer.prototype.unserialize = function (json, options) {
+        if (this.isUndefinedOrNull(json))
+            return json;
+        else if (options && typeof options["propertyType"] === "function") {
+            return unserialize(json, options["propertyType"]);
+        }
+        return json;
+    };
+    return ObjectSerializer;
+}(serializer_1.Serializer));
+var OBJECT_SERIALIZER = new ObjectSerializer();
 function toJsonImpl(object, prototype) {
     var json = {};
     var prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : null;
@@ -72,33 +138,24 @@ function serializerForType(type) {
     if (type === String)
         return string_serializer_1.StringSerializer.INSTANCE;
     if (type === Array)
-        return array_serializer_1.ArrayOfAny;
+        return exports.ArrayOfAny;
     return OBJECT_SERIALIZER;
 }
-var ObjectSerializer = (function (_super) {
-    __extends(ObjectSerializer, _super);
-    function ObjectSerializer() {
-        _super.apply(this, arguments);
+function setupSerialization(constructor) {
+    constructor["__json__serialization"] = true;
+    if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
+        constructor["__json__toJSON"] = true;
+        constructor.toJSON = function () {
+            return toJsonImpl(this, constructor);
+        };
     }
-    ObjectSerializer.prototype.serialize = function (object, options) {
-        if (object === null || object === undefined)
-            return object;
-        if (object.toJSON) {
-            return object.toJSON();
-        }
-        return object;
-    };
-    ObjectSerializer.prototype.unserialize = function (json, options) {
-        if (this.isUndefinedOrNull(json))
-            return json;
-        else if (options && typeof options["propertyType"] === "function") {
-            return unserialize(json, options["propertyType"]);
-        }
-        return json;
-    };
-    return ObjectSerializer;
-}(serializer_1.Serializer));
-var OBJECT_SERIALIZER = new ObjectSerializer();
+    if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
+        constructor["__json__fromJSON"] = true;
+        constructor.fromJSON = function (json) {
+            return fromJsonImpl(this, constructor, json);
+        };
+    }
+}
 function Subtype(property, value, typeRef) {
     return function (target) {
         setupSerialization(target);
@@ -114,39 +171,6 @@ function Subtype(property, value, typeRef) {
     };
 }
 exports.Subtype = Subtype;
-function serialize(object, options) {
-    return OBJECT_SERIALIZER.serialize(object, options);
-}
-exports.serialize = serialize;
-function unserialize(json, targetClass) {
-    var serializer = serializerForType(targetClass);
-    if (serializer && serializer !== OBJECT_SERIALIZER)
-        return serializer.unserialize(json);
-    var prototype = targetClass.prototype;
-    // if type has subtypes, find apropriate subtype
-    if (targetClass.hasOwnProperty("__json__subtypes")) {
-        var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value;
-        for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
-            var subtype = subtypes_1[_i];
-            if (json[subtype.property] == subtype.value) {
-                prototype = subtype.typeRef.call(null).prototype;
-                break;
-            }
-        }
-    }
-    if (prototype["fromJSON"]) {
-        var instance = Object.create(prototype);
-        instance.fromJSON(json);
-        return instance;
-    }
-    else if (targetClass !== Object) {
-        var instance = Object.create(prototype);
-        targetClass.apply(instance, [json]);
-        return instance;
-    }
-    return json;
-}
-exports.unserialize = unserialize;
 function Property(type, nameOrOptions, options) {
     return function (target, propertyName, propertyDescriptor) {
         var constructor = target;
@@ -194,4 +218,37 @@ function Serialize(target) {
     setupSerialization(target);
 }
 exports.Serialize = Serialize;
+function serialize(object, options) {
+    return OBJECT_SERIALIZER.serialize(object, options);
+}
+exports.serialize = serialize;
+function unserialize(json, targetClass) {
+    var serializer = serializerForType(targetClass);
+    if (serializer && serializer !== OBJECT_SERIALIZER)
+        return serializer.unserialize(json);
+    var prototype = targetClass.prototype;
+    // if type has subtypes, find apropriate subtype
+    if (targetClass.hasOwnProperty("__json__subtypes")) {
+        var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value;
+        for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
+            var subtype = subtypes_1[_i];
+            if (json[subtype.property] == subtype.value) {
+                prototype = subtype.typeRef.call(null).prototype;
+                break;
+            }
+        }
+    }
+    if (prototype["fromJSON"]) {
+        var instance = Object.create(prototype);
+        instance.fromJSON(json);
+        return instance;
+    }
+    else if (targetClass !== Object) {
+        var instance = Object.create(prototype);
+        targetClass.apply(instance, [json]);
+        return instance;
+    }
+    return json;
+}
+exports.unserialize = unserialize;
 //# sourceMappingURL=index.js.map

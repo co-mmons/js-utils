@@ -2,27 +2,95 @@ import {Serializer, SerializationOptions} from "./serializer";
 import {StringSerializer} from "./string-serializer";
 import {NumberSerializer} from "./number-serializer";
 import {BooleanSerializer} from "./boolean-serializer";
-import {ArrayOfAny} from "./array-serializer";
 
+export class ArraySerializer extends Serializer {
 
-function setupSerialization (constructor: any) {
+    constructor (valueType?: Function | Serializer) {
+    	super();
+        this.valueType = valueType;
+    }
 
-	constructor["__json__serialization"] = true;
+    private valueType: Function | Serializer;
 
-	if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
-		constructor["__json__toJSON"] = true;
-		constructor.toJSON = function () {
-			return toJsonImpl(this, constructor);
-		}
+    public serialize (value: any, options?: SerializationOptions) : any {
+        if (this.isUndefinedOrNull(value)) {
+            return this.serializeUndefinedOrNull(value, options);
+        } else if (Array.isArray(value)) {
+            return value;
+        } else if (!options || !options.ignoreErrors) {
+	        throw 'Cannot serialize "' + value + " as array";
+        } else {
+            return undefined;
+        }
 	}
 
-	if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
-		constructor["__json__fromJSON"] = true;
-		constructor.fromJSON = function (json: any) {
-			return fromJsonImpl(this, constructor, json);
-		}
+	public unserialize (value: any, options?: SerializationOptions) : any {
+
+        if (Array.isArray(value)) {
+
+            if (this.valueType) {
+                let array: any[] = [];
+
+                if (this.valueType instanceof Serializer) {
+
+                    for (let i of value) {
+                        array.push((this.valueType as Serializer).unserialize(i));
+                    }
+
+                } else {
+                    for (let i of value) {
+                        array.push(unserialize(i, this.valueType as Function));
+                    }
+                }
+
+                return array;
+
+            } else {
+			    return value;
+            }
+
+        } else if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+        } else if (!options || !options.ignoreErrors) {
+			throw 'Cannot unserialize "' + value + " to array.";
+		} else {
+            return undefined;
+        }
 	}
 }
+
+export const ArrayOfAny = new ArraySerializer();
+export const ArrayOfString = new ArraySerializer(String);
+export const ArrayOfNumber = new ArraySerializer(Number);
+
+class ObjectSerializer extends Serializer {
+
+	serialize (object: any, options?: SerializationOptions) : any {
+
+		if (object === null || object === undefined) return object;
+
+		if (object.toJSON) {
+			return object.toJSON();
+		}
+
+		return object;
+	}
+
+	unserialize (json: any, options?: SerializationOptions) : any {
+
+		if (this.isUndefinedOrNull(json)) return json;
+
+		else if (options && typeof options["propertyType"] === "function") {
+			return unserialize(json, options["propertyType"]);
+		}
+
+		return json;
+	}
+}
+
+const OBJECT_SERIALIZER = new ObjectSerializer();
+
+
 
 function toJsonImpl (object: any, prototype: any) {
 
@@ -30,7 +98,7 @@ function toJsonImpl (object: any, prototype: any) {
 
 	let prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : null;
 	let properties = prototype["__json__properties"];
-	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<String>;
+	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<string>;
 
 	if (prototype && prototypeOfPrototype && prototypeOfPrototype["toJSON"]) {
 		let prototypeJson = prototypeOfPrototype.toJSON.call(object);
@@ -65,7 +133,7 @@ function fromJsonImpl (instance: any, prototype: any, json: any) {
 	}
 
 	let properties = prototype["__json__properties"];
-	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<String>;
+	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<string>;
 
 	for (let propertyName in properties) {
 
@@ -86,42 +154,24 @@ function serializerForType (type: Function) : Serializer {
 	return OBJECT_SERIALIZER;
 }
 
-class ObjectSerializer extends Serializer {
+function setupSerialization (constructor: any) {
 
-	serialize (object: any, options?: SerializationOptions) : any {
+	constructor["__json__serialization"] = true;
 
-		if (object === null || object === undefined) return object;
-
-		if (object.toJSON) {
-			return object.toJSON();
+	if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
+		constructor["__json__toJSON"] = true;
+		constructor.toJSON = function () {
+			return toJsonImpl(this, constructor);
 		}
-
-		return object;
 	}
 
-	unserialize (json: any, options?: SerializationOptions) : any {
-
-		if (this.isUndefinedOrNull(json)) return json;
-
-		else if (options && typeof options["propertyType"] === "function") {
-			return unserialize(json, options["propertyType"]);
+	if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
+		constructor["__json__fromJSON"] = true;
+		constructor.fromJSON = function (json: any) {
+			return fromJsonImpl(this, constructor, json);
 		}
-
-		return json;
 	}
 }
-
-const OBJECT_SERIALIZER = new ObjectSerializer();
-
-
-
-
-
-
-
-
-
-
 
 
 interface SubtypeInfo {
@@ -147,40 +197,6 @@ export function Subtype (property: string, value: any, typeRef: Function) {
 	}
 }
 
-export function serialize (object: any, options?: SerializationOptions) : any {
-	return OBJECT_SERIALIZER.serialize(object, options);
-}
-
-export function unserialize <T> (json: any, targetClass: Function) : T {
-
-	let serializer: Serializer = serializerForType(targetClass);
-	if (serializer && serializer !== OBJECT_SERIALIZER) return serializer.unserialize(json);
-
-	let prototype: any = targetClass.prototype;
-
-	// if type has subtypes, find apropriate subtype
-	if (targetClass.hasOwnProperty("__json__subtypes")) {
-		let subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value as SubtypeInfo[];
-		for (let subtype of subtypes) {
-			if (json[subtype.property] == subtype.value) {
-				prototype = subtype.typeRef.call(null).prototype;
-				break;
-			}
-		}
-	}
-
-	if (prototype["fromJSON"]) {
-		let instance = Object.create(prototype);
-		instance.fromJSON(json);
-		return instance;
-	} else if (targetClass !== Object) {
-		let instance = Object.create(prototype);
-		targetClass.apply(instance, [json]);
-		return instance;
-	}
-
-	return json;
-}
 
 interface PropertyConfig extends SerializationOptions {
 	propertyType?: Function | Serializer;
@@ -250,4 +266,39 @@ export function Ignore (target: any, propertyName: string, propertyDescriptor?: 
  */
 export function Serialize (target: Function) {
 	setupSerialization(target);
+}
+
+export function serialize (object: any, options?: SerializationOptions) : any {
+	return OBJECT_SERIALIZER.serialize(object, options);
+}
+
+export function unserialize <T> (json: any, targetClass: Function) : T {
+
+	let serializer: Serializer = serializerForType(targetClass);
+	if (serializer && serializer !== OBJECT_SERIALIZER) return serializer.unserialize(json);
+
+	let prototype: any = targetClass.prototype;
+
+	// if type has subtypes, find apropriate subtype
+	if (targetClass.hasOwnProperty("__json__subtypes")) {
+		let subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value as SubtypeInfo[];
+		for (let subtype of subtypes) {
+			if (json[subtype.property] == subtype.value) {
+				prototype = subtype.typeRef.call(null).prototype;
+				break;
+			}
+		}
+	}
+
+	if (prototype["fromJSON"]) {
+		let instance = Object.create(prototype);
+		instance.fromJSON(json);
+		return instance;
+	} else if (targetClass !== Object) {
+		let instance = Object.create(prototype);
+		targetClass.apply(instance, [json]);
+		return instance;
+	}
+
+	return json;
 }
