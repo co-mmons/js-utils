@@ -36,7 +36,7 @@ var ObjectAsMapSerializer = (function (_super) {
     ObjectAsMapSerializer.prototype.unserialize = function (value, options) {
         if (typeof value === "object") {
             if (this.valueType) {
-                var object = [];
+                var object = {};
                 for (var i in value) {
                     object[i] = this.valueType instanceof serializer_1.Serializer ? this.valueType.unserialize(value[i]) : index_1.unserialize(value[i], this.valueType);
                 }

@@ -40,7 +40,7 @@ export class ObjectAsMapSerializer extends Serializer {
         if (typeof value === "object") {
 
             if (this.valueType) {
-                let object: any[] = [];
+                let object = {};
 
                 for (let i in value) {
                     object[i] = this.valueType instanceof Serializer ? this.valueType.unserialize(value[i]) : unserialize(value[i], this.valueType);
