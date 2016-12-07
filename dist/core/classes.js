@@ -40,4 +40,5 @@ function Enumerable(isEnumerable) {
         return descriptor;
     };
 }
+exports.Enumerable = Enumerable;
 //# sourceMappingURL=classes.js.map

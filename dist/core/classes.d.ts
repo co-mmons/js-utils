@@ -5,3 +5,4 @@
 * @link http://stackoverflow.com/a/37778842
 */
 export declare function Final(target: any, propertyKey: string): void;
+export declare function Enumerable(isEnumerable: boolean): (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => TypedPropertyDescriptor<any>;
