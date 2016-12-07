@@ -11,5 +11,6 @@ export function enumValues <T> (enumClass: any) : T[] {
     return values;
 }
 
-export {BitFlags} from "./bit-flags";
+export * from "./bit-flags";
 export * from "./types";
+export * from "./classes";

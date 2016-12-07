@@ -34,4 +34,10 @@ function Final(target, propertyKey) {
     }
 }
 exports.Final = Final;
+function Enumerable(isEnumerable) {
+    return function (target, propertyKey, descriptor) {
+        descriptor.enumerable = isEnumerable;
+        return descriptor;
+    };
+}
 //# sourceMappingURL=classes.js.map
