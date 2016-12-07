@@ -1,5 +1,5 @@
 "use strict";
-function asInteger(value) {
+function toInteger(value) {
     if (typeof value === "number") {
         return value;
     }
@@ -13,8 +13,8 @@ function asInteger(value) {
         return value;
     }
 }
-exports.asInteger = asInteger;
-function asString(value) {
+exports.toInteger = toInteger;
+function toString(value) {
     if (typeof value === "string") {
         return value;
     }
@@ -25,5 +25,5 @@ function asString(value) {
         return value.toString();
     }
 }
-exports.asString = asString;
+exports.toString = toString;
 //# sourceMappingURL=types.js.map
