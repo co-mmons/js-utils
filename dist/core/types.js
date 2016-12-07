@@ -14,4 +14,16 @@ function asInteger(value) {
     }
 }
 exports.asInteger = asInteger;
+function asString(value) {
+    if (typeof value === "string") {
+        return value;
+    }
+    else if (value === undefined || value === null) {
+        return value;
+    }
+    else {
+        return value.toString();
+    }
+}
+exports.asString = asString;
 //# sourceMappingURL=types.js.map
