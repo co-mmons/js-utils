@@ -22,7 +22,7 @@ var ObjectAsMapSerializer = (function (_super) {
         else if (typeof value === "object") {
             var json = {};
             for (var i in value) {
-                json[i] = this.valueType instanceof serializer_1.Serializer ? this.valueType.serialize(value) : index_1.serialize(value);
+                json[i] = this.valueType instanceof serializer_1.Serializer ? this.valueType.serialize(value[i]) : index_1.serialize(value[i]);
             }
             return json;
         }

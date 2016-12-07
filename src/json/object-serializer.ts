@@ -22,7 +22,7 @@ export class ObjectAsMapSerializer extends Serializer {
             let json = {};
 
             for (let i in value) {
-                json[i] = this.valueType instanceof Serializer ? this.valueType.serialize(value) : serialize(value);
+                json[i] = this.valueType instanceof Serializer ? this.valueType.serialize(value[i]) : serialize(value[i]);
             }
 
             return json;
