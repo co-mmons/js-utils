@@ -14,4 +14,5 @@ exports.enumValues = enumValues;
 __export(require("./bit-flags"));
 __export(require("./types"));
 __export(require("./classes"));
+__export(require("./exception"));
 //# sourceMappingURL=index.js.map
