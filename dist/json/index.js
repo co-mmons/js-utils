@@ -19,7 +19,20 @@ var ArraySerializer = (function (_super) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (Array.isArray(value)) {
-            return value;
+            var array = [];
+            if (this.valueType instanceof serializer_1.Serializer) {
+                for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                    var i = value_1[_i];
+                    array.push(this.valueType.serialize(i, options));
+                }
+            }
+            else {
+                for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
+                    var i = value_2[_a];
+                    array.push(serialize(i, this.valueType));
+                }
+            }
+            return array;
         }
         else if (!options || !options.ignoreErrors) {
             throw 'Cannot serialize "' + value + " as array";
@@ -33,14 +46,14 @@ var ArraySerializer = (function (_super) {
             if (this.valueType) {
                 var array = [];
                 if (this.valueType instanceof serializer_1.Serializer) {
-                    for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-                        var i = value_1[_i];
+                    for (var _i = 0, value_3 = value; _i < value_3.length; _i++) {
+                        var i = value_3[_i];
                         array.push(this.valueType.unserialize(i));
                     }
                 }
                 else {
-                    for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
-                        var i = value_2[_a];
+                    for (var _a = 0, value_4 = value; _a < value_4.length; _a++) {
+                        var i = value_4[_a];
                         array.push(unserialize(i, this.valueType));
                     }
                 }

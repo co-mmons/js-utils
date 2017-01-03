@@ -4,14 +4,15 @@
     "author": "co.mmons",
     "private": false,
     "license": "MIT",
-
     "scripts": {
         "install": "node-utils-npm-install-dist"
     },
-
     "dependencies": {
         "bignumber.js": "^2.4.0",
         "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js",
         "co.mmons.node-utils": "git://github.com/co-mmons/node-utils"
-   }
+    },
+    "devDependencies": {
+        "typescript": "2.0.10"
+    }
 }

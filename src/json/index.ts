@@ -1,61 +1,82 @@
-import {Serializer, SerializationOptions} from "./serializer";
-import {StringSerializer} from "./string-serializer";
-import {NumberSerializer} from "./number-serializer";
-import {BooleanSerializer} from "./boolean-serializer";
+import { Serializer, SerializationOptions } from "./serializer";
+import { StringSerializer } from "./string-serializer";
+import { NumberSerializer } from "./number-serializer";
+import { BooleanSerializer } from "./boolean-serializer";
 
 export class ArraySerializer extends Serializer {
 
-    constructor (valueType?: Function | Serializer) {
-    	super();
-        this.valueType = valueType;
-    }
-
-    private valueType: Function | Serializer;
-
-    public serialize (value: any, options?: SerializationOptions) : any {
-        if (this.isUndefinedOrNull(value)) {
-            return this.serializeUndefinedOrNull(value, options);
-        } else if (Array.isArray(value)) {
-            return value;
-        } else if (!options || !options.ignoreErrors) {
-	        throw 'Cannot serialize "' + value + " as array";
-        } else {
-            return undefined;
-        }
+	constructor(valueType?: Function | Serializer) {
+		super();
+		this.valueType = valueType;
 	}
 
-	public unserialize (value: any, options?: SerializationOptions) : any {
+	private valueType: Function | Serializer;
 
-        if (Array.isArray(value)) {
+	public serialize(value: any, options?: SerializationOptions): any {
+		
+		if (this.isUndefinedOrNull(value)) {
+			return this.serializeUndefinedOrNull(value, options);
 
-            if (this.valueType) {
-                let array: any[] = [];
+		} else if (Array.isArray(value)) {
 
-                if (this.valueType instanceof Serializer) {
+			let array: any[] = [];
 
-                    for (let i of value) {
-                        array.push((this.valueType as Serializer).unserialize(i));
-                    }
+			if (this.valueType instanceof Serializer) {
 
-                } else {
-                    for (let i of value) {
-                        array.push(unserialize(i, this.valueType as Function));
-                    }
-                }
+				for (let i of value) {
+					array.push((this.valueType as Serializer).serialize(i, options));
+				}
 
-                return array;
+			} else {
+				for (let i of value) {
+					array.push(serialize(i, this.valueType as Function));
+				}
+			}
 
-            } else {
-			    return value;
-            }
+			return array;
 
-        } else if (this.isUndefinedOrNull(value)) {
-            return this.unserializeUndefinedOrNull(value, options);
-        } else if (!options || !options.ignoreErrors) {
-			throw 'Cannot unserialize "' + value + " to array.";
+		} else if (!options || !options.ignoreErrors) {
+			throw 'Cannot serialize "' + value + " as array";
+
 		} else {
-            return undefined;
-        }
+			return undefined;
+		}
+	}
+
+	public unserialize(value: any, options?: SerializationOptions): any {
+
+		if (Array.isArray(value)) {
+
+			if (this.valueType) {
+				let array: any[] = [];
+
+				if (this.valueType instanceof Serializer) {
+
+					for (let i of value) {
+						array.push((this.valueType as Serializer).unserialize(i));
+					}
+
+				} else {
+					for (let i of value) {
+						array.push(unserialize(i, this.valueType as Function));
+					}
+				}
+
+				return array;
+
+			} else {
+				return value;
+			}
+
+		} else if (this.isUndefinedOrNull(value)) {
+			return this.unserializeUndefinedOrNull(value, options);
+
+		} else if (!options || !options.ignoreErrors) {
+			throw 'Cannot unserialize "' + value + " to array.";
+			
+		} else {
+			return undefined;
+		}
 	}
 }
 
@@ -65,7 +86,7 @@ export const ArrayOfNumber = new ArraySerializer(Number);
 
 class ObjectSerializer extends Serializer {
 
-	serialize (object: any, options?: SerializationOptions) : any {
+	serialize(object: any, options?: SerializationOptions): any {
 
 		if (object === null || object === undefined) return object;
 
@@ -76,7 +97,7 @@ class ObjectSerializer extends Serializer {
 		return object;
 	}
 
-	unserialize (json: any, options?: SerializationOptions) : any {
+	unserialize(json: any, options?: SerializationOptions): any {
 
 		if (this.isUndefinedOrNull(json)) return json;
 
@@ -92,7 +113,7 @@ const OBJECT_SERIALIZER = new ObjectSerializer();
 
 
 
-function toJsonImpl (object: any, prototype: any) {
+function toJsonImpl(object: any, prototype: any) {
 
 	let json: any = {};
 
@@ -124,7 +145,7 @@ function toJsonImpl (object: any, prototype: any) {
 	return json;
 }
 
-function fromJsonImpl (instance: any, prototype: any, json: any) {
+function fromJsonImpl(instance: any, prototype: any, json: any) {
 
 	let prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : undefined;
 
@@ -146,7 +167,7 @@ function fromJsonImpl (instance: any, prototype: any, json: any) {
 	}
 }
 
-function serializerForType (type: Function) : Serializer {
+function serializerForType(type: Function): Serializer {
 	if (type === Boolean) return BooleanSerializer.INSTANCE;
 	if (type === Number) return NumberSerializer.INSTANCE;
 	if (type === String) return StringSerializer.INSTANCE;
@@ -154,7 +175,7 @@ function serializerForType (type: Function) : Serializer {
 	return OBJECT_SERIALIZER;
 }
 
-function setupSerialization (constructor: any) {
+function setupSerialization(constructor: any) {
 
 	constructor["__json__serialization"] = true;
 
@@ -180,7 +201,7 @@ interface SubtypeInfo {
 	typeRef: Function;
 }
 
-export function Subtype (property: string, value: any, typeRef: Function) {
+export function Subtype(property: string, value: any, typeRef: Function) {
 	return function (target: Function) {
 		setupSerialization(target);
 
@@ -190,10 +211,10 @@ export function Subtype (property: string, value: any, typeRef: Function) {
 			types = Object.getOwnPropertyDescriptor(target, "__json__subtypes").value as SubtypeInfo[];
 		} else {
 			types = [];
-			Object.defineProperty(target, "__json__subtypes", {value: types, enumerable: false, configurable: false});
+			Object.defineProperty(target, "__json__subtypes", { value: types, enumerable: false, configurable: false });
 		}
 
-		types.push({property: property, value: value, typeRef: typeRef});
+		types.push({ property: property, value: value, typeRef: typeRef });
 	}
 }
 
@@ -203,20 +224,20 @@ interface PropertyConfig extends SerializationOptions {
 	propertyJsonName?: string;
 }
 
-export function Property (type: Function | Serializer) : Function;
+export function Property(type: Function | Serializer): Function;
 
-export function Property (type: Function | Serializer, jsonName?: string) : Function;
+export function Property(type: Function | Serializer, jsonName?: string): Function;
 
-export function Property (type: Function | Serializer, options?: SerializationOptions) : Function;
+export function Property(type: Function | Serializer, options?: SerializationOptions): Function;
 
-export function Property (type: Function | Serializer, jsonName: string, options?: SerializationOptions) : Function;
+export function Property(type: Function | Serializer, jsonName: string, options?: SerializationOptions): Function;
 
-export function Property (type: Function | Serializer, nameOrOptions?: string | SerializationOptions, options?: SerializationOptions) : Function {
+export function Property(type: Function | Serializer, nameOrOptions?: string | SerializationOptions, options?: SerializationOptions): Function {
 
 	return function (target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
 
 		let constructor = target;
-		let config: PropertyConfig = {propertyType: type};
+		let config: PropertyConfig = { propertyType: type };
 
 		if (typeof nameOrOptions === "string") {
 			config.propertyJsonName = nameOrOptions;
@@ -236,14 +257,14 @@ export function Property (type: Function | Serializer, nameOrOptions?: string | 
 			properties = Object.getOwnPropertyDescriptor(constructor, "__json__properties").value;
 		} else {
 			properties = {};
-			Object.defineProperty(constructor, "__json__properties", {value: properties, enumerable: false, configurable: false});
+			Object.defineProperty(constructor, "__json__properties", { value: properties, enumerable: false, configurable: false });
 		}
 
 		properties[propertyName] = config;
 	}
 }
 
-export function Ignore (target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
+export function Ignore(target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
 
 	let constructor = target;
 
@@ -255,7 +276,7 @@ export function Ignore (target: any, propertyName: string, propertyDescriptor?: 
 		properties = Object.getOwnPropertyDescriptor(constructor, "__json__ignoreProperties").value;
 	} else {
 		properties = [];
-		Object.defineProperty(constructor, "__json__ignoreProperties", {value: properties, enumerable: false, configurable: false});
+		Object.defineProperty(constructor, "__json__ignoreProperties", { value: properties, enumerable: false, configurable: false });
 	}
 
 	properties.push(propertyName);
@@ -264,15 +285,15 @@ export function Ignore (target: any, propertyName: string, propertyDescriptor?: 
 /**
  * Marks a class, that is to be serialized by json serialization engine.
  */
-export function Serialize (target: Function) {
+export function Serialize(target: Function) {
 	setupSerialization(target);
 }
 
-export function serialize (object: any, options?: SerializationOptions) : any {
+export function serialize(object: any, options?: SerializationOptions): any {
 	return OBJECT_SERIALIZER.serialize(object, options);
 }
 
-export function unserialize <T> (json: any, targetClass: Function) : T {
+export function unserialize<T>(json: any, targetClass: Function): T {
 
 	let serializer: Serializer = serializerForType(targetClass);
 	if (serializer && serializer !== OBJECT_SERIALIZER) return serializer.unserialize(json);
