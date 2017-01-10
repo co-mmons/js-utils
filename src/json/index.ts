@@ -43,21 +43,21 @@ export class ArraySerializer extends Serializer {
 		}
 	}
 
-	public unserialize(value: any, options?: SerializationOptions): any {
+	public unserialize(json: any, options?: SerializationOptions): any {
 
-		if (Array.isArray(value)) {
+		if (Array.isArray(json)) {
 
 			if (this.valueType) {
 				let array: any[] = [];
 
 				if (this.valueType instanceof Serializer) {
 
-					for (let i of value) {
+					for (let i of json) {
 						array.push((this.valueType as Serializer).unserialize(i));
 					}
 
 				} else {
-					for (let i of value) {
+					for (let i of json) {
 						array.push(unserialize(i, this.valueType as Function));
 					}
 				}
@@ -65,14 +65,14 @@ export class ArraySerializer extends Serializer {
 				return array;
 
 			} else {
-				return value;
+				return json;
 			}
 
-		} else if (this.isUndefinedOrNull(value)) {
-			return this.unserializeUndefinedOrNull(value, options);
+		} else if (this.isUndefinedOrNull(json)) {
+			return this.unserializeUndefinedOrNull(json, options);
 
 		} else if (!options || !options.ignoreErrors) {
-			throw 'Cannot unserialize "' + value + " to array.";
+			throw 'Cannot unserialize "' + json + " to array.";
 			
 		} else {
 			return undefined;
