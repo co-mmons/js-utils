@@ -19,3 +19,16 @@ export function toString(value: any): string {
         return value.toString();
     }
 }
+
+export function isArrayContainsInstanceOf(value: any, type: Function): boolean {
+
+    if (Array.isArray(value)) {
+        for (let a of value) {
+            if (a instanceof type) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

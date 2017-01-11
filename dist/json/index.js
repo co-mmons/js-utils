@@ -41,33 +41,33 @@ var ArraySerializer = (function (_super) {
             return undefined;
         }
     };
-    ArraySerializer.prototype.unserialize = function (value, options) {
-        if (Array.isArray(value)) {
+    ArraySerializer.prototype.unserialize = function (json, options) {
+        if (Array.isArray(json)) {
             if (this.valueType) {
                 var array = [];
                 if (this.valueType instanceof serializer_1.Serializer) {
-                    for (var _i = 0, value_3 = value; _i < value_3.length; _i++) {
-                        var i = value_3[_i];
+                    for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
+                        var i = json_1[_i];
                         array.push(this.valueType.unserialize(i));
                     }
                 }
                 else {
-                    for (var _a = 0, value_4 = value; _a < value_4.length; _a++) {
-                        var i = value_4[_a];
+                    for (var _a = 0, json_2 = json; _a < json_2.length; _a++) {
+                        var i = json_2[_a];
                         array.push(unserialize(i, this.valueType));
                     }
                 }
                 return array;
             }
             else {
-                return value;
+                return json;
             }
         }
-        else if (this.isUndefinedOrNull(value)) {
-            return this.unserializeUndefinedOrNull(value, options);
+        else if (this.isUndefinedOrNull(json)) {
+            return this.unserializeUndefinedOrNull(json, options);
         }
         else if (!options || !options.ignoreErrors) {
-            throw 'Cannot unserialize "' + value + " to array.";
+            throw 'Cannot unserialize "' + json + " to array.";
         }
         else {
             return undefined;

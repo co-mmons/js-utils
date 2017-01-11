@@ -26,4 +26,16 @@ function toString(value) {
     }
 }
 exports.toString = toString;
+function isArrayContainsInstanceOf(value, type) {
+    if (Array.isArray(value)) {
+        for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+            var a = value_1[_i];
+            if (a instanceof type) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+exports.isArrayContainsInstanceOf = isArrayContainsInstanceOf;
 //# sourceMappingURL=types.js.map
