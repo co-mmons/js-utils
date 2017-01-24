@@ -88,8 +88,18 @@ var ObjectSerializer = (function (_super) {
         if (object === null || object === undefined)
             return object;
         if (object.toJSON) {
-            return object.toJSON();
+            object = object.toJSON();
         }
+        /*
+        if (typeof object == "object") {
+
+            for (let k in object) {
+                if (object[k] === undefined || object[k] === null) {
+                    delete object[k];
+                }
+            }
+
+        }*/
         return object;
     };
     ObjectSerializer.prototype.unserialize = function (json, options) {

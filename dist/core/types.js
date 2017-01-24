@@ -38,4 +38,12 @@ function isArrayContainsInstanceOf(value, type) {
     return false;
 }
 exports.isArrayContainsInstanceOf = isArrayContainsInstanceOf;
+function mapEntries(map) {
+    var array = [];
+    for (var key in map) {
+        array.push({ key: key, value: map[key] });
+    }
+    return array;
+}
+exports.mapEntries = mapEntries;
 //# sourceMappingURL=types.js.map
