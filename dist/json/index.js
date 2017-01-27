@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var core_1 = require("../core");
 var serializer_1 = require("./serializer");
 var string_serializer_1 = require("./string-serializer");
 var number_serializer_1 = require("./number-serializer");
@@ -12,24 +13,28 @@ var ArraySerializer = (function (_super) {
     __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
         _super.call(this);
+        if (arguments.length == 1 && !valueType) {
+            throw "Value type passed to Json Array Serializer is undefined - check, whether class reference cycle";
+        }
         this.valueType = valueType;
     }
     ArraySerializer.prototype.serialize = function (value, options) {
+        var valueType = core_1.resolveForwardRef(this.valueType);
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (Array.isArray(value)) {
             var array = [];
-            if (this.valueType instanceof serializer_1.Serializer) {
+            if (valueType instanceof serializer_1.Serializer) {
                 for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
                     var i = value_1[_i];
-                    array.push(this.valueType.serialize(i, options));
+                    array.push(valueType.serialize(i, options));
                 }
             }
             else {
                 for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
                     var i = value_2[_a];
-                    array.push(serialize(i, this.valueType));
+                    array.push(serialize(i));
                 }
             }
             return array;
@@ -42,19 +47,20 @@ var ArraySerializer = (function (_super) {
         }
     };
     ArraySerializer.prototype.unserialize = function (json, options) {
+        var valueType = core_1.resolveForwardRef(this.valueType);
         if (Array.isArray(json)) {
-            if (this.valueType) {
+            if (valueType) {
                 var array = [];
-                if (this.valueType instanceof serializer_1.Serializer) {
+                if (valueType instanceof serializer_1.Serializer) {
                     for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
                         var i = json_1[_i];
-                        array.push(this.valueType.unserialize(i));
+                        array.push(valueType.unserialize(i));
                     }
                 }
                 else {
                     for (var _a = 0, json_2 = json; _a < json_2.length; _a++) {
                         var i = json_2[_a];
-                        array.push(unserialize(i, this.valueType));
+                        array.push(unserialize(i, valueType));
                     }
                 }
                 return array;

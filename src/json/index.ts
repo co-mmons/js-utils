@@ -1,3 +1,5 @@
+import { resolveForwardRef } from "../core";
+
 import { Serializer, SerializationOptions } from "./serializer";
 import { StringSerializer } from "./string-serializer";
 import { NumberSerializer } from "./number-serializer";
@@ -7,12 +9,19 @@ export class ArraySerializer extends Serializer {
 
 	constructor(valueType?: Function | Serializer) {
 		super();
+
+		if (arguments.length == 1 && !valueType) {
+			throw "Value type passed to Json Array Serializer is undefined - check, whether class reference cycle";
+		}
+
 		this.valueType = valueType;
 	}
 
 	private valueType: Function | Serializer;
 
 	public serialize(value: any, options?: SerializationOptions): any {
+
+		let valueType = resolveForwardRef(this.valueType);
 		
 		if (this.isUndefinedOrNull(value)) {
 			return this.serializeUndefinedOrNull(value, options);
@@ -21,15 +30,15 @@ export class ArraySerializer extends Serializer {
 
 			let array: any[] = [];
 
-			if (this.valueType instanceof Serializer) {
+			if (valueType instanceof Serializer) {
 
 				for (let i of value) {
-					array.push((this.valueType as Serializer).serialize(i, options));
+					array.push((valueType as Serializer).serialize(i, options));
 				}
 
 			} else {
 				for (let i of value) {
-					array.push(serialize(i, this.valueType as Function));
+					array.push(serialize(i));
 				}
 			}
 
@@ -45,20 +54,22 @@ export class ArraySerializer extends Serializer {
 
 	public unserialize(json: any, options?: SerializationOptions): any {
 
+		let valueType = resolveForwardRef(this.valueType);
+
 		if (Array.isArray(json)) {
 
-			if (this.valueType) {
+			if (valueType) {
 				let array: any[] = [];
 
-				if (this.valueType instanceof Serializer) {
+				if (valueType instanceof Serializer) {
 
 					for (let i of json) {
-						array.push((this.valueType as Serializer).unserialize(i));
+						array.push((valueType as Serializer).unserialize(i));
 					}
 
 				} else {
 					for (let i of json) {
-						array.push(unserialize(i, this.valueType as Function));
+						array.push(unserialize(i, valueType as Function));
 					}
 				}
 

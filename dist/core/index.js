@@ -15,4 +15,6 @@ __export(require("./bit-flags"));
 __export(require("./types"));
 __export(require("./classes"));
 __export(require("./exception"));
+__export(require("./type"));
+__export(require("./forward-ref"));
 //# sourceMappingURL=index.js.map
