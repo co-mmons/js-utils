@@ -1,5 +1,5 @@
 {
-    "name": "co.mmons.typescript-utils",
+    "name": "@co.mmons/typescript-utils",
     "version": "1.0.0",
     "author": "co.mmons",
     "private": false,
@@ -10,7 +10,7 @@
     "dependencies": {
         "bignumber.js": "^2.4.0",
         "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js",
-        "co.mmons.node-utils": "git://github.com/co-mmons/node-utils"
+        "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils"
     },
     "devDependencies": {
         "typescript": "2.0.10"
