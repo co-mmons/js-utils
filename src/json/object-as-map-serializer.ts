@@ -1,19 +1,19 @@
-import {Serializer, SerializationOptions} from "./serializer";
-import {unserialize, serialize} from "./index";
+import { Type } from "../core";
+import { Serializer, SerializationOptions, unserialize, serialize } from "./serialization";
 
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
 export class ObjectAsMapSerializer extends Serializer {
 
-    constructor (valueType?: Function | Serializer) {
-    	super();
+    constructor(valueType?: Type<any> | Serializer) {
+        super();
         this.valueType = valueType;
     }
 
-    private valueType: Function | Serializer;
+    private valueType: Type<any> | Serializer;
 
-    public serialize (value: any, options?: SerializationOptions): any {
+    public serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
 
@@ -28,14 +28,14 @@ export class ObjectAsMapSerializer extends Serializer {
             return json;
 
         } else if (!options || !options.ignoreErrors) {
-	        throw 'Cannot serialize "' + value + " as object";
+            throw 'Cannot serialize "' + value + " as object";
 
         } else {
             return undefined;
         }
-	}
+    }
 
-	public unserialize (value: any, options?: SerializationOptions) : any {
+    public unserialize(value: any, options?: SerializationOptions): any {
 
         if (typeof value === "object") {
 
@@ -49,17 +49,17 @@ export class ObjectAsMapSerializer extends Serializer {
                 return object;
 
             } else {
-			    return value;
+                return value;
             }
 
         } else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);
 
         } else if (!options || !options.ignoreErrors) {
-			throw 'Cannot unserialize "' + value + " to object.";
+            throw 'Cannot unserialize "' + value + " to object.";
 
-		} else {
+        } else {
             return undefined;
         }
-	}
+    }
 }

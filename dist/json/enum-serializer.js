@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var serializer_1 = require("./serializer");
+var serialization_1 = require("./serialization");
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
@@ -31,6 +31,6 @@ var EnumAsStringSerializer = (function (_super) {
         }
     };
     return EnumAsStringSerializer;
-}(serializer_1.Serializer));
+}(serialization_1.Serializer));
 exports.EnumAsStringSerializer = EnumAsStringSerializer;
 //# sourceMappingURL=enum-serializer.js.map

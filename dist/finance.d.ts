@@ -1,9 +1,9 @@
 /// <reference types="bignumber.js" />
-import BigNumber from 'bignumber.js';
-import { Comparable } from './core/compare';
-import { Currency } from './intl/currency';
-export { Currency } from './intl/currency';
-export { BigNumber } from 'bignumber.js';
+import BigNumber from "bignumber.js";
+import { Comparable } from "./core";
+import { Currency } from "./intl";
+export { Currency } from "./intl";
+export { BigNumber } from "bignumber.js";
 export declare class Money implements Comparable<Money> {
     constructor(currency: Currency, amount: BigNumber | number);
     constructor(currency: string, amount: BigNumber | number);
@@ -15,5 +15,6 @@ export declare class Money implements Comparable<Money> {
     minus(amount: BigNumber | number | string): Money;
     times(amount: BigNumber | number | string): Money;
     dividedBy(amount: BigNumber | number | string): Money;
+    comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
 }

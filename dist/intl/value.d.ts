@@ -1,5 +1,5 @@
-import { Serializer } from "./../json/serializer";
-import { ObjectAsMapSerializer } from "../json/object-serializer";
+import { Type } from "../core";
+import { Serializer, ObjectAsMapSerializer } from "../json";
 export interface IntlValue<V> {
     [locale: string]: V;
 }
@@ -8,5 +8,5 @@ export declare namespace IntlValue {
     function clone<V>(value: IntlValue<V>): IntlValue<V>;
 }
 export declare class IntlValueSerializer extends ObjectAsMapSerializer {
-    constructor(valueType: Function | Serializer);
+    constructor(valueType: Type<any> | Serializer);
 }

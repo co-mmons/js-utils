@@ -8,36 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var json_1 = require('./json');
-var bignumber_js_1 = require('bignumber.js');
-var currency_1 = require('./intl/currency');
-var currency_2 = require('./intl/currency');
-exports.Currency = currency_2.Currency;
-var bignumber_js_2 = require('bignumber.js');
+var bignumber_js_1 = require("bignumber.js");
+var json_1 = require("./json");
+var intl_1 = require("./intl");
+var intl_2 = require("./intl");
+exports.Currency = intl_2.Currency;
+var bignumber_js_2 = require("bignumber.js");
 exports.BigNumber = bignumber_js_2.BigNumber;
 function toBigNumber(value) {
     if (value instanceof bignumber_js_1.default) {
         return value;
     }
-    else if (typeof value === 'number') {
+    else if (typeof value === "number") {
         return new bignumber_js_1.default(value);
     }
-    else if (typeof value === 'string') {
+    else if (typeof value === "string") {
         return new bignumber_js_1.default(value);
     }
     else {
-        throw 'Given value: "' + value + '" cannot be converted to BigNumber.';
+        throw "Given value: " + value + " cannot be converted to BigNumber.";
     }
 }
 var Money = (function () {
     function Money(currencyOrPrototype, amount) {
-        if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
-            this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
+        if (currencyOrPrototype instanceof intl_1.Currency || typeof currencyOrPrototype === "string") {
+            this._currency = currencyOrPrototype instanceof intl_1.Currency ? currencyOrPrototype : new intl_1.Currency(currencyOrPrototype);
             this._amount = toBigNumber(amount);
         }
         else if (currencyOrPrototype) {
-            this._amount = toBigNumber(currencyOrPrototype['amount']);
-            this._currency = currencyOrPrototype['currency'] instanceof currency_1.Currency ? currencyOrPrototype['amount'] : new currency_1.Currency(currencyOrPrototype['currency']);
+            this._amount = toBigNumber(currencyOrPrototype["amount"]);
+            this._currency = currencyOrPrototype["currency"] instanceof intl_1.Currency ? currencyOrPrototype["amount"] : new intl_1.Currency(currencyOrPrototype["currency"]);
         }
     }
     Object.defineProperty(Money.prototype, "currency", {
@@ -66,6 +66,9 @@ var Money = (function () {
     Money.prototype.dividedBy = function (amount) {
         return new Money(this._currency, this._amount.dividedBy(amount));
     };
+    Money.prototype.comparedTo = function (money) {
+        return this.compareTo(money);
+    };
     Money.prototype.compareTo = function (money) {
         if (typeof money === "number")
             return this._amount.comparedTo(money);
@@ -77,11 +80,11 @@ var Money = (function () {
             throw "Cannot compare empty value";
     };
     __decorate([
-        json_1.Property(currency_1.Currency, 'currency'), 
-        __metadata('design:type', currency_1.Currency)
+        json_1.Property(intl_1.Currency, "currency"), 
+        __metadata('design:type', intl_1.Currency)
     ], Money.prototype, "_currency", void 0);
     __decorate([
-        json_1.Property(bignumber_js_1.default, 'amount'), 
+        json_1.Property(bignumber_js_1.default, "amount"), 
         __metadata('design:type', bignumber_js_1.default)
     ], Money.prototype, "_amount", void 0);
     return Money;

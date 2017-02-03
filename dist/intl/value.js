@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var object_serializer_1 = require("../json/object-serializer");
+var json_1 = require("../json");
 var IntlValue;
 (function (IntlValue) {
     function value(value, locale) {
@@ -32,6 +32,6 @@ var IntlValueSerializer = (function (_super) {
         _super.call(this, valueType);
     }
     return IntlValueSerializer;
-}(object_serializer_1.ObjectAsMapSerializer));
+}(json_1.ObjectAsMapSerializer));
 exports.IntlValueSerializer = IntlValueSerializer;
 //# sourceMappingURL=value.js.map

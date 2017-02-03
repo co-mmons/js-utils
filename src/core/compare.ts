@@ -1,3 +1,3 @@
-export interface Comparable <T> {
-    compareTo (obj: T): number;
+export interface Comparable<T> {
+    compareTo(obj: T): number;
 }

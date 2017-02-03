@@ -1,5 +1,5 @@
-import {ModelA, ModelB, ModelC, ModelD} from "./model";
-import {serialize, unserialize} from "../../json";
+import { ModelA, ModelB, ModelC, ModelD } from "./model";
+import { serialize, unserialize } from "../../json";
 
 var model: ModelB = new ModelB();
 model.fieldString = "aaaa";
@@ -32,7 +32,7 @@ var modelCUnserialized: ModelC = unserialize(modelCSerialized, ModelC) as ModelC
 console.log("Unserialize ModelC:");
 console.log(modelCUnserialized);
 */
-var modelD = new ModelD() ;
+var modelD = new ModelD();
 modelD.fieldBoolean = true;
 console.log("ModelD:");
 console.log(modelD);

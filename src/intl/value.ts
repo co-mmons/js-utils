@@ -1,5 +1,5 @@
-import {Serializer} from "./../json/serializer";
-import {ObjectAsMapSerializer} from "../json/object-serializer";
+import { Type } from "../core";
+import { Serializer, ObjectAsMapSerializer } from "../json";
 
 export interface IntlValue<V> {
     [locale: string]: V;
@@ -7,7 +7,7 @@ export interface IntlValue<V> {
 
 export namespace IntlValue {
 
-    export function value <V> (value: IntlValue<V>, locale?: string): V {
+    export function value<V>(value: IntlValue<V>, locale?: string): V {
 
         if (value) {
             return value[locale];
@@ -16,7 +16,7 @@ export namespace IntlValue {
         return undefined;
     }
 
-    export function clone <V> (value: IntlValue<V>): IntlValue<V> {
+    export function clone<V>(value: IntlValue<V>): IntlValue<V> {
 
         if (!value) {
             return value;
@@ -34,7 +34,7 @@ export namespace IntlValue {
 
 export class IntlValueSerializer extends ObjectAsMapSerializer {
 
-    constructor (valueType: Function | Serializer) {
+    constructor(valueType: Type<any> | Serializer) {
         super(valueType);
     }
 
