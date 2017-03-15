@@ -6,6 +6,10 @@ export function serialize(object: any, options?: SerializationOptions): any {
 
 export function unserialize<T>(json: any, targetClass: Type<any>): T {
 
+    if (json === undefined || json === null) {
+        return json;
+    }
+
     let serializer: Serializer = serializerForType(targetClass);
     if (serializer && serializer !== ObjectSerializer.instance) return serializer.unserialize(json);
 

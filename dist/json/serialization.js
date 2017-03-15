@@ -10,6 +10,9 @@ function serialize(object, options) {
 }
 exports.serialize = serialize;
 function unserialize(json, targetClass) {
+    if (json === undefined || json === null) {
+        return json;
+    }
     var serializer = serializerForType(targetClass);
     if (serializer && serializer !== ObjectSerializer.instance)
         return serializer.unserialize(json);
