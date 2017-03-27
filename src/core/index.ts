@@ -1,12 +1,12 @@
 export function enumValues <T> (enumClass: any) : T[] {
 
-    var values: T[] = [];
+    let values: T[] = [];
 
-    for (var key in enumClass) {
-        values.push(enumClass[key]);
+    for (let key in enumClass) {
+        if (typeof enumClass[key] === "number" && enumClass[enumClass[key]]) {
+            values.push(enumClass[key]);
+        }
     }
-
-    values.length = values.length / 2;
 
     return values;
 }

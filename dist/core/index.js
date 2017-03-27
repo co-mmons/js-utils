@@ -5,9 +5,10 @@ function __export(m) {
 function enumValues(enumClass) {
     var values = [];
     for (var key in enumClass) {
-        values.push(enumClass[key]);
+        if (typeof enumClass[key] === "number" && enumClass[enumClass[key]]) {
+            values.push(enumClass[key]);
+        }
     }
-    values.length = values.length / 2;
     return values;
 }
 exports.enumValues = enumValues;
