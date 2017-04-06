@@ -14,7 +14,7 @@
         "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils"
     },
     "devDependencies": {
-        "typescript": "2.0.10"
+        "typescript": "^2.2.2"
     }
     
 }
