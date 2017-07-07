@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var serialization_1 = require("./serialization");
 function toJsonImpl(object, prototype) {
     var json = {};

@@ -1,9 +1,15 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("../core");
 function serialize(object, options) {
     return ObjectSerializer.instance.serialize(object, options);
@@ -19,7 +25,7 @@ function unserialize(json, targetClass) {
     var prototype = targetClass.prototype;
     // if type has subtypes, find apropriate subtype
     if (targetClass.hasOwnProperty("__json__subtypes")) {
-        var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value;
+        var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
         for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
             var subtype = subtypes_1[_i];
             if (json[subtype.property] == subtype.value) {
@@ -79,11 +85,12 @@ exports.Serializer = Serializer;
 var ArraySerializer = (function (_super) {
     __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
-        _super.call(this);
+        var _this = _super.call(this) || this;
         if (arguments.length == 1 && !valueType) {
             throw "Value type passed to Json Array Serializer is undefined - check, whether class reference cycle";
         }
-        this.valueType = valueType;
+        _this.valueType = valueType;
+        return _this;
     }
     ArraySerializer.prototype.serialize = function (value, options) {
         var valueType = core_1.resolveForwardRef(this.valueType);
@@ -172,7 +179,7 @@ exports.ArrayOfBoolean = ArraySerializer.ofBoolean;
 var ObjectSerializer = (function (_super) {
     __extends(ObjectSerializer, _super);
     function ObjectSerializer() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     ObjectSerializer.prototype.serialize = function (object, options) {
         if (object === null || object === undefined)
@@ -206,7 +213,7 @@ var ObjectSerializer = (function (_super) {
 var BooleanSerializer = (function (_super) {
     __extends(BooleanSerializer, _super);
     function BooleanSerializer() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     BooleanSerializer.prototype.serialize = function (value, options) {
         if (this.isUndefinedOrNull(value)) {
@@ -248,7 +255,7 @@ var BooleanSerializer = (function (_super) {
 var NumberSerializer = (function (_super) {
     __extends(NumberSerializer, _super);
     function NumberSerializer() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     NumberSerializer.prototype.serialize = function (value, options) {
         if (this.isUndefinedOrNull(value)) {
@@ -290,7 +297,7 @@ var NumberSerializer = (function (_super) {
 var StringSerializer = (function (_super) {
     __extends(StringSerializer, _super);
     function StringSerializer() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     StringSerializer.prototype.serialize = function (value, options) {
         if (this.isUndefinedOrNull(value)) {

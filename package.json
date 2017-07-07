@@ -1,20 +1,19 @@
 {
-    "name": "@co.mmons/typescript-utils",
-    "version": "1.0.0",
-    "author": "co.mmons",
-    "private": false,
-    "license": "MIT",
-    "scripts": {
-        "install": "node-utils-npm-install-dist",
-        "build": "tsc -p tsconfig.dist.json"
-    },
-    "dependencies": {
-        "bignumber.js": "^4.0.0",
-        "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js",
-        "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils"
-    },
-    "devDependencies": {
-        "typescript": "^2.2.2"
-    }
-    
+  "name": "@co.mmons/typescript-utils",
+  "version": "1.0.0",
+  "author": "co.mmons",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "install": "node-utils-npm-install-dist",
+    "build": "tsc -p tsconfig.dist.json"
+  },
+  "dependencies": {
+    "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils",
+    "@types/bignumber.js": "^4.0.2",
+    "bignumber.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.1"
+  }
 }

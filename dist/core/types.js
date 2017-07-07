@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function toInteger(value) {
     if (typeof value === "number") {
         return value;

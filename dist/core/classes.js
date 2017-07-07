@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
 * Turns static and non-static fields into getter-only, and therefor renders them "Final".
 * To use simply annotate the static or non-static field with: @Final
