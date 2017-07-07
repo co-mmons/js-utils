@@ -20,4 +20,4 @@ export * from "./forward-ref";
 export * from "./compare";
 
 import BigNumber from "bignumber.js";
-export {BigNumber};
+export type BigNumber = BigNumber;
