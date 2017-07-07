@@ -6,4 +6,5 @@ export * from "./exception";
 export * from "./type";
 export * from "./forward-ref";
 export * from "./compare";
-export { BigNumber } from "bignumber.js";
+import BigNumber from "bignumber.js";
+export { BigNumber };

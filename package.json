@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils",
-    "@types/bignumber.js": "^4.0.2",
+    "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js",
     "bignumber.js": "^4.0.2"
   },
   "devDependencies": {
