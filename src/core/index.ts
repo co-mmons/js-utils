@@ -19,5 +19,4 @@ export * from "./type";
 export * from "./forward-ref";
 export * from "./compare";
 
-import BigNumber from "bignumber.js";
-export type BigNumber = BigNumber;
+export {BigNumber, BigNumberConfig, BigNumberFormatConfig} from "bignumber.js";
