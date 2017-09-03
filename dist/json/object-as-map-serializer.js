@@ -14,7 +14,7 @@ var serialization_1 = require("./serialization");
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
-var ObjectAsMapSerializer = (function (_super) {
+var ObjectAsMapSerializer = /** @class */ (function (_super) {
     __extends(ObjectAsMapSerializer, _super);
     function ObjectAsMapSerializer(valueType) {
         var _this = _super.call(this) || this;

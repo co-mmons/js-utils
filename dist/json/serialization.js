@@ -59,7 +59,7 @@ function serializerForType(type) {
     return ObjectSerializer.instance;
 }
 exports.serializerForType = serializerForType;
-var Serializer = (function () {
+var Serializer = /** @class */ (function () {
     function Serializer() {
     }
     Serializer.prototype.serialize = function (object, options) {
@@ -82,7 +82,7 @@ var Serializer = (function () {
     return Serializer;
 }());
 exports.Serializer = Serializer;
-var ArraySerializer = (function (_super) {
+var ArraySerializer = /** @class */ (function (_super) {
     __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
         var _this = _super.call(this) || this;
@@ -176,7 +176,7 @@ exports.ArrayOfNumber = ArraySerializer.ofNumber;
  * @deprecated Use {@link ArraySerializer#ofBoolean}.
  */
 exports.ArrayOfBoolean = ArraySerializer.ofBoolean;
-var ObjectSerializer = (function (_super) {
+var ObjectSerializer = /** @class */ (function (_super) {
     __extends(ObjectSerializer, _super);
     function ObjectSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -210,7 +210,7 @@ var ObjectSerializer = (function (_super) {
     ObjectSerializer.instance = new ObjectSerializer();
     return ObjectSerializer;
 }(Serializer));
-var BooleanSerializer = (function (_super) {
+var BooleanSerializer = /** @class */ (function (_super) {
     __extends(BooleanSerializer, _super);
     function BooleanSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -252,7 +252,7 @@ var BooleanSerializer = (function (_super) {
     BooleanSerializer.instance = new BooleanSerializer();
     return BooleanSerializer;
 }(Serializer));
-var NumberSerializer = (function (_super) {
+var NumberSerializer = /** @class */ (function (_super) {
     __extends(NumberSerializer, _super);
     function NumberSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -294,7 +294,7 @@ var NumberSerializer = (function (_super) {
     NumberSerializer.instance = new NumberSerializer();
     return NumberSerializer;
 }(Serializer));
-var StringSerializer = (function (_super) {
+var StringSerializer = /** @class */ (function (_super) {
     __extends(StringSerializer, _super);
     function StringSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;

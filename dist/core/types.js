@@ -1,5 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function toFloat(value) {
+    if (typeof value === "number") {
+        return value;
+    }
+    else if (typeof value === "string") {
+        return parseFloat(value);
+    }
+    else if (value) {
+        throw "Cannot convert value \"" + value + "\" to float";
+    }
+    else {
+        return value;
+    }
+}
+exports.toFloat = toFloat;
 function toInteger(value) {
     if (typeof value === "number") {
         return value;

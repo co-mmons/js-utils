@@ -1,3 +1,15 @@
+export function toFloat(value: string | number): number {
+    if (typeof value === "number") {
+        return value as number;
+    } else if (typeof value === "string") {
+        return parseFloat(value);
+    } else if (value) {
+        throw `Cannot convert value "${value}" to float`;
+    } else {
+        return value;
+    }
+}
+
 export function toInteger(value: string | number): number {
     if (typeof value === "number") {
         return value as number;

@@ -14,7 +14,7 @@ var serialization_1 = require("./serialization");
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
-var EnumAsStringSerializer = (function (_super) {
+var EnumAsStringSerializer = /** @class */ (function (_super) {
     __extends(EnumAsStringSerializer, _super);
     function EnumAsStringSerializer(enumClass) {
         var _this = _super.call(this) || this;

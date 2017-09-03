@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exception = (function () {
+var Exception = /** @class */ (function () {
     function Exception(message) {
         this.message = message;
     }

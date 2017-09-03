@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BitFlags = (function () {
+var BitFlags = /** @class */ (function () {
     function BitFlags(value) {
         this._value = value !== undefined ? value : 0;
     }
@@ -39,7 +39,7 @@ var BitFlags = (function () {
     return BitFlags;
 }());
 exports.BitFlags = BitFlags;
-var BitFlagsMutable = (function (_super) {
+var BitFlagsMutable = /** @class */ (function (_super) {
     __extends(BitFlagsMutable, _super);
     function BitFlagsMutable(value) {
         return _super.call(this, value) || this;
