@@ -6,4 +6,4 @@ export * from "./exception";
 export * from "./type";
 export * from "./forward-ref";
 export * from "./compare";
-export { BigNumber, BigNumberConfig, BigNumberFormatConfig } from "bignumber.js";
+export { BigNumber, Configuration as BigNumberConfiguration, Format as BigNumberFormat } from "bignumber.js";
