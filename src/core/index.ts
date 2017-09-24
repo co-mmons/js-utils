@@ -1,16 +1,4 @@
-export function enumValues <T> (enumClass: any) : T[] {
-
-    let values: T[] = [];
-
-    for (let key in enumClass) {
-        if (typeof enumClass[key] === "number" && enumClass[enumClass[key]]) {
-            values.push(enumClass[key]);
-        }
-    }
-
-    return values;
-}
-
+export * from "./enums";
 export * from "./bit-flags";
 export * from "./types";
 export * from "./classes";
