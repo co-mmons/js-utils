@@ -44,6 +44,7 @@ export function serializerForType(type: Type<any>): Serializer {
     if (type === Number) return NumberSerializer.instance;
     if (type === String) return StringSerializer.instance;
     if (type === Array) return ArraySerializer.ofAny;
+    if (type === Date) return DateSerializer.instance;
     return ObjectSerializer.instance;
 }
 
@@ -327,6 +328,48 @@ class StringSerializer extends Serializer {
             return value + "";
         } else if (!options || !options.ignoreErrors) {
             throw 'Cannot unserialize "' + value + " to string.";
+        } else {
+            return undefined;
+        }
+    }
+
+}
+
+class DateSerializer extends Serializer {
+
+    static readonly instance = new DateSerializer();
+
+    public serialize(value: any, options?: SerializationOptions): any {
+        if (this.isUndefinedOrNull(value)) {
+            return this.serializeUndefinedOrNull(value, options);
+        } else if (value instanceof Date) {
+            return value;
+        } else if (options && options.notStrict && typeof value == "number") {
+            return new Date().setTime(value);
+        } else if (!options || !options.ignoreErrors) {
+            throw 'Cannot serialize "' + value + " as Date";
+        } else {
+            return undefined;
+        }
+    }
+
+    public unserialize(value: any, options?: SerializationOptions): any {
+        
+        if (value instanceof Date) {
+            return value;
+
+        } else if (typeof value == "string") {
+            return new Date(value);
+
+        } else if (typeof value == "number" && options && options.notStrict) {
+            return new Date().setTime(value);
+
+        } else if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+
+        } else if (!options || !options.ignoreErrors) {
+            throw 'Cannot unserialize "' + value + " to Date.";
+
         } else {
             return undefined;
         }
