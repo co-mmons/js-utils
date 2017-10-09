@@ -15,13 +15,13 @@ function serialize(object, options) {
     return ObjectSerializer.instance.serialize(object, options);
 }
 exports.serialize = serialize;
-function unserialize(json, targetClass) {
+function unserialize(json, targetClass, options) {
     if (json === undefined || json === null) {
         return json;
     }
     var serializer = serializerForType(targetClass);
     if (serializer && serializer !== ObjectSerializer.instance)
-        return serializer.unserialize(json);
+        return serializer.unserialize(json, options);
     var prototype = targetClass.prototype;
     // if type has subtypes, find apropriate subtype
     if (targetClass.hasOwnProperty("__json__subtypes")) {
@@ -36,7 +36,7 @@ function unserialize(json, targetClass) {
     }
     if (prototype["fromJSON"]) {
         var instance = Object.create(prototype);
-        instance.fromJSON(json);
+        instance.fromJSON(json, options);
         return instance;
     }
     else if (targetClass !== Object) {

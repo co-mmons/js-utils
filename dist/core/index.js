@@ -10,6 +10,7 @@ __export(require("./classes"));
 __export(require("./exception"));
 __export(require("./type"));
 __export(require("./forward-ref"));
+__export(require("./compare"));
 var bignumber_js_1 = require("bignumber.js");
 exports.BigNumber = bignumber_js_1.BigNumber;
 //# sourceMappingURL=index.js.map

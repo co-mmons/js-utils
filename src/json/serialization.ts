@@ -4,14 +4,14 @@ export function serialize(object: any, options?: SerializationOptions): any {
     return ObjectSerializer.instance.serialize(object, options);
 }
 
-export function unserialize<T>(json: any, targetClass: Type<any>): T {
+export function unserialize<T>(json: any, targetClass: Type<any>, options?: SerializationOptions): T {
 
     if (json === undefined || json === null) {
         return json;
     }
 
     let serializer: Serializer = serializerForType(targetClass);
-    if (serializer && serializer !== ObjectSerializer.instance) return serializer.unserialize(json);
+    if (serializer && serializer !== ObjectSerializer.instance) return serializer.unserialize(json, options);
 
     let prototype: any = targetClass.prototype;
 
@@ -28,7 +28,7 @@ export function unserialize<T>(json: any, targetClass: Type<any>): T {
 
     if (prototype["fromJSON"]) {
         let instance = Object.create(prototype);
-        instance.fromJSON(json);
+        instance.fromJSON(json, options);
         return instance;
     } else if (targetClass !== Object) {
         let instance = Object.create(prototype);
