@@ -25,7 +25,7 @@ function Final(target, propertyKey) {
             configurable: true
         });
     }
-    else {
+    else { // else, set it immediatly
         Object.defineProperty(target, propertyKey, {
             get: function () {
                 return value;
