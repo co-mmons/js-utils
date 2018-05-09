@@ -48,7 +48,6 @@ export function serializerForType(type: Type<any>): Serializer {
     return ObjectSerializer.instance;
 }
 
-
 export interface SerializationOptions {
     notStrict?: boolean;
     disallowUndefinedOrNull?: boolean;
@@ -345,7 +344,7 @@ class DateSerializer extends Serializer {
         } else if (value instanceof Date) {
             return value;
         } else if (options && options.notStrict && typeof value == "number") {
-            return new Date().setTime(value);
+            return new Date(new Date().setTime(value));
         } else if (!options || !options.ignoreErrors) {
             throw 'Cannot serialize "' + value + " as Date";
         } else {
@@ -362,7 +361,7 @@ class DateSerializer extends Serializer {
             return new Date(value);
 
         } else if (typeof value == "number" && options && options.notStrict) {
-            return new Date().setTime(value);
+            return new Date(new Date().setTime(value));
 
         } else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);

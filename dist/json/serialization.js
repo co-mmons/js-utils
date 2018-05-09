@@ -351,7 +351,7 @@ var DateSerializer = /** @class */ (function (_super) {
             return value;
         }
         else if (options && options.notStrict && typeof value == "number") {
-            return new Date().setTime(value);
+            return new Date(new Date().setTime(value));
         }
         else if (!options || !options.ignoreErrors) {
             throw 'Cannot serialize "' + value + " as Date";
@@ -368,7 +368,7 @@ var DateSerializer = /** @class */ (function (_super) {
             return new Date(value);
         }
         else if (typeof value == "number" && options && options.notStrict) {
-            return new Date().setTime(value);
+            return new Date(new Date().setTime(value));
         }
         else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);
