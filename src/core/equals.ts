@@ -1,4 +1,4 @@
-export const equals = "@co.mmons/js-utils/core/equals";
+export const equals = Symbol("@co.mmons/js-utils/core/equals");
 
 export interface Equals {
 
@@ -16,12 +16,6 @@ export interface Equals {
      * The equals method for class Object implements the most discriminating possible equivalence relation on objects; that is, for any non-null reference values x and y, this method returns true if and only if x and y refer to the same object (x == y has the value true).
      * Note that it is generally necessary to override the hashCode method whenever this method is overridden, so as to maintain the general contract for the hashCode method, which states that equal objects must have equal hash codes.
      */
-    ["@co.mmons/js-utils/core/equals"](object: any): boolean;
-}
+    [equals](object: any): boolean;
 
-class Ola implements Equals {
-
-    ["@co.mmons/js-utils/core/equals"](object: any): boolean {
-        return false;
-    }
 }

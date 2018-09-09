@@ -1,5 +1,5 @@
-import { Type } from "../core";
-import { Serializer, SerializationOptions, unserialize, serialize } from "./serialization";
+import {Type} from "../core";
+import {SerializationOptions, serialize, Serializer, unserialize} from "./serialization";
 
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.

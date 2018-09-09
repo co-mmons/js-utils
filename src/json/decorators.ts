@@ -1,5 +1,5 @@
-import { Type } from "../core";
-import { Serializer, unserialize, serialize, serializerForType, SerializationOptions } from "./serialization";
+import {Type} from "../core";
+import {SerializationOptions, Serializer, serializerForType} from "./serialization";
 
 function toJsonImpl(object: any, prototype: any) {
 

@@ -1,4 +1,4 @@
-import { resolveForwardRef, Type } from "../core";
+import {resolveForwardRef, Type} from "../core";
 
 export function serialize(object: any, options?: SerializationOptions): any {
     return ObjectSerializer.instance.serialize(object, options);

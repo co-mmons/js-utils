@@ -15,9 +15,8 @@
 
     "exclude": [
         "dist",
+        "test",
         "src/test",
         "node_modules"
-    ],
-
-    "compileOnSave": false
+    ]
 }

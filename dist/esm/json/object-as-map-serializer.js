@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Serializer, unserialize, serialize } from "./serialization";
+import { serialize, Serializer, unserialize } from "./serialization";
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
