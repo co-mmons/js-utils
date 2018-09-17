@@ -360,7 +360,7 @@ class DateSerializer extends Serializer {
         } else if (typeof value == "string") {
             return new Date(value);
 
-        } else if (typeof value == "object" && value.toDate && typeof value.toDate == "function") {
+        } else if (typeof value == "object" && value && value.toDate && typeof value.toDate == "function") {
             return value.toDate();
 
         } else if (typeof value == "number" && options && options.notStrict) {
