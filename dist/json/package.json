@@ -1,0 +1,5 @@
+{
+    "name": "@co.mmons/js-utils/json",
+    "main": "index.js",
+    "module": "../esm/json/index.js"
+}
