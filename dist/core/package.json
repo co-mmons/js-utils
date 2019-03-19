@@ -1,5 +1,0 @@
-{
-    "name": "@co.mmons/js-utils/core",
-    "main": "index.js",
-    "module": "../esm/core/index.js"
-}
