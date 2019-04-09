@@ -14,7 +14,7 @@ export class EnumAsStringSerializer extends Serializer {
 
 	public serialize(value: any, options?: SerializationOptions) {
 
-		if (value) {
+		if (value !== undefined && value !== null) {
 			return this.enumClass[value];
 		} else {
 			return undefined;

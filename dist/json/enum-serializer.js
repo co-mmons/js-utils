@@ -25,7 +25,7 @@ var EnumAsStringSerializer = /** @class */ (function (_super) {
         return _this;
     }
     EnumAsStringSerializer.prototype.serialize = function (value, options) {
-        if (value) {
+        if (value !== undefined && value !== null) {
             return this.enumClass[value];
         }
         else {
