@@ -1,5 +1,5 @@
 var DateTimezone = /** @class */ (function () {
-    function DateTimezone(timezone, dateOrEpoch) {
+    function DateTimezone(dateOrEpoch, timezone) {
         this.timezone = timezone;
         if (typeof dateOrEpoch === "number") {
             this.date = new Date(dateOrEpoch);
@@ -9,11 +9,14 @@ var DateTimezone = /** @class */ (function () {
         }
     }
     DateTimezone.prototype.toJSON = function () {
-        return { timezone: this.timezone, date: this.date.getTime() };
+        return { date: this.date.getTime(), timezone: this.timezone };
     };
     DateTimezone.prototype.fromJSON = function (json) {
         if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.constructor.call(this, json["timezone"], json["date"]);
+            this.constructor.call(this, json["date"], json["timezone"]);
+        }
+        else if (typeof json === "number") {
+            this.constructor.call(this, json);
         }
     };
     return DateTimezone;

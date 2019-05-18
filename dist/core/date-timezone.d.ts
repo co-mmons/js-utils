@@ -1,11 +1,11 @@
 export declare class DateTimezone {
-    constructor(timezone: string, epoch: number);
-    constructor(timezone: string, date: Date);
+    constructor(epoch: number, timezone?: string);
+    constructor(date: Date, timezone?: string);
     readonly date: Date;
     readonly timezone: string;
     toJSON(): {
-        timezone: string;
         date: number;
+        timezone: string;
     };
     fromJSON(json: any): void;
 }
