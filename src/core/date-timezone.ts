@@ -1,10 +1,10 @@
 export class DateTimezone {
 
-    constructor(timezone: string, epoch: number);
+    constructor(epoch: number, timezone?: string);
 
-    constructor(timezone: string, date: Date);
+    constructor(date: Date, timezone?: string);
 
-    constructor(timezone: string, dateOrEpoch: Date | number) {
+    constructor(dateOrEpoch: Date | number, timezone?: string) {
 
         this.timezone = timezone;
 
@@ -21,12 +21,14 @@ export class DateTimezone {
     readonly timezone: string;
 
     toJSON() {
-        return {timezone: this.timezone, date: this.date.getTime()};
+        return {date: this.date.getTime(), timezone: this.timezone};
     }
 
     fromJSON(json: any) {
         if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.constructor.call(this, json["timezone"], json["date"]);
+            this.constructor.call(this, json["date"], json["timezone"]);
+        } else if (typeof json === "number") {
+            this.constructor.call(this, json);
         }
     }
 }
