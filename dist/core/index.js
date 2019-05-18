@@ -8,6 +8,7 @@ exports.BigNumber = bignumber_js_1.default;
 __export(require("./bit-flags"));
 __export(require("./classes"));
 __export(require("./compare"));
+__export(require("./date-timezone"));
 __export(require("./enums"));
 __export(require("./equals"));
 __export(require("./exception"));
