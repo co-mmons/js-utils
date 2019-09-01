@@ -12,9 +12,10 @@
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git"
   },
   "peerDependencies": {
-    "bignumber.js": "^8.1.0"
+    "bignumber.js": "^9.0.0"
   },
   "devDependencies": {
+    "tslib": "^1.10.0",
     "typescript": "~3.3.0"
   },
   "sideEffects": false

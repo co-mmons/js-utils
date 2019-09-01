@@ -1,16 +1,4 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+import * as tslib_1 from "tslib";
 import { resolveForwardRef } from "../core";
 export function serialize(object, options) {
     return ObjectSerializer.instance.serialize(object, options);
@@ -83,7 +71,7 @@ var Serializer = /** @class */ (function () {
 }());
 export { Serializer };
 var ArraySerializer = /** @class */ (function (_super) {
-    __extends(ArraySerializer, _super);
+    tslib_1.__extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
         var _this = _super.call(this) || this;
         if (arguments.length == 1 && !valueType) {
@@ -177,7 +165,7 @@ export var ArrayOfNumber = ArraySerializer.ofNumber;
  */
 export var ArrayOfBoolean = ArraySerializer.ofBoolean;
 var ObjectSerializer = /** @class */ (function (_super) {
-    __extends(ObjectSerializer, _super);
+    tslib_1.__extends(ObjectSerializer, _super);
     function ObjectSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -211,7 +199,7 @@ var ObjectSerializer = /** @class */ (function (_super) {
     return ObjectSerializer;
 }(Serializer));
 var BooleanSerializer = /** @class */ (function (_super) {
-    __extends(BooleanSerializer, _super);
+    tslib_1.__extends(BooleanSerializer, _super);
     function BooleanSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -253,7 +241,7 @@ var BooleanSerializer = /** @class */ (function (_super) {
     return BooleanSerializer;
 }(Serializer));
 var NumberSerializer = /** @class */ (function (_super) {
-    __extends(NumberSerializer, _super);
+    tslib_1.__extends(NumberSerializer, _super);
     function NumberSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -295,7 +283,7 @@ var NumberSerializer = /** @class */ (function (_super) {
     return NumberSerializer;
 }(Serializer));
 var StringSerializer = /** @class */ (function (_super) {
-    __extends(StringSerializer, _super);
+    tslib_1.__extends(StringSerializer, _super);
     function StringSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -337,7 +325,7 @@ var StringSerializer = /** @class */ (function (_super) {
     return StringSerializer;
 }(Serializer));
 var DateSerializer = /** @class */ (function (_super) {
-    __extends(DateSerializer, _super);
+    tslib_1.__extends(DateSerializer, _super);
     function DateSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }

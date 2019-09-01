@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 export * from "./bit-flags";
 export * from "./classes";
 export * from "./compare";
@@ -10,4 +9,3 @@ export * from "./forward-ref";
 export * from "./type";
 export * from "./types";
 export * from "./wait";
-export { BigNumber };
