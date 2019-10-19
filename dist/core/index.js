@@ -1,17 +1,15 @@
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./bit-flags"));
-__export(require("./classes"));
-__export(require("./compare"));
-__export(require("./date-timezone"));
-__export(require("./enums"));
-__export(require("./equals"));
-__export(require("./exception"));
-__export(require("./forward-ref"));
-__export(require("./type"));
-__export(require("./types"));
-__export(require("./wait"));
+const tslib_1 = require("tslib");
+tslib_1.__exportStar(require("./bit-flags"), exports);
+tslib_1.__exportStar(require("./classes"), exports);
+tslib_1.__exportStar(require("./compare"), exports);
+tslib_1.__exportStar(require("./date-timezone"), exports);
+tslib_1.__exportStar(require("./enums"), exports);
+tslib_1.__exportStar(require("./equals"), exports);
+tslib_1.__exportStar(require("./exception"), exports);
+tslib_1.__exportStar(require("./forward-ref"), exports);
+tslib_1.__exportStar(require("./type"), exports);
+tslib_1.__exportStar(require("./types"), exports);
+tslib_1.__exportStar(require("./wait"), exports);
 //# sourceMappingURL=index.js.map

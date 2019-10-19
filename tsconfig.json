@@ -10,7 +10,8 @@
         "target": "es2015",
         "outDir": "dist",
         "rootDir": "src",
-        "sourceMap": true
+        "sourceMap": true,
+        "importHelpers": true
     },
 
     "exclude": [
