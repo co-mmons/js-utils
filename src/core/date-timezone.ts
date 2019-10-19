@@ -40,16 +40,21 @@ export class DateTimezone {
     constructor(date: Date, timezone?: string);
 
     constructor(dateOrEpoch: Date | number, timezone?: string) {
+        this.$constructor(dateOrEpoch, timezone);
+    }
 
-        this.timezone = timezone;
+    private $constructor(dateOrEpoch: Date | number, timezone?: string) {
+
+        this["timezone" as any] = timezone;
 
         if (typeof dateOrEpoch === "number") {
-            this.date = new Date(dateOrEpoch);
+            this["date" as any] = new Date(dateOrEpoch);
         } else if (dateOrEpoch instanceof Date) {
-            this.date = new Date(dateOrEpoch.getTime());
+            this["date" as any] = new Date(dateOrEpoch.getTime());
         }
 
     }
+
 
     readonly date: Date;
 
@@ -61,9 +66,9 @@ export class DateTimezone {
 
     fromJSON(json: any) {
         if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.constructor.call(this, json["date"], json["timezone"]);
+            this.$constructor(json["date"], json["timezone"]);
         } else if (typeof json === "number") {
-            this.constructor.call(this, json);
+            this.$constructor(json);
         }
     }
 }

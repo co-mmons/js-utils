@@ -26,12 +26,15 @@ class DateTimezone {
         return diffMinutes(parseDate(offsetUsFormatter.format(date)), parseDate(formatter.format(date)));
     }
     constructor(dateOrEpoch, timezone) {
-        this.timezone = timezone;
+        this.$constructor(dateOrEpoch, timezone);
+    }
+    $constructor(dateOrEpoch, timezone) {
+        this["timezone"] = timezone;
         if (typeof dateOrEpoch === "number") {
-            this.date = new Date(dateOrEpoch);
+            this["date"] = new Date(dateOrEpoch);
         }
         else if (dateOrEpoch instanceof Date) {
-            this.date = new Date(dateOrEpoch.getTime());
+            this["date"] = new Date(dateOrEpoch.getTime());
         }
     }
     toJSON() {
@@ -39,10 +42,10 @@ class DateTimezone {
     }
     fromJSON(json) {
         if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.constructor.call(this, json["date"], json["timezone"]);
+            this.$constructor(json["date"], json["timezone"]);
         }
         else if (typeof json === "number") {
-            this.constructor.call(this, json);
+            this.$constructor(json);
         }
     }
 }

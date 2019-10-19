@@ -26,9 +26,7 @@ export function unserialize(json, targetClass, options) {
         return instance;
     }
     else if (targetClass !== Object) {
-        let instance = Object.create(prototype);
-        targetClass.apply(instance, [json]);
-        return instance;
+        return new targetClass(json);
     }
     return json;
 }

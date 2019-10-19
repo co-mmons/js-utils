@@ -31,9 +31,7 @@ export function unserialize<T>(json: any, targetClass: Type<any>, options?: Seri
         instance.fromJSON(json, options);
         return instance;
     } else if (targetClass !== Object) {
-        let instance = Object.create(prototype);
-        targetClass.apply(instance, [json]);
-        return instance;
+        return new (targetClass as any)(json);
     }
 
     return json;
