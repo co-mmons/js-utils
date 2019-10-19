@@ -1,51 +1,41 @@
-import * as tslib_1 from "tslib";
-var BitFlags = /** @class */ (function () {
-    function BitFlags(value) {
+export class BitFlags {
+    constructor(value) {
         this._value = value !== undefined ? value : 0;
     }
-    Object.defineProperty(BitFlags.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BitFlags.prototype.has = function (flag) {
-        return (this._value & flag) == flag;
-    };
-    BitFlags.prototype.not = function (flag) {
-        return this.has(flag) == false;
-    };
-    BitFlags.prototype.add = function (flag) {
-        return new BitFlags(this._value | flag);
-    };
-    BitFlags.prototype.remove = function (flag) {
-        return new BitFlags(this._value & ~flag);
-    };
-    BitFlags.prototype.toggle = function (flag) {
-        return new BitFlags(this._value ^ flag);
-    };
-    return BitFlags;
-}());
-export { BitFlags };
-var BitFlagsMutable = /** @class */ (function (_super) {
-    tslib_1.__extends(BitFlagsMutable, _super);
-    function BitFlagsMutable(value) {
-        return _super.call(this, value) || this;
+    get value() {
+        return this._value;
     }
-    BitFlagsMutable.prototype.add = function (flag) {
+    has(flag) {
+        return (this._value & flag) == flag;
+    }
+    not(flag) {
+        return this.has(flag) == false;
+    }
+    add(flag) {
+        return new BitFlags(this._value | flag);
+    }
+    remove(flag) {
+        return new BitFlags(this._value & ~flag);
+    }
+    toggle(flag) {
+        return new BitFlags(this._value ^ flag);
+    }
+}
+export class BitFlagsMutable extends BitFlags {
+    constructor(value) {
+        super(value);
+    }
+    add(flag) {
         this._value |= flag;
         return this;
-    };
-    BitFlagsMutable.prototype.remove = function (flag) {
+    }
+    remove(flag) {
         this._value &= ~flag;
         return this;
-    };
-    BitFlagsMutable.prototype.toggle = function (flag) {
+    }
+    toggle(flag) {
         this._value ^= flag;
         return this;
-    };
-    return BitFlagsMutable;
-}(BitFlags));
-export { BitFlagsMutable };
+    }
+}
 //# sourceMappingURL=bit-flags.js.map

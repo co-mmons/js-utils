@@ -1,3 +1,3 @@
-export var Type = Function;
-export var AssignableType = Function;
+export const Type = Function;
+export const AssignableType = Function;
 //# sourceMappingURL=type.js.map

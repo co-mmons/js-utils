@@ -6,7 +6,7 @@ export function toFloat(value) {
         return parseFloat(value);
     }
     else if (value) {
-        throw "Cannot convert value \"" + value + "\" to float";
+        throw `Cannot convert value "${value}" to float`;
     }
     else {
         return value;
@@ -20,7 +20,7 @@ export function toInteger(value) {
         return parseInt(value);
     }
     else if (value) {
-        throw "Cannot convert value \"" + value + "\" to integer";
+        throw `Cannot convert value "${value}" to integer`;
     }
     else {
         return value;
@@ -39,8 +39,7 @@ export function toString(value) {
 }
 export function isArrayContainsInstanceOf(value, type) {
     if (Array.isArray(value)) {
-        for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-            var a = value_1[_i];
+        for (let a of value) {
             if (a instanceof type) {
                 return true;
             }
@@ -49,8 +48,8 @@ export function isArrayContainsInstanceOf(value, type) {
     return false;
 }
 export function mapEntries(map) {
-    var array = [];
-    for (var key in map) {
+    let array = [];
+    for (let key in map) {
         array.push({ key: key, value: map[key] });
     }
     return array;

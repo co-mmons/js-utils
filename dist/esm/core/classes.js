@@ -5,7 +5,7 @@
 * @link http://stackoverflow.com/a/37778842
 */
 export function Final(target, propertyKey) {
-    var value = target[propertyKey];
+    const value = target[propertyKey];
     // if it currently has no value, then wait for the first setter-call
     // usually the case with non-static fields
     if (!value) {
@@ -33,7 +33,7 @@ export function Final(target, propertyKey) {
     }
 }
 export function Enumerable(isEnumerable) {
-    return function (target, propertyKey, descriptor) {
+    return (target, propertyKey, descriptor) => {
         descriptor.enumerable = isEnumerable;
         return descriptor;
     };

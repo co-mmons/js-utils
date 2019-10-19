@@ -1,22 +1,19 @@
-import * as tslib_1 from "tslib";
 import { serialize, Serializer, unserialize } from "./serialization";
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
-var ObjectAsMapSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(ObjectAsMapSerializer, _super);
-    function ObjectAsMapSerializer(valueType) {
-        var _this = _super.call(this) || this;
-        _this.valueType = valueType;
-        return _this;
+export class ObjectAsMapSerializer extends Serializer {
+    constructor(valueType) {
+        super();
+        this.valueType = valueType;
     }
-    ObjectAsMapSerializer.prototype.serialize = function (value, options) {
+    serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            var json = {};
-            for (var i in value) {
+            let json = {};
+            for (let i in value) {
                 json[i] = this.valueType instanceof Serializer ? this.valueType.serialize(value[i]) : serialize(value[i]);
             }
             return json;
@@ -27,12 +24,12 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
         else {
             return undefined;
         }
-    };
-    ObjectAsMapSerializer.prototype.unserialize = function (value, options) {
+    }
+    unserialize(value, options) {
         if (typeof value === "object") {
             if (this.valueType) {
-                var object = {};
-                for (var i in value) {
+                let object = {};
+                for (let i in value) {
                     object[i] = this.valueType instanceof Serializer ? this.valueType.unserialize(value[i]) : unserialize(value[i], this.valueType);
                 }
                 return object;
@@ -50,8 +47,6 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
         else {
             return undefined;
         }
-    };
-    return ObjectAsMapSerializer;
-}(Serializer));
-export { ObjectAsMapSerializer };
+    }
+}
 //# sourceMappingURL=object-as-map-serializer.js.map

@@ -4,12 +4,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Check condition async and re-check every 100ms (or other interval) till it explicitly returns true.
  * If condition throws error, the promise will be rejected.
  */
-function waitTill(condition, interval, timeout) {
-    if (interval === void 0) { interval = 100; }
-    return new Promise(function (resolve, reject) {
-        var intervalId;
-        var finished = false;
-        var test = function () {
+function waitTill(condition, interval = 100, timeout) {
+    return new Promise((resolve, reject) => {
+        let intervalId;
+        let finished = false;
+        let test = () => {
             try {
                 if (condition() === true) {
                     if (intervalId) {
@@ -32,7 +31,7 @@ function waitTill(condition, interval, timeout) {
         if (!test()) {
             intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
             if (timeout > 0) {
-                setTimeout(function () {
+                setTimeout(() => {
                     if (!finished) {
                         if (intervalId) {
                             clearInterval(intervalId);
@@ -49,8 +48,8 @@ exports.waitTill = waitTill;
  * Do nothing but sleep millisec.
  */
 function sleep(timeout) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () { return resolve(); }, timeout);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => resolve(), timeout);
     });
 }
 exports.sleep = sleep;
