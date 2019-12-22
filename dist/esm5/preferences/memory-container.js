@@ -5,15 +5,19 @@ var MemoryPreferencesContainer = /** @class */ (function () {
     function MemoryPreferencesContainer() {
         this._items = [];
     }
+    MemoryPreferencesContainer.prototype.changed = function (collection, key, operation) {
+    };
     MemoryPreferencesContainer.prototype.set = function (collection, key, value) {
         var item = this._items.find(function (item) { return item.collection === collection && deepEqual(item.key, key); });
         if (item) {
             item.value = value;
+            this.changed(collection, key, "update");
             return Promise.resolve(deepClone(item));
         }
         else {
             item = { collection: collection, key: key, value: value };
             this._items.push(item);
+            this.changed(collection, key, "new");
             return Promise.resolve(deepClone(item));
         }
     };
@@ -30,6 +34,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
                     if (this._items[i].collection === collection && deepEqual(this._items[i].key, key)) {
                         for (var _a = 0, _b = this._items.splice(i, 1); _a < _b.length; _a++) {
                             var item = _b[_a];
+                            this.changed(collection, item.key, "delete");
                             deleted.push(deepClone(item));
                         }
                         continue KEYS;
@@ -42,6 +47,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
                 if (this._items[i].collection === collection && (!keysOrFilter || keysOrFilter(this._items[i].key, this._items[i].value))) {
                     for (var _c = 0, _d = this._items.splice(i, 1); _c < _d.length; _c++) {
                         var item = _d[_c];
+                        this.changed(collection, item.key, "delete");
                         deleted.push(deepClone(item));
                     }
                 }
@@ -81,6 +87,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
         if (item) {
             if (changes) {
                 item.value = Object.assign({}, item.value, changes);
+                this.changed(collection, item.key, "update");
             }
             return Promise.resolve(deepClone(item));
         }

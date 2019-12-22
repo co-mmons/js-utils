@@ -7,15 +7,19 @@ class MemoryPreferencesContainer {
     constructor() {
         this._items = [];
     }
+    changed(collection, key, operation) {
+    }
     set(collection, key, value) {
         let item = this._items.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
         if (item) {
             item.value = value;
+            this.changed(collection, key, "update");
             return Promise.resolve(deep_clone_1.deepClone(item));
         }
         else {
             item = { collection: collection, key: key, value: value };
             this._items.push(item);
+            this.changed(collection, key, "new");
             return Promise.resolve(deep_clone_1.deepClone(item));
         }
     }
@@ -30,6 +34,7 @@ class MemoryPreferencesContainer {
                 for (let i = 0; i < this._items.length; i++) {
                     if (this._items[i].collection === collection && fast_equals_1.deepEqual(this._items[i].key, key)) {
                         for (const item of this._items.splice(i, 1)) {
+                            this.changed(collection, item.key, "delete");
                             deleted.push(deep_clone_1.deepClone(item));
                         }
                         continue KEYS;
@@ -41,6 +46,7 @@ class MemoryPreferencesContainer {
             for (let i = 0; i < this._items.length; i++) {
                 if (this._items[i].collection === collection && (!keysOrFilter || keysOrFilter(this._items[i].key, this._items[i].value))) {
                     for (const item of this._items.splice(i, 1)) {
+                        this.changed(collection, item.key, "delete");
                         deleted.push(deep_clone_1.deepClone(item));
                     }
                 }
@@ -77,6 +83,7 @@ class MemoryPreferencesContainer {
         if (item) {
             if (changes) {
                 item.value = Object.assign({}, item.value, changes);
+                this.changed(collection, item.key, "update");
             }
             return Promise.resolve(deep_clone_1.deepClone(item));
         }
