@@ -1,6 +1,6 @@
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem } from "./interfaces";
 export declare class MemoryPreferencesContainer implements PreferencesContainer {
-    private readonly _items;
+    protected readonly itemsArray: PreferencesItem[];
     protected changed(collection: string, key: any, operation: "new" | "update" | "delete"): void;
     set(collection: string, key: any, value: any): Promise<any>;
     get(collection: string, key: any): Promise<any>;
