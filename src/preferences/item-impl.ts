@@ -1,4 +1,4 @@
-import {PreferencesCollectionRef, PreferencesItemRef} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesItemRef, PreferencesSetOptions} from "./interfaces";
 
 export class PreferenceItemRefImpl<Key, Value> implements PreferencesItemRef<Key, Value> {
 
@@ -13,8 +13,8 @@ export class PreferenceItemRefImpl<Key, Value> implements PreferencesItemRef<Key
         return await this.collection.value(this.key);
     }
 
-    set(value: Value) {
-        return this.collection.set(this.key, value);
+    set(value: Value, options?: PreferencesSetOptions) {
+        return this.collection.set(this.key, value, options);
     }
 
     update(value: Value) {

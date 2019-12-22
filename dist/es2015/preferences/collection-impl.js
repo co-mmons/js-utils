@@ -43,8 +43,8 @@ class PreferencesCollectionRefImpl {
     item(key) {
         return new item_impl_1.PreferenceItemRefImpl(this, key);
     }
-    set(key, value) {
-        return this.container.set(this.name, key, value);
+    set(key, value, options) {
+        return this.container.set(this.name, key, value, options);
     }
     update(key, value) {
         return this.container.update(this.name, key, value);

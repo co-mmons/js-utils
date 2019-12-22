@@ -21,17 +21,17 @@ class StoragePreferencesContainer {
     realKey(collection, storageKey) {
         return JSON.parse(storageKey.replace(new RegExp(`^${collection}\/`), ""));
     }
-    set(collection, key, value) {
+    set(collection, key, value, options) {
         const itemKey = this.storageKey(collection, key);
         let item = this.getStorageItem(itemKey);
         if (item) {
-            item.value = value;
+            item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
         }
         else {
             item = { value: value };
         }
         this.setStorageItem(itemKey, item);
-        return Promise.resolve({ key: deep_clone_1.deepClone(key), collection, value });
+        return Promise.resolve({ key: deep_clone_1.deepClone(key), collection, value: deep_clone_1.deepClone(item.value) });
     }
     get(collection, key) {
         const item = this.getStorageItem(this.storageKey(collection, key));

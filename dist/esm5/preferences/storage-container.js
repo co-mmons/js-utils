@@ -19,17 +19,17 @@ var StoragePreferencesContainer = /** @class */ (function () {
     StoragePreferencesContainer.prototype.realKey = function (collection, storageKey) {
         return JSON.parse(storageKey.replace(new RegExp("^" + collection + "/"), ""));
     };
-    StoragePreferencesContainer.prototype.set = function (collection, key, value) {
+    StoragePreferencesContainer.prototype.set = function (collection, key, value, options) {
         var itemKey = this.storageKey(collection, key);
         var item = this.getStorageItem(itemKey);
         if (item) {
-            item.value = value;
+            item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
         }
         else {
             item = { value: value };
         }
         this.setStorageItem(itemKey, item);
-        return Promise.resolve({ key: deepClone(key), collection: collection, value: value });
+        return Promise.resolve({ key: deepClone(key), collection: collection, value: deepClone(item.value) });
     };
     StoragePreferencesContainer.prototype.get = function (collection, key) {
         var item = this.getStorageItem(this.storageKey(collection, key));

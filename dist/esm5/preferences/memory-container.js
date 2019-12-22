@@ -7,15 +7,15 @@ var MemoryPreferencesContainer = /** @class */ (function () {
     }
     MemoryPreferencesContainer.prototype.changed = function (collection, key, operation) {
     };
-    MemoryPreferencesContainer.prototype.set = function (collection, key, value) {
+    MemoryPreferencesContainer.prototype.set = function (collection, key, value, options) {
         var item = this.itemsArray.find(function (item) { return item.collection === collection && deepEqual(item.key, key); });
         if (item) {
-            item.value = value;
+            item.value = options && options.merge ? Object.assign({}, item.value, value) : deepClone(value);
             this.changed(collection, key, "update");
             return Promise.resolve(deepClone(item));
         }
         else {
-            item = { collection: collection, key: key, value: value };
+            item = { collection: collection, key: deepClone(key), value: deepClone(value) };
             this.itemsArray.push(item);
             this.changed(collection, key, "new");
             return Promise.resolve(deepClone(item));

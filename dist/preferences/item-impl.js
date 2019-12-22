@@ -16,8 +16,8 @@ class PreferenceItemRefImpl {
             return yield this.collection.value(this.key);
         });
     }
-    set(value) {
-        return this.collection.set(this.key, value);
+    set(value, options) {
+        return this.collection.set(this.key, value, options);
     }
     update(value) {
         return this.collection.update(this.key, value);

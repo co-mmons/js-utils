@@ -1,4 +1,4 @@
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesItemRef} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesItemRef, PreferencesSetOptions} from "./interfaces";
 import {PreferenceItemRefImpl} from "./item-impl";
 
 export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesCollectionRef<Key, Value> {
@@ -54,8 +54,8 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         return new PreferenceItemRefImpl(this, key);
     }
 
-    set(key: Key, value: Value) {
-        return this.container.set(this.name, key, value);
+    set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions) {
+        return this.container.set(this.name, key, value, options);
     }
 
     update(key: Key, value: Partial<Value>) {

@@ -1,6 +1,6 @@
 import {PreferencesCollectionRefImpl} from "./collection-impl";
 import {deepClone} from "./deep-clone";
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesSetOptions} from "./interfaces";
 
 interface StorageItem {
     value: any;
@@ -31,21 +31,21 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return JSON.parse(storageKey.replace(new RegExp(`^${collection}\/`), ""));
     }
 
-    set(collection: string, key: any, value: any) {
+    set(collection: string, key: any, value: any, options?: PreferencesSetOptions) {
 
         const itemKey = this.storageKey(collection, key);
 
         let item = this.getStorageItem(itemKey);
 
         if (item) {
-            item.value = value;
+            item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
         } else {
             item = {value: value};
         }
 
         this.setStorageItem(itemKey, item);
 
-        return Promise.resolve({key: deepClone(key), collection, value} as PreferencesItem);
+        return Promise.resolve({key: deepClone(key), collection, value: deepClone(item.value)} as PreferencesItem);
     }
 
     get(collection: string, key: any) {

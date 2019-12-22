@@ -65,8 +65,8 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
     PreferencesCollectionRefImpl.prototype.item = function (key) {
         return new PreferenceItemRefImpl(this, key);
     };
-    PreferencesCollectionRefImpl.prototype.set = function (key, value) {
-        return this.container.set(this.name, key, value);
+    PreferencesCollectionRefImpl.prototype.set = function (key, value, options) {
+        return this.container.set(this.name, key, value, options);
     };
     PreferencesCollectionRefImpl.prototype.update = function (key, value) {
         return this.container.update(this.name, key, value);

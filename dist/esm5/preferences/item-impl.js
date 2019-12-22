@@ -24,8 +24,8 @@ var PreferenceItemRefImpl = /** @class */ (function () {
             });
         });
     };
-    PreferenceItemRefImpl.prototype.set = function (value) {
-        return this.collection.set(this.key, value);
+    PreferenceItemRefImpl.prototype.set = function (value, options) {
+        return this.collection.set(this.key, value, options);
     };
     PreferenceItemRefImpl.prototype.update = function (value) {
         return this.collection.update(this.key, value);

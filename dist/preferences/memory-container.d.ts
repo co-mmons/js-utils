@@ -1,8 +1,8 @@
-import { PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem } from "./interfaces";
+import { PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesSetOptions } from "./interfaces";
 export declare class MemoryPreferencesContainer implements PreferencesContainer {
     protected readonly itemsArray: PreferencesItem[];
     protected changed(collection: string, key: any, operation: "new" | "update" | "delete"): void;
-    set(collection: string, key: any, value: any): Promise<any>;
+    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<any>;
     get(collection: string, key: any): Promise<any>;
     delete(collection: string, keysOrFilter: any[] | PreferencesFilter): Promise<PreferencesItem<any, any>[]>;
     exists(collection: string, key: any): Promise<boolean>;

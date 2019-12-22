@@ -1,6 +1,6 @@
 export interface PreferencesContainer {
 
-    set<Key = any, Value = any>(collection: string, key: Key, value: Value): Promise<PreferencesItem<Key, Value>>;
+    set<Key = any, Value = any>(collection: string, key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
 
     update<Key = any, Value = any>(collection: string, key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
 
@@ -26,6 +26,10 @@ export interface PreferencesItem<Key = any, Value = any> {
     value: Value;
 }
 
+export interface PreferencesSetOptions {
+    merge?: boolean;
+}
+
 export interface PreferencesItemRef<Key = any, Value = any> {
 
     readonly collection: PreferencesCollectionRef<Key, Value>;
@@ -37,6 +41,8 @@ export interface PreferencesItemRef<Key = any, Value = any> {
     delete(): Promise<boolean>;
 
     set(value: Value): Promise<PreferencesItem<Key, Value>>;
+
+    set(value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
 
     update(value: Value): Promise<PreferencesItem<Key, Value>>;
 }
@@ -60,6 +66,8 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
     items(): Promise<PreferencesItemRef<Key, Value>[]>;
 
     set(key: Key, value: Value): Promise<PreferencesItem<Key, Value>>;
+
+    set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
 
     update(key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
 
