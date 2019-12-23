@@ -21,7 +21,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                         case 1:
                             _b.trys.push([1, 6, , 7]);
                             _i = 0;
-                            return [4 /*yield*/, this.container.items(this.name, filter)];
+                            return [4 /*yield*/, (filter ? this.container.items(this.name, filter) : this.container.items(this.name))];
                         case 2:
                             _a = _b.sent();
                             _b.label = 3;
@@ -46,7 +46,9 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
             var items = [];
             for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
                 var key = keys_1[_i];
-                items.push(new PreferenceItemRefImpl(this, key));
+                if (key) {
+                    items.push(new PreferenceItemRefImpl(this, key));
+                }
             }
             return items;
         }

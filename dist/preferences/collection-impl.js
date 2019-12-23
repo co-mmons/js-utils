@@ -15,7 +15,7 @@ class PreferencesCollectionRefImpl {
             return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 const preferences = [];
                 try {
-                    for (const pref of yield this.container.items(this.name, filter)) {
+                    for (const pref of yield (filter ? this.container.items(this.name, filter) : this.container.items(this.name))) {
                         preferences.push(new item_impl_1.PreferenceItemRefImpl(this, pref.key));
                     }
                 }
@@ -28,7 +28,9 @@ class PreferencesCollectionRefImpl {
         else if (keys) {
             const items = [];
             for (const key of keys) {
-                items.push(new item_impl_1.PreferenceItemRefImpl(this, key));
+                if (key) {
+                    items.push(new item_impl_1.PreferenceItemRefImpl(this, key));
+                }
             }
             return items;
         }

@@ -19,7 +19,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
 
                 try {
 
-                    for (const pref of await this.container.items(this.name, filter)) {
+                    for (const pref of await (filter ? this.container.items(this.name, filter) : this.container.items(this.name))) {
                         preferences.push(new PreferenceItemRefImpl(this, pref.key));
                     }
 
@@ -35,7 +35,9 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
             const items: PreferencesItemRef<Key, Value>[] = [];
 
             for (const key of keys) {
-                items.push(new PreferenceItemRefImpl(this, key));
+                if (key) {
+                    items.push(new PreferenceItemRefImpl(this, key));
+                }
             }
 
             return items;
