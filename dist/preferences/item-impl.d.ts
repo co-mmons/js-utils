@@ -4,7 +4,7 @@ export declare class PreferenceItemRefImpl<Key, Value> implements PreferencesIte
     readonly key: Key;
     constructor(collection: PreferencesCollectionRef<Key, Value>, key: Key);
     delete(): Promise<boolean>;
-    get(): Promise<Value>;
+    value(): Promise<Value>;
     set(value: Value, options?: PreferencesSetOptions): Promise<import("./interfaces").PreferencesItem<Key, Value>>;
     update(value: Value): Promise<import("./interfaces").PreferencesItem<Key, Value>>;
 }

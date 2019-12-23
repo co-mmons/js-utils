@@ -14,7 +14,7 @@ var PreferenceItemRefImpl = /** @class */ (function () {
             });
         });
     };
-    PreferenceItemRefImpl.prototype.get = function () {
+    PreferenceItemRefImpl.prototype.value = function () {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {

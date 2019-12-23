@@ -9,7 +9,7 @@ export class PreferenceItemRefImpl<Key, Value> implements PreferencesItemRef<Key
         return (await this.collection.delete(this.key)).length === 1;
     }
 
-    async get(): Promise<Value> {
+    async value(): Promise<Value> {
         return await this.collection.value(this.key);
     }
 

@@ -36,7 +36,7 @@ export interface PreferencesItemRef<Key = any, Value = any> {
 
     readonly key: Key;
 
-    get(): Promise<Value>;
+    value(): Promise<Value>;
 
     delete(): Promise<boolean>;
 

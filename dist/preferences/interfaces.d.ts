@@ -20,7 +20,7 @@ export interface PreferencesSetOptions {
 export interface PreferencesItemRef<Key = any, Value = any> {
     readonly collection: PreferencesCollectionRef<Key, Value>;
     readonly key: Key;
-    get(): Promise<Value>;
+    value(): Promise<Value>;
     delete(): Promise<boolean>;
     set(value: Value): Promise<PreferencesItem<Key, Value>>;
     set(value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
