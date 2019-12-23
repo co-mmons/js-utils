@@ -35,15 +35,14 @@ var StoragePreferencesContainer = /** @class */ (function () {
         var item = this.getStorageItem(this.storageKey(collection, key));
         return Promise.resolve((item && { collection: collection, key: deepClone(key), value: item.value }) || null);
     };
-    StoragePreferencesContainer.prototype.delete = function (collection) {
-        var keysOrFilter = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            keysOrFilter[_i - 1] = arguments[_i];
-        }
+    StoragePreferencesContainer.prototype.delete = function (collection, keysOrFilter) {
         var deleted = [];
-        if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _a = 0, keysOrFilter_1 = keysOrFilter; _a < keysOrFilter_1.length; _a++) {
-                var key = keysOrFilter_1[_a];
+        var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        var args = arguments;
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        if (keys) {
+            KEYS: for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
                 var itemKey = this.storageKey(collection, key);
                 for (var i = 0; i < this.storage.length; i++) {
                     var storageKey = this.storage.key(i);
@@ -55,14 +54,13 @@ var StoragePreferencesContainer = /** @class */ (function () {
                 }
             }
         }
-        else {
-            var filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
+        else if (arguments.length === 1 || filter) {
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
                     var key = this.realKey(collection, storageKey);
                     var item = this.getStorageItem(storageKey);
-                    if (arguments.length === 0 || (filter && filter(key, item.value))) {
+                    if (!filter || filter(key, item.value)) {
                         deleted.push({ collection: collection, key: key, value: item.value });
                     }
                 }
@@ -80,9 +78,12 @@ var StoragePreferencesContainer = /** @class */ (function () {
             keysOrFilter[_i - 1] = arguments[_i];
         }
         var items = [];
-        if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _a = 0, keysOrFilter_2 = keysOrFilter; _a < keysOrFilter_2.length; _a++) {
-                var key = keysOrFilter_2[_a];
+        var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        var args = arguments;
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        if (keys) {
+            KEYS: for (var _a = 0, keys_2 = keys; _a < keys_2.length; _a++) {
+                var key = keys_2[_a];
                 var itemKey = this.storageKey(collection, key);
                 for (var i = 0; i < this.storage.length; i++) {
                     var storageKey = this.storage.key(i);
@@ -95,7 +96,6 @@ var StoragePreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {

@@ -53,13 +53,17 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return Promise.resolve((item && {collection, key: deepClone(key), value: item.value} as PreferencesItem) || null);
     }
 
-    delete(collection: string, ...keysOrFilter: Array<any | PreferencesFilter>) {
+    delete(collection: string, keysOrFilter?) {
 
         const deleted: PreferencesItem[] = [];
 
-        if (Array.isArray(keysOrFilter)) {
+        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        const args = arguments;
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
 
-            KEYS: for (const key of keysOrFilter) {
+        if (keys) {
+
+            KEYS: for (const key of keys) {
                 const itemKey = this.storageKey(collection, key);
 
                 for (let i = 0; i < this.storage.length; i++) {
@@ -73,9 +77,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                 }
             }
 
-        } else {
-
-            const filter: PreferencesFilter<any> = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
+        } else if (arguments.length === 1 || filter) {
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
@@ -84,7 +86,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
 
-                    if (arguments.length === 0 || (filter && filter(key, item.value))) {
+                    if (!filter || filter(key, item.value)) {
                         deleted.push({collection, key, value: item.value});
                     }
                 }
@@ -103,9 +105,13 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
         const items: PreferencesItem[] = [];
 
-        if (Array.isArray(keysOrFilter)) {
+        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        const args = arguments;
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
 
-            KEYS: for (const key of keysOrFilter) {
+        if (keys) {
+
+            KEYS: for (const key of keys) {
                 const itemKey = this.storageKey(collection, key);
 
                 for (let i = 0; i < this.storage.length; i++) {
@@ -120,8 +126,6 @@ export class StoragePreferencesContainer implements PreferencesContainer {
             }
 
         } else {
-
-            const filter: PreferencesFilter<any> = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);

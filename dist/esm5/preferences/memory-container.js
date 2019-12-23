@@ -25,19 +25,18 @@ var MemoryPreferencesContainer = /** @class */ (function () {
         var item = this.itemsArray.find(function (item) { return item.collection === collection && deepEqual(item.key, key); });
         return Promise.resolve((item && deepClone(item)) || null);
     };
-    MemoryPreferencesContainer.prototype.delete = function (collection) {
-        var keysOrFilter = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            keysOrFilter[_i - 1] = arguments[_i];
-        }
+    MemoryPreferencesContainer.prototype.delete = function (collection, keysOrFilter) {
         var deleted = [];
-        if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _a = 0, keysOrFilter_1 = keysOrFilter; _a < keysOrFilter_1.length; _a++) {
-                var key = keysOrFilter_1[_a];
+        var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        var args = arguments;
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        if (keys) {
+            KEYS: for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
                 for (var i = 0; i < this.itemsArray.length; i++) {
                     if (this.itemsArray[i].collection === collection && deepEqual(this.itemsArray[i].key, key)) {
-                        for (var _b = 0, _c = this.itemsArray.splice(i, 1); _b < _c.length; _b++) {
-                            var item = _c[_b];
+                        for (var _a = 0, _b = this.itemsArray.splice(i, 1); _a < _b.length; _a++) {
+                            var item = _b[_a];
                             this.changed(collection, item.key, "delete");
                             deleted.push(deepClone(item));
                         }
@@ -46,12 +45,11 @@ var MemoryPreferencesContainer = /** @class */ (function () {
                 }
             }
         }
-        else {
-            var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        else if (arguments.length === 1 || filter) {
             for (var i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (arguments.length === 0 || (filter && filter(this.itemsArray[i].key, this.itemsArray[i].value)))) {
-                    for (var _d = 0, _e = this.itemsArray.splice(i, 1); _d < _e.length; _d++) {
-                        var item = _e[_d];
+                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
+                    for (var _c = 0, _d = this.itemsArray.splice(i, 1); _c < _d.length; _c++) {
+                        var item = _d[_c];
                         this.changed(collection, item.key, "delete");
                         deleted.push(deepClone(item));
                     }
@@ -63,17 +61,16 @@ var MemoryPreferencesContainer = /** @class */ (function () {
     MemoryPreferencesContainer.prototype.exists = function (collection, key) {
         return Promise.resolve(!!this.itemsArray.find(function (item) { return item.collection === collection && deepEqual(item.key, key); }));
     };
-    MemoryPreferencesContainer.prototype.items = function (collection) {
-        var keysOrFilter = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            keysOrFilter[_i - 1] = arguments[_i];
-        }
+    MemoryPreferencesContainer.prototype.items = function (collection, keysOrFilter) {
         var items = [];
-        if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _a = 0, keysOrFilter_2 = keysOrFilter; _a < keysOrFilter_2.length; _a++) {
-                var key = keysOrFilter_2[_a];
-                for (var _b = 0, _c = this.itemsArray; _b < _c.length; _b++) {
-                    var item = _c[_b];
+        var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        var args = arguments;
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        if (keys) {
+            KEYS: for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
+                var key = keys_2[_i];
+                for (var _a = 0, _b = this.itemsArray; _a < _b.length; _a++) {
+                    var item = _b[_a];
                     if (item.collection === collection && deepEqual(item.key, key)) {
                         items.push(deepClone(item));
                         continue KEYS;
@@ -82,9 +79,8 @@ var MemoryPreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
-            for (var _d = 0, _e = this.itemsArray; _d < _e.length; _d++) {
-                var item = _e[_d];
+            for (var _c = 0, _d = this.itemsArray; _c < _d.length; _c++) {
+                var item = _d[_c];
                 if (item.collection === collection && (!filter || filter(item.key, item.value))) {
                     items.push(deepClone(item));
                 }

@@ -10,5 +10,5 @@ export declare class PreferencesCollectionRefImpl<Key, Value> implements Prefere
     set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
     update(key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     value(key: Key): Promise<any>;
-    values(...keysOrFilter: any[]): Promise<Value[]>;
+    values(): Promise<Value[]>;
 }

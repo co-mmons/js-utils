@@ -86,12 +86,9 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
     };
     PreferencesCollectionRefImpl.prototype.values = function () {
         var _this = this;
-        var keysOrFilter = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            keysOrFilter[_i] = arguments[_i];
-        }
         var filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
-        var keys = Array.isArray(keysOrFilter) && keysOrFilter;
+        var args = arguments;
+        var keys = !filter && arguments.length > 0 && new Array(arguments.length).map(function (value, index) { return args[index]; });
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var _a, values, _i, _b, item, error_2;
             return tslib_1.__generator(this, function (_c) {

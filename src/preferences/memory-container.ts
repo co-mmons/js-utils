@@ -32,13 +32,17 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
         return Promise.resolve((item && deepClone(item)) || null);
     }
 
-    delete(collection: string, ...keysOrFilter: Array<any | PreferencesFilter>) {
+    delete(collection: string, keysOrFilter?) {
 
         const deleted: PreferencesItem[] = [];
 
-        if (Array.isArray(keysOrFilter)) {
+        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        const args = arguments;
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
 
-            KEYS: for (const key of keysOrFilter) {
+        if (keys) {
+
+            KEYS: for (const key of keys) {
 
                 for (let i = 0; i < this.itemsArray.length; i++) {
 
@@ -54,12 +58,10 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 }
             }
 
-        } else {
-
-            const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        } else if (arguments.length === 1 || filter) {
 
             for (let i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (arguments.length === 0 || (filter && filter(this.itemsArray[i].key, this.itemsArray[i].value)))) {
+                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
                     for (const item of this.itemsArray.splice(i, 1)) {
                         this.changed(collection, item.key, "delete");
                         deleted.push(deepClone(item));
@@ -75,13 +77,17 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
         return Promise.resolve(!!this.itemsArray.find(item => item.collection === collection && deepEqual(item.key, key)));
     }
 
-    items(collection: string, ...keysOrFilter: Array<any | PreferencesFilter>) {
+    items(collection: string, keysOrFilter?) {
 
         const items: PreferencesItem[] = [];
 
-        if (Array.isArray(keysOrFilter)) {
+        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
+        const args = arguments;
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
 
-            KEYS: for (const key of keysOrFilter) {
+        if (keys) {
+
+            KEYS: for (const key of keys) {
 
                 for (const item of this.itemsArray) {
 
@@ -93,7 +99,6 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
             }
 
         } else {
-            const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
 
             for (const item of this.itemsArray) {
                 if (item.collection === collection && (!filter || filter(item.key, item.value))) {
