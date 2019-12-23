@@ -28,6 +28,9 @@ export class StoragePreferencesContainer {
         else {
             item = { value: value };
         }
+        if (item.value === undefined) {
+            item.value = null;
+        }
         this.setStorageItem(itemKey, item);
         return Promise.resolve({ key: deepClone(key), collection, value: deepClone(item.value) });
     }
@@ -113,6 +116,9 @@ export class StoragePreferencesContainer {
             let newValue = oldItem.value;
             if (changes) {
                 newValue = Object.assign({}, newValue, changes);
+                if (newValue === undefined) {
+                    newValue = null;
+                }
                 this.setStorageItem(storageKey, { value: newValue });
             }
             return Promise.resolve({ collection, key, value: deepClone(newValue) });
