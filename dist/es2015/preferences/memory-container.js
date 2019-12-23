@@ -27,7 +27,7 @@ class MemoryPreferencesContainer {
         const item = this.itemsArray.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
         return Promise.resolve((item && deep_clone_1.deepClone(item)) || null);
     }
-    delete(collection, keysOrFilter) {
+    delete(collection, ...keysOrFilter) {
         const deleted = [];
         if (Array.isArray(keysOrFilter)) {
             KEYS: for (const key of keysOrFilter) {
@@ -43,8 +43,9 @@ class MemoryPreferencesContainer {
             }
         }
         else {
+            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (let i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (!keysOrFilter || keysOrFilter(this.itemsArray[i].key, this.itemsArray[i].value))) {
+                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
                     for (const item of this.itemsArray.splice(i, 1)) {
                         this.changed(collection, item.key, "delete");
                         deleted.push(deep_clone_1.deepClone(item));
@@ -57,7 +58,7 @@ class MemoryPreferencesContainer {
     exists(collection, key) {
         return Promise.resolve(!!this.itemsArray.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key)));
     }
-    items(collection, keysOrFilter) {
+    items(collection, ...keysOrFilter) {
         const items = [];
         if (Array.isArray(keysOrFilter)) {
             KEYS: for (const key of keysOrFilter) {
@@ -70,8 +71,9 @@ class MemoryPreferencesContainer {
             }
         }
         else {
+            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (const item of this.itemsArray) {
-                if (item.collection === collection && (!keysOrFilter || keysOrFilter(item.key, item.value))) {
+                if (item.collection === collection && (!filter || filter(item.key, item.value))) {
                     items.push(deep_clone_1.deepClone(item));
                 }
             }

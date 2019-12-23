@@ -37,7 +37,7 @@ class StoragePreferencesContainer {
         const item = this.getStorageItem(this.storageKey(collection, key));
         return Promise.resolve((item && { collection, key: deep_clone_1.deepClone(key), value: item.value }) || null);
     }
-    delete(collection, keysOrFilter) {
+    delete(collection, ...keysOrFilter) {
         const deleted = [];
         if (Array.isArray(keysOrFilter)) {
             KEYS: for (const key of keysOrFilter) {
@@ -53,12 +53,13 @@ class StoragePreferencesContainer {
             }
         }
         else {
+            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
-                    if (!keysOrFilter || keysOrFilter(key, item.value)) {
+                    if (!filter || filter(key, item.value)) {
                         deleted.push({ collection, key, value: item.value });
                     }
                 }
@@ -70,7 +71,7 @@ class StoragePreferencesContainer {
         const item = this.getStorageItem(this.storageKey(collection, key));
         return Promise.resolve(!!item);
     }
-    items(collection, keysOrFilter) {
+    items(collection, ...keysOrFilter) {
         const items = [];
         if (Array.isArray(keysOrFilter)) {
             KEYS: for (const key of keysOrFilter) {
@@ -86,12 +87,13 @@ class StoragePreferencesContainer {
             }
         }
         else {
+            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
-                    if (!keysOrFilter || keysOrFilter(key, item.value)) {
+                    if (!filter || filter(key, item.value)) {
                         items.push({ collection, key, value: item.value });
                     }
                 }

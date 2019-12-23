@@ -25,15 +25,19 @@ var MemoryPreferencesContainer = /** @class */ (function () {
         var item = this.itemsArray.find(function (item) { return item.collection === collection && deepEqual(item.key, key); });
         return Promise.resolve((item && deepClone(item)) || null);
     };
-    MemoryPreferencesContainer.prototype.delete = function (collection, keysOrFilter) {
+    MemoryPreferencesContainer.prototype.delete = function (collection) {
+        var keysOrFilter = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            keysOrFilter[_i - 1] = arguments[_i];
+        }
         var deleted = [];
         if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _i = 0, keysOrFilter_1 = keysOrFilter; _i < keysOrFilter_1.length; _i++) {
-                var key = keysOrFilter_1[_i];
+            KEYS: for (var _a = 0, keysOrFilter_1 = keysOrFilter; _a < keysOrFilter_1.length; _a++) {
+                var key = keysOrFilter_1[_a];
                 for (var i = 0; i < this.itemsArray.length; i++) {
                     if (this.itemsArray[i].collection === collection && deepEqual(this.itemsArray[i].key, key)) {
-                        for (var _a = 0, _b = this.itemsArray.splice(i, 1); _a < _b.length; _a++) {
-                            var item = _b[_a];
+                        for (var _b = 0, _c = this.itemsArray.splice(i, 1); _b < _c.length; _b++) {
+                            var item = _c[_b];
                             this.changed(collection, item.key, "delete");
                             deleted.push(deepClone(item));
                         }
@@ -43,10 +47,11 @@ var MemoryPreferencesContainer = /** @class */ (function () {
             }
         }
         else {
+            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (var i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (!keysOrFilter || keysOrFilter(this.itemsArray[i].key, this.itemsArray[i].value))) {
-                    for (var _c = 0, _d = this.itemsArray.splice(i, 1); _c < _d.length; _c++) {
-                        var item = _d[_c];
+                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
+                    for (var _d = 0, _e = this.itemsArray.splice(i, 1); _d < _e.length; _d++) {
+                        var item = _e[_d];
                         this.changed(collection, item.key, "delete");
                         deleted.push(deepClone(item));
                     }
@@ -58,13 +63,17 @@ var MemoryPreferencesContainer = /** @class */ (function () {
     MemoryPreferencesContainer.prototype.exists = function (collection, key) {
         return Promise.resolve(!!this.itemsArray.find(function (item) { return item.collection === collection && deepEqual(item.key, key); }));
     };
-    MemoryPreferencesContainer.prototype.items = function (collection, keysOrFilter) {
+    MemoryPreferencesContainer.prototype.items = function (collection) {
+        var keysOrFilter = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            keysOrFilter[_i - 1] = arguments[_i];
+        }
         var items = [];
         if (Array.isArray(keysOrFilter)) {
-            KEYS: for (var _i = 0, keysOrFilter_2 = keysOrFilter; _i < keysOrFilter_2.length; _i++) {
-                var key = keysOrFilter_2[_i];
-                for (var _a = 0, _b = this.itemsArray; _a < _b.length; _a++) {
-                    var item = _b[_a];
+            KEYS: for (var _a = 0, keysOrFilter_2 = keysOrFilter; _a < keysOrFilter_2.length; _a++) {
+                var key = keysOrFilter_2[_a];
+                for (var _b = 0, _c = this.itemsArray; _b < _c.length; _b++) {
+                    var item = _c[_b];
                     if (item.collection === collection && deepEqual(item.key, key)) {
                         items.push(deepClone(item));
                         continue KEYS;
@@ -73,9 +82,10 @@ var MemoryPreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            for (var _c = 0, _d = this.itemsArray; _c < _d.length; _c++) {
-                var item = _d[_c];
-                if (item.collection === collection && (!keysOrFilter || keysOrFilter(item.key, item.value))) {
+            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            for (var _d = 0, _e = this.itemsArray; _d < _e.length; _d++) {
+                var item = _e[_d];
+                if (item.collection === collection && (!filter || filter(item.key, item.value))) {
                     items.push(deepClone(item));
                 }
             }
