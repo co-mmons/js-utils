@@ -38,7 +38,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
         const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         const args = arguments;
-        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
 
         if (keys) {
 
@@ -83,7 +83,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
         const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         const args = arguments;
-        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
+        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
 
         if (keys) {
 

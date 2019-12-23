@@ -10,7 +10,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
 
         const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).map((value, index) => args[index]);
+        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
 
         if (arguments.length === 0 || filter) {
 
@@ -76,7 +76,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
 
         const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).map((value, index) => args[index]);
+        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
 
         return new Promise<Value[]>(async (resolve, reject) => {
 

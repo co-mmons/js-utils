@@ -31,7 +31,7 @@ class MemoryPreferencesContainer {
         const deleted = [];
         const filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         const args = arguments;
-        const keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
+        const keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
         if (keys) {
             KEYS: for (const key of keys) {
                 for (let i = 0; i < this.itemsArray.length; i++) {
@@ -64,7 +64,7 @@ class MemoryPreferencesContainer {
         const items = [];
         const filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         const args = arguments;
-        const keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map((value, index) => args[index + 1]);
+        const keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
         if (keys) {
             KEYS: for (const key of keys) {
                 for (const item of this.itemsArray) {

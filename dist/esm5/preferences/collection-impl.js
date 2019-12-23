@@ -9,7 +9,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var _this = this;
         var filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         var args = arguments;
-        var keys = !filter && arguments.length > 0 && new Array(arguments.length).map(function (value, index) { return args[index]; });
+        var keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
         if (arguments.length === 0 || filter) {
             return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
                 var preferences, _i, _a, pref, error_1;
@@ -88,7 +88,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var _this = this;
         var filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         var args = arguments;
-        var keys = !filter && arguments.length > 0 && new Array(arguments.length).map(function (value, index) { return args[index]; });
+        var keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var _a, values, items, _i, _b, item, error_2;
             return tslib_1.__generator(this, function (_c) {

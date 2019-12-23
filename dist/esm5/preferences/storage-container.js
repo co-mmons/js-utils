@@ -39,7 +39,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
         var deleted = [];
         var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         var args = arguments;
-        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map(function (value, index) { return args[index + 1]; });
         if (keys) {
             KEYS: for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
                 var key = keys_1[_i];
@@ -80,7 +80,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
         var items = [];
         var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         var args = arguments;
-        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).map(function (value, index) { return args[index + 1]; });
+        var keys = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map(function (value, index) { return args[index + 1]; });
         if (keys) {
             KEYS: for (var _a = 0, keys_2 = keys; _a < keys_2.length; _a++) {
                 var key = keys_2[_a];
