@@ -72,6 +72,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     if (itemKey === storageKey) {
                         const item = this.getStorageItem(storageKey);
                         deleted.push({collection, key, value: item.value});
+                        this.storage.removeItem(storageKey);
                         continue KEYS;
                     }
                 }
@@ -87,6 +88,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     const item = this.getStorageItem(storageKey);
 
                     if (!filter || filter(key, item.value)) {
+                        this.storage.removeItem(storageKey);
                         deleted.push({collection, key, value: item.value});
                     }
                 }

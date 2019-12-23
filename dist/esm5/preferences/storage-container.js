@@ -49,6 +49,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
                     if (itemKey === storageKey) {
                         var item = this.getStorageItem(storageKey);
                         deleted.push({ collection: collection, key: key, value: item.value });
+                        this.storage.removeItem(storageKey);
                         continue KEYS;
                     }
                 }
@@ -61,6 +62,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
                     var key = this.realKey(collection, storageKey);
                     var item = this.getStorageItem(storageKey);
                     if (!filter || filter(key, item.value)) {
+                        this.storage.removeItem(storageKey);
                         deleted.push({ collection: collection, key: key, value: item.value });
                     }
                 }

@@ -50,6 +50,7 @@ class StoragePreferencesContainer {
                     if (itemKey === storageKey) {
                         const item = this.getStorageItem(storageKey);
                         deleted.push({ collection, key, value: item.value });
+                        this.storage.removeItem(storageKey);
                         continue KEYS;
                     }
                 }
@@ -62,6 +63,7 @@ class StoragePreferencesContainer {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
                     if (!filter || filter(key, item.value)) {
+                        this.storage.removeItem(storageKey);
                         deleted.push({ collection, key, value: item.value });
                     }
                 }
