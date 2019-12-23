@@ -27,11 +27,11 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
                 return resolve(preferences);
             });
 
-        } else if (Array.isArray(arguments[0])) {
+        } else if (Array.isArray(keysOrFilter)) {
 
             const items: PreferencesItemRef<Key, Value>[] = [];
 
-            for (const key of arguments[0] as Key[]) {
+            for (const key of keysOrFilter as Key[]) {
                 items.push(new PreferenceItemRefImpl(this, key));
             }
 
@@ -70,14 +70,14 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
     values(...keysOrFilter): Promise<Value[]> {
 
         const filter: PreferencesFilter<Key, Value> = arguments.length > 0 && typeof arguments[0] === "function" && arguments[0];
-        const keys: Key[] = arguments.length > 0 && Array.isArray(arguments[0]) && arguments[0];
+        const keys: Key[] = Array.isArray(keysOrFilter) && keysOrFilter;
 
         return new Promise<Value[]>(async (resolve, reject) => {
 
             const values: Value[] = [];
 
             try {
-                for (const item of await this.container.items(this.name, keys || filter || null)) {
+                for (const item of await (keys ? this.container.items(this.name, ...keys) : this.container.items(this.name, filter))) {
                     values.push(item.value);
                 }
             } catch (error) {

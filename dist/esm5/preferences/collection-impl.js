@@ -44,9 +44,9 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                 });
             }); });
         }
-        else if (Array.isArray(arguments[0])) {
+        else if (Array.isArray(keysOrFilter)) {
             var items = [];
-            for (var _a = 0, _b = arguments[0]; _a < _b.length; _a++) {
+            for (var _a = 0, _b = keysOrFilter; _a < _b.length; _a++) {
                 var key = _b[_a];
                 items.push(new PreferenceItemRefImpl(this, key));
             }
@@ -91,32 +91,32 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
             keysOrFilter[_i] = arguments[_i];
         }
         var filter = arguments.length > 0 && typeof arguments[0] === "function" && arguments[0];
-        var keys = arguments.length > 0 && Array.isArray(arguments[0]) && arguments[0];
+        var keys = Array.isArray(keysOrFilter) && keysOrFilter;
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var values, _i, _a, item, error_2;
-            return tslib_1.__generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, values, _i, _b, item, error_2;
+            return tslib_1.__generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         values = [];
-                        _b.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _b.trys.push([1, 6, , 7]);
+                        _c.trys.push([1, 6, , 7]);
                         _i = 0;
-                        return [4 /*yield*/, this.container.items(this.name, keys || filter || null)];
+                        return [4 /*yield*/, (keys ? (_a = this.container).items.apply(_a, [this.name].concat(keys)) : this.container.items(this.name, filter))];
                     case 2:
-                        _a = _b.sent();
-                        _b.label = 3;
+                        _b = _c.sent();
+                        _c.label = 3;
                     case 3:
-                        if (!(_i < _a.length)) return [3 /*break*/, 5];
-                        item = _a[_i];
+                        if (!(_i < _b.length)) return [3 /*break*/, 5];
+                        item = _b[_i];
                         values.push(item.value);
-                        _b.label = 4;
+                        _c.label = 4;
                     case 4:
                         _i++;
                         return [3 /*break*/, 3];
                     case 5: return [3 /*break*/, 7];
                     case 6:
-                        error_2 = _b.sent();
+                        error_2 = _c.sent();
                         return [2 /*return*/, reject(error_2)];
                     case 7: return [2 /*return*/, resolve(values)];
                 }

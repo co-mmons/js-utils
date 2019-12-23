@@ -56,6 +56,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
         } else {
 
+            const all = arguments.length === 1;
             const filter: PreferencesFilter<any> = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
 
             for (let i = 0; i < this.itemsArray.length; i++) {

@@ -41,6 +41,7 @@ export class MemoryPreferencesContainer {
             }
         }
         else {
+            const all = arguments.length === 1;
             const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
             for (let i = 0; i < this.itemsArray.length; i++) {
                 if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
