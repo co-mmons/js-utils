@@ -47,6 +47,9 @@ export interface PreferencesItemRef<Key = any, Value = any> {
     update(value: Value): Promise<PreferencesItem<Key, Value>>;
 }
 
+export interface PreferencesItemValueRef<Value = any> extends PreferencesItemRef<any, Value> {
+}
+
 export interface PreferencesFilter<Key = any, Value = any> {
     (key: Key, value: Value): boolean;
 }
