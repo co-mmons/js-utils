@@ -3,7 +3,7 @@ export declare class PreferencesCollectionRefImpl<Key, Value> implements Prefere
     readonly container: PreferencesContainer;
     readonly name: string;
     constructor(container: PreferencesContainer, name: string);
-    items(...keysOrFilter: any): any;
+    items(): any;
     delete(): Promise<PreferencesItem[]>;
     exists(key: Key): Promise<boolean>;
     item(key: Key): PreferencesItemRef<Key, Value>;

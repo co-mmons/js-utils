@@ -7,9 +7,11 @@ class PreferencesCollectionRefImpl {
         this.container = container;
         this.name = name;
     }
-    items(...keysOrFilter) {
-        if (arguments.length === 0 || typeof arguments[0] === "function") {
-            const filter = arguments.length > 0 && arguments[0];
+    items() {
+        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
+        const args = arguments;
+        const keys = !filter && arguments.length > 0 && new Array(arguments.length).map((value, index) => args[index]);
+        if (arguments.length === 0 || filter) {
             return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 const preferences = [];
                 try {
@@ -23,9 +25,9 @@ class PreferencesCollectionRefImpl {
                 return resolve(preferences);
             }));
         }
-        else if (Array.isArray(keysOrFilter)) {
+        else if (keys) {
             const items = [];
-            for (const key of keysOrFilter) {
+            for (const key of keys) {
                 items.push(new item_impl_1.PreferenceItemRefImpl(this, key));
             }
             return items;

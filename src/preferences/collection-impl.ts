@@ -6,10 +6,13 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
     constructor(public readonly container: PreferencesContainer, public readonly name: string) {
     }
 
-    items(...keysOrFilter: any): any {
+    items(): any {
 
-        if (arguments.length === 0 || typeof arguments[0] === "function") {
-            const filter: PreferencesFilter<Key, Value> = arguments.length > 0 && arguments[0];
+        const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
+        const args = arguments;
+        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).map((value, index) => args[index]);
+
+        if (arguments.length === 0 || filter) {
 
             return new Promise<PreferencesItemRef<Key, Value>[]>(async (resolve, reject) => {
                 const preferences: PreferencesItemRef<Key, Value>[] = [];
@@ -27,11 +30,11 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
                 return resolve(preferences);
             });
 
-        } else if (Array.isArray(keysOrFilter)) {
+        } else if (keys) {
 
             const items: PreferencesItemRef<Key, Value>[] = [];
 
-            for (const key of keysOrFilter as Key[]) {
+            for (const key of keys) {
                 items.push(new PreferenceItemRefImpl(this, key));
             }
 

@@ -7,12 +7,10 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
     }
     PreferencesCollectionRefImpl.prototype.items = function () {
         var _this = this;
-        var keysOrFilter = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            keysOrFilter[_i] = arguments[_i];
-        }
-        if (arguments.length === 0 || typeof arguments[0] === "function") {
-            var filter_1 = arguments.length > 0 && arguments[0];
+        var filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
+        var args = arguments;
+        var keys = !filter && arguments.length > 0 && new Array(arguments.length).map(function (value, index) { return args[index]; });
+        if (arguments.length === 0 || filter) {
             return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
                 var preferences, _i, _a, pref, error_1;
                 return tslib_1.__generator(this, function (_b) {
@@ -23,7 +21,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                         case 1:
                             _b.trys.push([1, 6, , 7]);
                             _i = 0;
-                            return [4 /*yield*/, this.container.items(this.name, filter_1)];
+                            return [4 /*yield*/, this.container.items(this.name, filter)];
                         case 2:
                             _a = _b.sent();
                             _b.label = 3;
@@ -44,10 +42,10 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                 });
             }); });
         }
-        else if (Array.isArray(keysOrFilter)) {
+        else if (keys) {
             var items = [];
-            for (var _a = 0, _b = keysOrFilter; _a < _b.length; _a++) {
-                var key = _b[_a];
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
                 items.push(new PreferenceItemRefImpl(this, key));
             }
             return items;
