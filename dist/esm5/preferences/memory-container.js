@@ -47,10 +47,9 @@ var MemoryPreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var all = arguments.length === 1;
-            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
             for (var i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
+                if (this.itemsArray[i].collection === collection && (arguments.length === 0 || (filter && filter(this.itemsArray[i].key, this.itemsArray[i].value)))) {
                     for (var _d = 0, _e = this.itemsArray.splice(i, 1); _d < _e.length; _d++) {
                         var item = _e[_d];
                         this.changed(collection, item.key, "delete");
@@ -83,7 +82,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            var filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
             for (var _d = 0, _e = this.itemsArray; _d < _e.length; _d++) {
                 var item = _e[_d];
                 if (item.collection === collection && (!filter || filter(item.key, item.value))) {

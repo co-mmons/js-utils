@@ -69,7 +69,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
 
     values(...keysOrFilter): Promise<Value[]> {
 
-        const filter: PreferencesFilter<Key, Value> = arguments.length > 0 && typeof arguments[0] === "function" && arguments[0];
+        const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const keys: Key[] = Array.isArray(keysOrFilter) && keysOrFilter;
 
         return new Promise<Value[]>(async (resolve, reject) => {

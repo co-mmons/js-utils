@@ -75,7 +75,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
         } else {
 
-            const filter: PreferencesFilter<any> = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter: PreferencesFilter<any> = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
@@ -84,7 +84,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
 
-                    if (!filter || filter(key, item.value)) {
+                    if (arguments.length === 0 || (filter && filter(key, item.value))) {
                         deleted.push({collection, key, value: item.value});
                     }
                 }
@@ -121,7 +121,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
         } else {
 
-            const filter: PreferencesFilter<any> = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter: PreferencesFilter<any> = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);

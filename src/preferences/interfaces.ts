@@ -8,9 +8,11 @@ export interface PreferencesContainer {
 
     exists(collection: string, key: any): Promise<boolean>;
 
+    delete<Key = any, Value = any>(collection: string): Promise<PreferencesItem<Key, Value>[]>;
+
     delete<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
-    delete<Key = any, Value = any>(collection: string, filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
+    delete<Key = any, Value = any>(collection: string, filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
 
     items<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 

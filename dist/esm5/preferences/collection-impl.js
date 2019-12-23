@@ -90,7 +90,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             keysOrFilter[_i] = arguments[_i];
         }
-        var filter = arguments.length > 0 && typeof arguments[0] === "function" && arguments[0];
+        var filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         var keys = Array.isArray(keysOrFilter) && keysOrFilter;
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var _a, values, _i, _b, item, error_2;

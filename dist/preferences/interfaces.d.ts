@@ -3,8 +3,9 @@ export interface PreferencesContainer {
     update<Key = any, Value = any>(collection: string, key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     get<Key = any, Value = any>(collection: string, key: Key): Promise<PreferencesItem<Key, Value>>;
     exists(collection: string, key: any): Promise<boolean>;
+    delete<Key = any, Value = any>(collection: string): Promise<PreferencesItem<Key, Value>[]>;
     delete<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
-    delete<Key = any, Value = any>(collection: string, filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
+    delete<Key = any, Value = any>(collection: string, filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
     items<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
     items<Key = any, Value = any>(collection: string, filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value>;

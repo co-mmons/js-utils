@@ -41,10 +41,9 @@ export class MemoryPreferencesContainer {
             }
         }
         else {
-            const all = arguments.length === 1;
-            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
             for (let i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
+                if (this.itemsArray[i].collection === collection && (arguments.length === 0 || (filter && filter(this.itemsArray[i].key, this.itemsArray[i].value)))) {
                     for (const item of this.itemsArray.splice(i, 1)) {
                         this.changed(collection, item.key, "delete");
                         deleted.push(deepClone(item));
@@ -70,7 +69,7 @@ export class MemoryPreferencesContainer {
             }
         }
         else {
-            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
             for (const item of this.itemsArray) {
                 if (item.collection === collection && (!filter || filter(item.key, item.value))) {
                     items.push(deepClone(item));

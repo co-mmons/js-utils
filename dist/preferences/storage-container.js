@@ -53,13 +53,13 @@ class StoragePreferencesContainer {
             }
         }
         else {
-            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
                     const key = this.realKey(collection, storageKey);
                     const item = this.getStorageItem(storageKey);
-                    if (!filter || filter(key, item.value)) {
+                    if (arguments.length === 0 || (filter && filter(key, item.value))) {
                         deleted.push({ collection, key, value: item.value });
                     }
                 }
@@ -87,7 +87,7 @@ class StoragePreferencesContainer {
             }
         }
         else {
-            const filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            const filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {

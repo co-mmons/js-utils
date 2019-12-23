@@ -54,7 +54,7 @@ export class PreferencesCollectionRefImpl {
         });
     }
     values(...keysOrFilter) {
-        const filter = arguments.length > 0 && typeof arguments[0] === "function" && arguments[0];
+        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const keys = Array.isArray(keysOrFilter) && keysOrFilter;
         return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const values = [];

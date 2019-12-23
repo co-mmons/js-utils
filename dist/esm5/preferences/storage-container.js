@@ -56,13 +56,13 @@ var StoragePreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            var filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
                     var key = this.realKey(collection, storageKey);
                     var item = this.getStorageItem(storageKey);
-                    if (!filter || filter(key, item.value)) {
+                    if (arguments.length === 0 || (filter && filter(key, item.value))) {
                         deleted.push({ collection: collection, key: key, value: item.value });
                     }
                 }
@@ -95,7 +95,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
             }
         }
         else {
-            var filter = arguments.length === 2 && typeof arguments[1] === "function" && arguments[1];
+            var filter = (arguments.length > 1 && typeof arguments[1] === "function" && arguments[1]) || undefined;
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
                 if (this.isCollectionStorageKey(collection, storageKey)) {
