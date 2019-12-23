@@ -16,7 +16,7 @@ export interface PreferencesContainer {
 
     items<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
-    items<Key = any, Value = any>(collection: string, filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
+    items<Key = any, Value = any>(collection: string, filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
 
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value>;
 
@@ -66,7 +66,7 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     items(...keys: Key[]): PreferencesItemRef<Key, Value>[];
 
-    items(filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItemRef<Key, Value>[]>;
+    items(filter: PreferencesFilter<Key, Value>): Promise<PreferencesItemRef<Key, Value>[]>;
 
     items(): Promise<PreferencesItemRef<Key, Value>[]>;
 
@@ -82,14 +82,16 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     values(...keys: Key[]): Promise<Value[]>;
 
-    values(filter?: PreferencesFilter<Key, Value>): Promise<Value[]>;
+    values(filter: PreferencesFilter<Key, Value>): Promise<Value[]>;
+
+    values(): Promise<Value[]>;
 
     // observeValue(key: Key): Observable<Value>;
     // observeValues(filter?: DataCollectionFilter<Key, Value>): Observable<Value[]>;
 
     delete(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
-    delete(filter?: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
+    delete(filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
 
     delete(): Promise<PreferencesItem<Key, Value>[]>;
 }

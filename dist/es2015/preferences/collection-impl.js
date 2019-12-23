@@ -64,7 +64,17 @@ class PreferencesCollectionRefImpl {
         return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const values = [];
             try {
-                for (const item of yield (keys ? this.container.items(this.name, ...keys) : this.container.items(this.name, filter))) {
+                let items;
+                if (keys) {
+                    items = this.container.items(this.name, ...keys);
+                }
+                else if (filter) {
+                    items = this.container.items(this.name, filter);
+                }
+                else {
+                    items = this.container.items(this.name);
+                }
+                for (const item of yield items) {
                     values.push(item.value);
                 }
             }

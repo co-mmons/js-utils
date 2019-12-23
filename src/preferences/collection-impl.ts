@@ -81,9 +81,19 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
             const values: Value[] = [];
 
             try {
-                for (const item of await (keys ? this.container.items(this.name, ...keys) : this.container.items(this.name, filter))) {
+                let items: Promise<PreferencesItem<Key, Value>[]>;
+                if (keys) {
+                    items = this.container.items<Key, Value>(this.name, ...keys);
+                } else if (filter) {
+                    items = this.container.items<Key, Value>(this.name, filter);
+                } else {
+                    items = this.container.items<Key, Value>(this.name);
+                }
+
+                for (const item of await items) {
                     values.push(item.value);
                 }
+
             } catch (error) {
                 return reject(error);
             }

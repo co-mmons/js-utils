@@ -88,7 +88,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var args = arguments;
         var keys = !filter && arguments.length > 0 && new Array(arguments.length).map(function (value, index) { return args[index]; });
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var _a, values, _i, _b, item, error_2;
+            var _a, values, items, _i, _b, item, error_2;
             return tslib_1.__generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -96,8 +96,18 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 6, , 7]);
+                        items = void 0;
+                        if (keys) {
+                            items = (_a = this.container).items.apply(_a, [this.name].concat(keys));
+                        }
+                        else if (filter) {
+                            items = this.container.items(this.name, filter);
+                        }
+                        else {
+                            items = this.container.items(this.name);
+                        }
                         _i = 0;
-                        return [4 /*yield*/, (keys ? (_a = this.container).items.apply(_a, [this.name].concat(keys)) : this.container.items(this.name, filter))];
+                        return [4 /*yield*/, items];
                     case 2:
                         _b = _c.sent();
                         _c.label = 3;
