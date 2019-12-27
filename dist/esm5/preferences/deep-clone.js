@@ -1,4 +1,4 @@
 export function deepClone(obj) {
-    return JSON.parse(JSON.stringify(obj));
+    return obj === undefined ? undefined : JSON.parse(JSON.stringify(obj));
 }
 //# sourceMappingURL=deep-clone.js.map
