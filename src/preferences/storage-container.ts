@@ -19,16 +19,26 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         this.storage.setItem(storageKey, JSON.stringify(item));
     }
 
-    private isCollectionStorageKey(collection: string, storageKey: string) {
-        return storageKey.startsWith(collection + "/");
+    private isPrefsStorageKey(collection: string, storageKey: string) {
+        return storageKey.startsWith("[") && storageKey.endsWith("]");
     }
 
     private storageKey(collection: string, key: any) {
-        return `${collection}/${JSON.stringify(key)}`;
+        return JSON.stringify([collection, key]);
     }
 
-    private realKey(collection: string, storageKey: any) {
-        return JSON.parse(storageKey.replace(new RegExp(`^${collection}\/`), ""));
+    private collectionAndKey(storageKey: string): [string, any] {
+
+        if (storageKey.startsWith("[") && storageKey.endsWith("]")) {
+            try {
+                const collectionAndKey: [string, any] = JSON.parse(storageKey);
+                return (Array.isArray(collectionAndKey) && collectionAndKey.length === 2 && typeof collectionAndKey[0] === "string" && collectionAndKey) || null;
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+
+        return null;
     }
 
     set(collection: string, key: any, value: any, options?: PreferencesSetOptions) {
@@ -86,14 +96,14 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
+                const collectionAndKey = this.collectionAndKey(storageKey);
 
-                if (this.isCollectionStorageKey(collection, storageKey)) {
-                    const key = this.realKey(collection, storageKey);
+                if (collectionAndKey && collectionAndKey[0] === collection) {
                     const item = this.getStorageItem(storageKey);
 
-                    if (!filter || filter(key, item.value)) {
+                    if (!filter || filter(collectionAndKey[1], item.value)) {
                         this.storage.removeItem(storageKey);
-                        deleted.push({collection, key, value: item.value});
+                        deleted.push({collection, key: collectionAndKey[1], value: item.value});
                     }
                 }
             }
@@ -135,13 +145,13 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
+                const collectionAndKey = this.collectionAndKey(storageKey);
 
-                if (this.isCollectionStorageKey(collection, storageKey)) {
-                    const key = this.realKey(collection, storageKey);
+                if (collectionAndKey && collectionAndKey[0] === collection) {
                     const item = this.getStorageItem(storageKey);
 
-                    if (!filter || filter(key, item.value)) {
-                        items.push({collection, key, value: item.value});
+                    if (!filter || filter(collectionAndKey[1], item.value)) {
+                        items.push({collection, key: collectionAndKey[1], value: item.value});
                     }
                 }
             }

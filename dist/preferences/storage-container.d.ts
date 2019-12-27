@@ -4,9 +4,9 @@ export declare class StoragePreferencesContainer implements PreferencesContainer
     constructor(storage: typeof window.localStorage | typeof window.sessionStorage);
     private getStorageItem;
     private setStorageItem;
-    private isCollectionStorageKey;
+    private isPrefsStorageKey;
     private storageKey;
-    private realKey;
+    private collectionAndKey;
     set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferencesItem<any, any>>;
     get(collection: string, key: any): Promise<PreferencesItem<any, any>>;
     delete(collection: string, keysOrFilter?: any): Promise<PreferencesItem<any, any>[]>;

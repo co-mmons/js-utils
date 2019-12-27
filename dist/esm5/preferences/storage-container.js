@@ -10,14 +10,23 @@ var StoragePreferencesContainer = /** @class */ (function () {
     StoragePreferencesContainer.prototype.setStorageItem = function (storageKey, item) {
         this.storage.setItem(storageKey, JSON.stringify(item));
     };
-    StoragePreferencesContainer.prototype.isCollectionStorageKey = function (collection, storageKey) {
-        return storageKey.startsWith(collection + "/");
+    StoragePreferencesContainer.prototype.isPrefsStorageKey = function (collection, storageKey) {
+        return storageKey.startsWith("[") && storageKey.endsWith("]");
     };
     StoragePreferencesContainer.prototype.storageKey = function (collection, key) {
-        return collection + "/" + JSON.stringify(key);
+        return JSON.stringify([collection, key]);
     };
-    StoragePreferencesContainer.prototype.realKey = function (collection, storageKey) {
-        return JSON.parse(storageKey.replace(new RegExp("^" + collection + "/"), ""));
+    StoragePreferencesContainer.prototype.collectionAndKey = function (storageKey) {
+        if (storageKey.startsWith("[") && storageKey.endsWith("]")) {
+            try {
+                var collectionAndKey = JSON.parse(storageKey);
+                return (Array.isArray(collectionAndKey) && collectionAndKey.length === 2 && typeof collectionAndKey[0] === "string" && collectionAndKey) || null;
+            }
+            catch (e) {
+                console.warn(e);
+            }
+        }
+        return null;
     };
     StoragePreferencesContainer.prototype.set = function (collection, key, value, options) {
         var itemKey = this.storageKey(collection, key);
@@ -61,12 +70,12 @@ var StoragePreferencesContainer = /** @class */ (function () {
         else if (arguments.length === 1 || filter) {
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
-                if (this.isCollectionStorageKey(collection, storageKey)) {
-                    var key = this.realKey(collection, storageKey);
+                var collectionAndKey = this.collectionAndKey(storageKey);
+                if (collectionAndKey && collectionAndKey[0] === collection) {
                     var item = this.getStorageItem(storageKey);
-                    if (!filter || filter(key, item.value)) {
+                    if (!filter || filter(collectionAndKey[1], item.value)) {
                         this.storage.removeItem(storageKey);
-                        deleted.push({ collection: collection, key: key, value: item.value });
+                        deleted.push({ collection: collection, key: collectionAndKey[1], value: item.value });
                     }
                 }
             }
@@ -103,11 +112,11 @@ var StoragePreferencesContainer = /** @class */ (function () {
         else {
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
-                if (this.isCollectionStorageKey(collection, storageKey)) {
-                    var key = this.realKey(collection, storageKey);
+                var collectionAndKey = this.collectionAndKey(storageKey);
+                if (collectionAndKey && collectionAndKey[0] === collection) {
                     var item = this.getStorageItem(storageKey);
-                    if (!filter || filter(key, item.value)) {
-                        items.push({ collection: collection, key: key, value: item.value });
+                    if (!filter || filter(collectionAndKey[1], item.value)) {
+                        items.push({ collection: collection, key: collectionAndKey[1], value: item.value });
                     }
                 }
             }
