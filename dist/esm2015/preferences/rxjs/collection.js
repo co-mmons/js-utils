@@ -13,8 +13,9 @@ class CollectionItemsObserver extends Observable {
     onSubscribe(subscriber) {
         this.collection.items().then(items => {
             subscriber.next(items);
+            this.subscribers.push(subscriber);
             if (!this.unlisten) {
-                this.collection.listen(event => this.listener(event));
+                this.unlisten = this.collection.listen(event => this.listener(event));
             }
         });
         return () => {

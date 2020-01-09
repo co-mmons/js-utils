@@ -48,6 +48,7 @@ class StoragePreferencesContainer {
         if (item) {
             const old = item.value;
             item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
+            this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,
                 type: "update",
@@ -58,6 +59,7 @@ class StoragePreferencesContainer {
         }
         else {
             item = { value: value };
+            this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,
                 type: "create",
@@ -65,7 +67,6 @@ class StoragePreferencesContainer {
                 newValue: deep_clone_1.deepClone(value)
             });
         }
-        this.setStorageItem(itemKey, item);
         return Promise.resolve(this.newItem({ key, collection, value: item.value }));
     }
     get(collection, key) {

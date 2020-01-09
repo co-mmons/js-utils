@@ -1,9 +1,8 @@
 import {PreferencesCollectionRefImpl} from "./collection-impl";
 import {ContainerEventsManager} from "./container-events-manager";
 import {deepClone} from "./deep-clone";
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions} from "./interfaces";
 import {PreferencesItemImpl} from "./item-impl";
-import {MemoryPreferencesContainerItem} from "./memory-container";
 
 interface StorageItem {
     value: any;
@@ -70,6 +69,8 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
             item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
 
+            this.setStorageItem(itemKey, item);
+
             this.fireEvent({
                 collection: collection,
                 type: "update",
@@ -81,6 +82,8 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         } else {
             item = {value: value};
 
+            this.setStorageItem(itemKey, item);
+
             this.fireEvent({
                 collection: collection,
                 type: "create",
@@ -88,8 +91,6 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                 newValue: deepClone(value)
             });
         }
-
-        this.setStorageItem(itemKey, item);
 
         return Promise.resolve(this.newItem({key, collection, value: item.value}));
     }

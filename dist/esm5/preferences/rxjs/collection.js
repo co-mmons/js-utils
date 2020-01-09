@@ -16,8 +16,9 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
         var _this = this;
         this.collection.items().then(function (items) {
             subscriber.next(items);
+            _this.subscribers.push(subscriber);
             if (!_this.unlisten) {
-                _this.collection.listen(function (event) { return _this.listener(event); });
+                _this.unlisten = _this.collection.listen(function (event) { return _this.listener(event); });
             }
         });
         return function () {

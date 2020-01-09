@@ -19,9 +19,10 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
 
         this.collection.items().then(items => {
             subscriber.next(items);
+            this.subscribers.push(subscriber);
 
             if (!this.unlisten) {
-                this.collection.listen(event => this.listener(event));
+                this.unlisten = this.collection.listen(event => this.listener(event));
             }
         });
 
