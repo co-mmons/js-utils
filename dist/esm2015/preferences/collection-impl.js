@@ -1,39 +1,21 @@
-import * as tslib_1 from "tslib";
-import { PreferenceItemRefImpl } from "./item-impl";
+import { __awaiter } from "tslib";
+import { PreferencesItemRefImpl } from "./item-ref-impl";
 export class PreferencesCollectionRefImpl {
     constructor(container, name) {
         this.container = container;
         this.name = name;
     }
+    itemRef(key) {
+        return new PreferencesItemRefImpl(this, key);
+    }
     items() {
-        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
-        if (arguments.length === 0 || filter) {
-            return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                const preferences = [];
-                try {
-                    for (const pref of yield (filter ? this.container.items(this.name, filter) : this.container.items(this.name))) {
-                        preferences.push(new PreferenceItemRefImpl(this, pref.key));
-                    }
-                }
-                catch (error) {
-                    return reject(error);
-                }
-                return resolve(preferences);
-            }));
+        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        if (keys) {
+            return this.container.items(this.name, ...keys);
         }
-        else if (keys) {
-            const items = [];
-            for (const key of keys) {
-                if (key) {
-                    items.push(new PreferenceItemRefImpl(this, key));
-                }
-            }
-            return items;
-        }
-        else {
-            throw new Error("Invalid arguments");
+        else if (arguments.length === 0) {
+            return this.container.items(this.name);
         }
     }
     delete() {
@@ -43,7 +25,8 @@ export class PreferencesCollectionRefImpl {
         return this.container.exists(this.name, key);
     }
     item(key) {
-        return new PreferenceItemRefImpl(this, key);
+        const items = this.container.items(this.name, key);
+        return (items && items[0]) || undefined;
     }
     set(key, value, options) {
         return this.container.set(this.name, key, value, options);
@@ -52,30 +35,28 @@ export class PreferencesCollectionRefImpl {
         return this.container.update(this.name, key, value);
     }
     value(key) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             const item = yield this.container.get(this.name, key);
             return (item && item.value) || null;
         });
     }
     values() {
-        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
-        return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             const values = [];
             try {
                 let items;
                 if (keys) {
                     items = this.container.items(this.name, ...keys);
                 }
-                else if (filter) {
-                    items = this.container.items(this.name, filter);
-                }
-                else {
+                else if (args.length === 0) {
                     items = this.container.items(this.name);
                 }
-                for (const item of yield items) {
-                    values.push(item.value);
+                if (items) {
+                    for (const item of yield items) {
+                        values.push(item.value);
+                    }
                 }
             }
             catch (error) {
@@ -83,6 +64,9 @@ export class PreferencesCollectionRefImpl {
             }
             return resolve(values);
         }));
+    }
+    listen(listener) {
+        return this.container.listen(listener, this.name);
     }
 }
 //# sourceMappingURL=collection-impl.js.map

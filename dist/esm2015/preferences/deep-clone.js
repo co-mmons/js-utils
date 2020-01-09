@@ -1,4 +1,7 @@
 export function deepClone(obj) {
-    return obj === undefined ? undefined : JSON.parse(JSON.stringify(obj));
+    if (obj === undefined || obj === null || typeof obj === "string" || typeof obj === "number" || typeof obj === "boolean") {
+        return obj;
+    }
+    return JSON.parse(JSON.stringify(obj));
 }
 //# sourceMappingURL=deep-clone.js.map

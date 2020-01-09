@@ -1,27 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-class PreferenceItemRefImpl {
-    constructor(collection, key) {
-        this.collection = collection;
-        this.key = key;
+class PreferenceItemImpl {
+    constructor(collection, key, value) {
+        this.ref = collection.itemRef(key);
+        this.value = value;
     }
-    delete() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return (yield this.collection.delete(this.key)).length === 1;
-        });
-    }
-    value() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.collection.value(this.key);
-        });
-    }
-    set(value, options) {
-        return this.collection.set(this.key, value, options);
-    }
-    update(value) {
-        return this.collection.update(this.key, value);
+    get key() {
+        return this.ref.key;
     }
 }
-exports.PreferenceItemRefImpl = PreferenceItemRefImpl;
+exports.PreferenceItemImpl = PreferenceItemImpl;
 //# sourceMappingURL=item-impl.js.map

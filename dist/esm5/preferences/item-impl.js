@@ -1,36 +1,16 @@
-import * as tslib_1 from "tslib";
-var PreferenceItemRefImpl = /** @class */ (function () {
-    function PreferenceItemRefImpl(collection, key) {
-        this.collection = collection;
-        this.key = key;
+var PreferenceItemImpl = /** @class */ (function () {
+    function PreferenceItemImpl(collection, key, value) {
+        this.ref = collection.itemRef(key);
+        this.value = value;
     }
-    PreferenceItemRefImpl.prototype.delete = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.collection.delete(this.key)];
-                    case 1: return [2 /*return*/, (_a.sent()).length === 1];
-                }
-            });
-        });
-    };
-    PreferenceItemRefImpl.prototype.value = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.collection.value(this.key)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    PreferenceItemRefImpl.prototype.set = function (value, options) {
-        return this.collection.set(this.key, value, options);
-    };
-    PreferenceItemRefImpl.prototype.update = function (value) {
-        return this.collection.update(this.key, value);
-    };
-    return PreferenceItemRefImpl;
+    Object.defineProperty(PreferenceItemImpl.prototype, "key", {
+        get: function () {
+            return this.ref.key;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PreferenceItemImpl;
 }());
-export { PreferenceItemRefImpl };
+export { PreferenceItemImpl };
 //# sourceMappingURL=item-impl.js.map

@@ -1,24 +1,17 @@
-import {PreferencesCollectionRef, PreferencesItemRef, PreferencesSetOptions} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesItem, PreferencesItemRef} from "./interfaces";
 
-export class PreferenceItemRefImpl<Key, Value> implements PreferencesItemRef<Key, Value> {
+export class PreferenceItemImpl<Key, Value> implements PreferencesItem<Key, Value> {
 
-    constructor(public readonly collection: PreferencesCollectionRef<Key, Value>, public readonly key: Key) {
+    constructor(collection: PreferencesCollectionRef, key: Key, value: Value) {
+        this.ref = collection.itemRef(key);
+        this.value = value;
     }
 
-    async delete(): Promise<boolean> {
-        return (await this.collection.delete(this.key)).length === 1;
+    get key() {
+        return this.ref.key;
     }
 
-    async value(): Promise<Value> {
-        return await this.collection.value(this.key);
-    }
+    readonly ref: PreferencesItemRef;
 
-    set(value: Value, options?: PreferencesSetOptions) {
-        return this.collection.set(this.key, value, options);
-    }
-
-    update(value: Value) {
-        return this.collection.update(this.key, value);
-    }
-
+    readonly value: Value;
 }

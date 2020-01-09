@@ -1,41 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const item_impl_1 = require("./item-impl");
+const item_ref_impl_1 = require("./item-ref-impl");
 class PreferencesCollectionRefImpl {
     constructor(container, name) {
         this.container = container;
         this.name = name;
     }
+    itemRef(key) {
+        return new item_ref_impl_1.PreferencesItemRefImpl(this, key);
+    }
     items() {
-        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
-        if (arguments.length === 0 || filter) {
-            return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                const preferences = [];
-                try {
-                    for (const pref of yield (filter ? this.container.items(this.name, filter) : this.container.items(this.name))) {
-                        preferences.push(new item_impl_1.PreferenceItemRefImpl(this, pref.key));
-                    }
-                }
-                catch (error) {
-                    return reject(error);
-                }
-                return resolve(preferences);
-            }));
+        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        if (keys) {
+            return this.container.items(this.name, ...keys);
         }
-        else if (keys) {
-            const items = [];
-            for (const key of keys) {
-                if (key) {
-                    items.push(new item_impl_1.PreferenceItemRefImpl(this, key));
-                }
-            }
-            return items;
-        }
-        else {
-            throw new Error("Invalid arguments");
+        else if (arguments.length === 0) {
+            return this.container.items(this.name);
         }
     }
     delete() {
@@ -45,7 +27,8 @@ class PreferencesCollectionRefImpl {
         return this.container.exists(this.name, key);
     }
     item(key) {
-        return new item_impl_1.PreferenceItemRefImpl(this, key);
+        const items = this.container.items(this.name, key);
+        return (items && items[0]) || undefined;
     }
     set(key, value, options) {
         return this.container.set(this.name, key, value, options);
@@ -60,9 +43,8 @@ class PreferencesCollectionRefImpl {
         });
     }
     values() {
-        const filter = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
         return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const values = [];
             try {
@@ -70,14 +52,13 @@ class PreferencesCollectionRefImpl {
                 if (keys) {
                     items = this.container.items(this.name, ...keys);
                 }
-                else if (filter) {
-                    items = this.container.items(this.name, filter);
-                }
-                else {
+                else if (args.length === 0) {
                     items = this.container.items(this.name);
                 }
-                for (const item of yield items) {
-                    values.push(item.value);
+                if (items) {
+                    for (const item of yield items) {
+                        values.push(item.value);
+                    }
                 }
             }
             catch (error) {
@@ -85,6 +66,9 @@ class PreferencesCollectionRefImpl {
             }
             return resolve(values);
         }));
+    }
+    listen(listener) {
+        return this.container.listen(listener, this.name);
     }
 }
 exports.PreferencesCollectionRefImpl = PreferencesCollectionRefImpl;

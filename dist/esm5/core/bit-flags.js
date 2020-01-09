@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 var BitFlags = /** @class */ (function () {
     function BitFlags(value) {
         this._value = value !== undefined ? value : 0;
@@ -29,7 +29,7 @@ var BitFlags = /** @class */ (function () {
 }());
 export { BitFlags };
 var BitFlagsMutable = /** @class */ (function (_super) {
-    tslib_1.__extends(BitFlagsMutable, _super);
+    __extends(BitFlagsMutable, _super);
     function BitFlagsMutable(value) {
         return _super.call(this, value) || this;
     }

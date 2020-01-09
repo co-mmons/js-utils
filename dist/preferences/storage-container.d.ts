@@ -1,17 +1,23 @@
-import { PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesSetOptions } from "./interfaces";
+import { ContainerEventsManager } from "./container-events-manager";
+import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions } from "./interfaces";
+import { PreferenceItemImpl } from "./item-impl";
 export declare class StoragePreferencesContainer implements PreferencesContainer {
     private readonly storage;
     constructor(storage: typeof window.localStorage | typeof window.sessionStorage);
+    protected readonly events: ContainerEventsManager;
+    protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>): void;
     private getStorageItem;
     private setStorageItem;
-    private isPrefsStorageKey;
     private storageKey;
     private collectionAndKey;
-    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferencesItem<any, any>>;
-    get(collection: string, key: any): Promise<PreferencesItem<any, any>>;
-    delete(collection: string, keysOrFilter?: any): Promise<PreferencesItem<any, any>[]>;
+    private newItem;
+    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferenceItemImpl<any, any>>;
+    get(collection: string, key: any): Promise<PreferenceItemImpl<any, any>>;
+    delete(collection: string, ...keys: any[]): Promise<PreferencesItem<any, any>[]>;
+    deleteAll(collection: string): Promise<PreferencesItem<any, any>[]>;
     exists(collection: string, key: any): Promise<boolean>;
-    items(collection: string, ...keysOrFilter: Array<any | PreferencesFilter>): Promise<PreferencesItem<any, any>[]>;
+    items(collection: string, keysToFilter?: any): Promise<PreferencesItem<any, any>[]>;
     update<Key = any, Value = any>(collection: string, key: Key, changes: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value>;
+    listen<Key, Value>(listener: (event: PreferencesItemEvent<any, any>) => void, collection?: string): () => void;
 }

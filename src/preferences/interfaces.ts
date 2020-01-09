@@ -8,24 +8,36 @@ export interface PreferencesContainer {
 
     exists(collection: string, key: any): Promise<boolean>;
 
-    delete<Key = any, Value = any>(collection: string): Promise<PreferencesItem<Key, Value>[]>;
+    deleteAll<Key = any, Value = any>(collection: string): Promise<PreferencesItem<Key, Value>[]>;
 
     delete<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
-    delete<Key = any, Value = any>(collection: string, filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
-
     items<Key = any, Value = any>(collection: string, ...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
-
-    items<Key = any, Value = any>(collection: string, filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
 
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value>;
 
+    listen<Key, Value>(listener: PreferencesItemEventListener, collection: string): () => void;
+
+    listen(listener: PreferencesItemEventListener): () => void;
+}
+
+export type PreferencesItemEventListener = (event: PreferencesItemEvent<any, any>) => void;
+
+export type PreferencesItemEventType = "create" | "update" | "delete";
+
+export interface PreferencesItemEvent<Key, Value> {
+    readonly collection: string;
+    readonly type: PreferencesItemEventType;
+    readonly ref: PreferencesItemRef;
+    readonly key: Key;
+    readonly newValue: Value;
+    readonly oldValue: Value;
 }
 
 export interface PreferencesItem<Key = any, Value = any> {
-    collection: string;
-    key: Key;
-    value: Value;
+    readonly ref: PreferencesItemRef;
+    readonly key: Key;
+    readonly value: Value;
 }
 
 export interface PreferencesSetOptions {
@@ -62,13 +74,15 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     readonly container: PreferencesContainer;
 
-    item(key: Key): PreferencesItemRef<Key, Value>;
+    listen(listener: PreferencesItemEventListener): () => void;
 
-    items(...keys: Key[]): PreferencesItemRef<Key, Value>[];
+    itemRef(key: Key): PreferencesItemRef<Key, Value>;
 
-    items(filter: PreferencesFilter<Key, Value>): Promise<PreferencesItemRef<Key, Value>[]>;
+    item(key: Key): PreferencesItem<Key, Value>;
 
-    items(): Promise<PreferencesItemRef<Key, Value>[]>;
+    items(...keys: Key[]): PreferencesItem<Key, Value>[];
+
+    items(): Promise<PreferencesItem<Key, Value>[]>;
 
     set(key: Key, value: Value): Promise<PreferencesItem<Key, Value>>;
 
@@ -82,16 +96,9 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     values(...keys: Key[]): Promise<Value[]>;
 
-    values(filter: PreferencesFilter<Key, Value>): Promise<Value[]>;
-
     values(): Promise<Value[]>;
 
-    // observeValue(key: Key): Observable<Value>;
-    // observeValues(filter?: DataCollectionFilter<Key, Value>): Observable<Value[]>;
-
     delete(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
-
-    delete(filter: PreferencesFilter<Key, Value>): Promise<PreferencesItem<Key, Value>[]>;
 
     delete(): Promise<PreferencesItem<Key, Value>[]>;
 }

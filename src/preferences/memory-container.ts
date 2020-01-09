@@ -1,71 +1,121 @@
 import {deepEqual} from "fast-equals";
 import {PreferencesCollectionRefImpl} from "./collection-impl";
 import {deepClone} from "./deep-clone";
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesSetOptions} from "./interfaces";
+import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions} from "./interfaces";
+import {PreferenceItemImpl} from "./item-impl";
+import {ContainerEventsManager} from "./container-events-manager";
+
+export interface MemoryPreferencesContainerItem {
+    key: any;
+    value: any;
+    collection: string;
+}
 
 export class MemoryPreferencesContainer implements PreferencesContainer {
 
-    protected readonly itemsArray: PreferencesItem[] = [];
+    protected readonly memory: MemoryPreferencesContainerItem[] = [];
 
-    protected changed(collection: string, key: any, operation: "new" | "update" | "delete") {
+    protected readonly events: ContainerEventsManager = new ContainerEventsManager();
+
+    protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>) {
+    }
+
+    private newItem(item: MemoryPreferencesContainerItem) {
+        if (item) {
+            return new PreferenceItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+        }
+
+        return undefined;
     }
 
     set(collection: string, key: any, value: any, options?: PreferencesSetOptions) {
 
-        let item = this.itemsArray.find(item => item.collection === collection && deepEqual(item.key, key));
+        let item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
 
         if (item) {
+
+            const old = item.value;
+
             item.value = options && options.merge ? Object.assign({}, item.value, value) : deepClone(value);
-            this.changed(collection, key, "update");
-            return Promise.resolve(deepClone(item));
+
+            this.fireEvent({
+                collection: collection,
+                type: "update",
+                key: deepClone(key),
+                newValue: deepClone(value),
+                oldValue: deepClone(old)
+            });
+
+            return Promise.resolve(this.newItem(item));
 
         } else {
-            item = {collection: collection, key: deepClone(key), value: deepClone(value)};
-            this.itemsArray.push(item);
-            this.changed(collection, key, "new");
-            return Promise.resolve(deepClone(item));
+
+            this.memory.push(item = {collection: collection, key: deepClone(key), value: deepClone(value)});
+
+            this.fireEvent({
+                collection: collection,
+                type: "create",
+                key: deepClone(key),
+                newValue: deepClone(value)
+            });
+
+            return Promise.resolve(this.newItem(item));
         }
     }
 
     get(collection: string, key: any) {
-        const item = this.itemsArray.find(item => item.collection === collection && deepEqual(item.key, key));
-        return Promise.resolve((item && deepClone(item)) || null);
+        const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
+        return Promise.resolve(this.newItem(item || null));
     }
 
-    delete(collection: string, keysOrFilter?) {
+    deleteAll(collection: string) {
 
         const deleted: PreferencesItem[] = [];
 
-        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
-        const args = arguments;
-        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        for (let i = this.memory.length - 1; i >= 0; i--) {
 
-        if (keys) {
+            if (this.memory[i].collection === collection) {
 
-            KEYS: for (const key of keys) {
+                for (const item of this.memory.splice(i, 1)) {
 
-                for (let i = 0; i < this.itemsArray.length; i++) {
+                    this.fireEvent({
+                        collection,
+                        type: "delete",
+                        key: deepClone(item.key),
+                        oldValue: deepClone(item.value)
+                    });
 
-                    if (this.itemsArray[i].collection === collection && deepEqual(this.itemsArray[i].key, key)) {
-
-                        for (const item of this.itemsArray.splice(i, 1)) {
-                            this.changed(collection, item.key, "delete");
-                            deleted.push(deepClone(item));
-                        }
-
-                        continue KEYS;
-                    }
+                    deleted.push(this.newItem(item));
                 }
             }
+        }
 
-        } else if (arguments.length === 1 || filter) {
+        return Promise.resolve(deleted);
+    }
 
-            for (let i = 0; i < this.itemsArray.length; i++) {
-                if (this.itemsArray[i].collection === collection && (!filter || filter(this.itemsArray[i].key, this.itemsArray[i].value))) {
-                    for (const item of this.itemsArray.splice(i, 1)) {
-                        this.changed(collection, item.key, "delete");
-                        deleted.push(deepClone(item));
+    delete(collection: string, ...keys: any[]) {
+
+        const deleted: PreferencesItem[] = [];
+
+        KEYS: for (const key of keys) {
+
+            for (let i = 0; i < this.memory.length; i++) {
+
+                if (this.memory[i].collection === collection && deepEqual(this.memory[i].key, key)) {
+
+                    for (const item of this.memory.splice(i, 1)) {
+
+                        this.fireEvent({
+                            collection,
+                            type: "delete",
+                            key: deepClone(item.key),
+                            oldValue: deepClone(item.value)
+                        });
+
+                        deleted.push(this.newItem(item));
                     }
+
+                    continue KEYS;
                 }
             }
         }
@@ -74,25 +124,24 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
     }
 
     exists(collection: string, key: any): Promise<boolean> {
-        return Promise.resolve(!!this.itemsArray.find(item => item.collection === collection && deepEqual(item.key, key)));
+        return Promise.resolve(!!this.memory.find(item => item.collection === collection && deepEqual(item.key, key)));
     }
 
-    items(collection: string, keysOrFilter?) {
+    items(collection: string, keysToFilter?: any) {
 
         const items: PreferencesItem[] = [];
 
-        const filter: PreferencesFilter<any> = arguments.length > 1 && typeof arguments[1] === "function" && arguments[1];
         const args = arguments;
-        const keys: any[] = !filter && arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        const keys: any[] = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
 
         if (keys) {
 
             KEYS: for (const key of keys) {
 
-                for (const item of this.itemsArray) {
+                for (const item of this.memory) {
 
                     if (item.collection === collection && deepEqual(item.key, key)) {
-                        items.push(deepClone(item));
+                        items.push(this.newItem(item));
                         continue KEYS;
                     }
                 }
@@ -100,9 +149,9 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
         } else {
 
-            for (const item of this.itemsArray) {
-                if (item.collection === collection && (!filter || filter(item.key, item.value))) {
-                    items.push(deepClone(item));
+            for (const item of this.memory) {
+                if (item.collection === collection) {
+                    items.push(this.newItem(item));
                 }
             }
         }
@@ -112,15 +161,25 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
     update<Key = any, Value = any>(collection: string, key: Key, changes: Partial<Value>): Promise<PreferencesItem<Key, Value>> {
 
-        const item = this.itemsArray.find(item => item.collection === collection && deepEqual(item.key, key));
+        const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
+
         if (item) {
 
             if (changes) {
+                const old = item.value;
+
                 item.value = Object.assign({}, item.value, changes);
-                this.changed(collection, item.key, "update");
+
+                this.fireEvent({
+                    collection: collection,
+                    type: "update",
+                    key: deepClone(key),
+                    newValue: deepClone(item.value),
+                    oldValue: deepClone(old)
+                });
             }
 
-            return Promise.resolve(deepClone(item));
+            return Promise.resolve(this.newItem(item));
 
         } else {
             return Promise.reject(new Error("Key not exists"));
@@ -129,5 +188,9 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value> {
         return new PreferencesCollectionRefImpl(this, name);
+    }
+
+    listen<Key, Value>(listener: PreferencesItemEventListener, collection?: string): () => void {
+        return this.events.addListener(listener, collection);
     }
 }

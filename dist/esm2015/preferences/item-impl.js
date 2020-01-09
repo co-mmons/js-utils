@@ -1,24 +1,10 @@
-import * as tslib_1 from "tslib";
-export class PreferenceItemRefImpl {
-    constructor(collection, key) {
-        this.collection = collection;
-        this.key = key;
+export class PreferenceItemImpl {
+    constructor(collection, key, value) {
+        this.ref = collection.itemRef(key);
+        this.value = value;
     }
-    delete() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return (yield this.collection.delete(this.key)).length === 1;
-        });
-    }
-    value() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.collection.value(this.key);
-        });
-    }
-    set(value, options) {
-        return this.collection.set(this.key, value, options);
-    }
-    update(value) {
-        return this.collection.update(this.key, value);
+    get key() {
+        return this.ref.key;
     }
 }
 //# sourceMappingURL=item-impl.js.map

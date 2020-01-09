@@ -1,49 +1,24 @@
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesItemRef, PreferencesSetOptions} from "./interfaces";
-import {PreferenceItemRefImpl} from "./item-impl";
+import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEventListener, PreferencesSetOptions} from "./interfaces";
+import {PreferencesItemRefImpl} from "./item-ref-impl";
 
 export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesCollectionRef<Key, Value> {
 
     constructor(public readonly container: PreferencesContainer, public readonly name: string) {
     }
 
+    itemRef(key: Key) {
+        return new PreferencesItemRefImpl(this, key);
+    }
+
     items(): any {
 
-        const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys: Key[] = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
 
-        if (arguments.length === 0 || filter) {
-
-            return new Promise<PreferencesItemRef<Key, Value>[]>(async (resolve, reject) => {
-                const preferences: PreferencesItemRef<Key, Value>[] = [];
-
-                try {
-
-                    for (const pref of await (filter ? this.container.items(this.name, filter) : this.container.items(this.name))) {
-                        preferences.push(new PreferenceItemRefImpl(this, pref.key));
-                    }
-
-                } catch (error) {
-                    return reject(error);
-                }
-
-                return resolve(preferences);
-            });
-
-        } else if (keys) {
-
-            const items: PreferencesItemRef<Key, Value>[] = [];
-
-            for (const key of keys) {
-                if (key) {
-                    items.push(new PreferenceItemRefImpl(this, key));
-                }
-            }
-
-            return items;
-
-        } else {
-            throw new Error("Invalid arguments");
+        if (keys) {
+            return this.container.items<Key, Value>(this.name, ...keys);
+        } else if (arguments.length === 0) {
+            return this.container.items<Key, Value>(this.name);
         }
     }
 
@@ -55,8 +30,9 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         return this.container.exists(this.name, key);
     }
 
-    item(key: Key): PreferencesItemRef<Key, Value> {
-        return new PreferenceItemRefImpl(this, key);
+    item(key: Key): PreferencesItem<Key, Value> {
+        const items = this.container.items(this.name, key);
+        return (items && items[0]) || undefined;
     }
 
     set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions) {
@@ -74,9 +50,8 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
 
     values(): Promise<Value[]> {
 
-        const filter: PreferencesFilter<Key, Value> = (arguments.length > 0 && typeof arguments[0] === "function" && arguments[0]) || undefined;
         const args = arguments;
-        const keys: Key[] = !filter && arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys: Key[] = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
 
         return new Promise<Value[]>(async (resolve, reject) => {
 
@@ -86,14 +61,14 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
                 let items: Promise<PreferencesItem<Key, Value>[]>;
                 if (keys) {
                     items = this.container.items<Key, Value>(this.name, ...keys);
-                } else if (filter) {
-                    items = this.container.items<Key, Value>(this.name, filter);
-                } else {
+                } else if (args.length === 0) {
                     items = this.container.items<Key, Value>(this.name);
                 }
 
-                for (const item of await items) {
-                    values.push(item.value);
+                if (items) {
+                    for (const item of await items) {
+                        values.push(item.value);
+                    }
                 }
 
             } catch (error) {
@@ -104,5 +79,8 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         });
     }
 
+    listen(listener: PreferencesItemEventListener) {
+        return this.container.listen(listener, this.name);
+    }
 
 }

@@ -1,10 +1,10 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import { serialize, Serializer, unserialize } from "./serialization";
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
 var ObjectAsMapSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(ObjectAsMapSerializer, _super);
+    __extends(ObjectAsMapSerializer, _super);
     function ObjectAsMapSerializer(valueType) {
         var _this = _super.call(this) || this;
         _this.valueType = valueType;
