@@ -4,10 +4,10 @@ export declare class PreferencesCollectionRefImpl<Key, Value> implements Prefere
     readonly name: string;
     constructor(container: PreferencesContainer, name: string);
     itemRef(key: Key): any;
-    items(): any;
+    items(): Promise<PreferencesItem<Key, Value>[]>;
     delete(): Promise<PreferencesItem[]>;
     exists(key: Key): Promise<boolean>;
-    item(key: Key): PreferencesItem<Key, Value>;
+    item(key: Key): any;
     set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
     update(key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     value(key: Key): Promise<any>;

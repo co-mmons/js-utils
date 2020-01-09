@@ -12,9 +12,12 @@ class CollectionItemsObserver extends rxjs_1.Observable {
         this.subscribers = [];
     }
     onSubscribe(subscriber) {
-        if (this.unlisten) {
-            this.collection.listen(event => this.listener(event));
-        }
+        this.collection.items().then(items => {
+            subscriber.next(deep_clone_1.deepClone(items));
+            if (!this.unlisten) {
+                this.collection.listen(event => this.listener(event));
+            }
+        });
         return () => {
             const i = this.subscribers.indexOf(subscriber);
             if (i > -1) {

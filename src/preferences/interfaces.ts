@@ -78,9 +78,9 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     itemRef(key: Key): PreferencesItemRef<Key, Value>;
 
-    item(key: Key): PreferencesItem<Key, Value>;
+    item(key: Key): Promise<PreferencesItem<Key, Value>>;
 
-    items(...keys: Key[]): PreferencesItem<Key, Value>[];
+    items(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
     items(): Promise<PreferencesItem<Key, Value>[]>;
 

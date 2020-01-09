@@ -16,9 +16,13 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
 
     private onSubscribe(subscriber: Subscriber<PreferencesItem<Key, Value>[]>) {
 
-        if (this.unlisten) {
-            this.collection.listen(event => this.listener(event));
-        }
+        this.collection.items().then(items => {
+            subscriber.next(deepClone(items));
+
+            if (!this.unlisten) {
+                this.collection.listen(event => this.listener(event));
+            }
+        });
 
         return () => {
             const i = this.subscribers.indexOf(subscriber);

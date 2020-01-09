@@ -10,9 +10,12 @@ class CollectionItemsObserver extends Observable {
         this.subscribers = [];
     }
     onSubscribe(subscriber) {
-        if (this.unlisten) {
-            this.collection.listen(event => this.listener(event));
-        }
+        this.collection.items().then(items => {
+            subscriber.next(deepClone(items));
+            if (!this.unlisten) {
+                this.collection.listen(event => this.listener(event));
+            }
+        });
         return () => {
             const i = this.subscribers.indexOf(subscriber);
             if (i > -1) {

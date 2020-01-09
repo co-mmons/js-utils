@@ -13,9 +13,12 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
     }
     CollectionItemsObserver.prototype.onSubscribe = function (subscriber) {
         var _this = this;
-        if (this.unlisten) {
-            this.collection.listen(function (event) { return _this.listener(event); });
-        }
+        this.collection.items().then(function (items) {
+            subscriber.next(deepClone(items));
+            if (!_this.unlisten) {
+                _this.collection.listen(function (event) { return _this.listener(event); });
+            }
+        });
         return function () {
             var i = _this.subscribers.indexOf(subscriber);
             if (i > -1) {

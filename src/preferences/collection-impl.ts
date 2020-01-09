@@ -10,7 +10,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         return new PreferencesItemRefImpl(this, key);
     }
 
-    items(): any {
+    items() {
 
         const args = arguments;
         const keys: Key[] = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
@@ -30,7 +30,7 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         return this.container.exists(this.name, key);
     }
 
-    item(key: Key): PreferencesItem<Key, Value> {
+    item(key: Key) {
         const items = this.container.items(this.name, key);
         return (items && items[0]) || undefined;
     }
