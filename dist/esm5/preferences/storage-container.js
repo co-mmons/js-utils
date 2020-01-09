@@ -8,6 +8,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
         this.events = new ContainerEventsManager();
     }
     StoragePreferencesContainer.prototype.fireEvent = function (event) {
+        this.events.fireEvent(Object.assign(event, { ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key) }));
     };
     StoragePreferencesContainer.prototype.getStorageItem = function (storageKey) {
         return JSON.parse(this.storage.getItem(storageKey));

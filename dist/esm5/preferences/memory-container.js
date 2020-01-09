@@ -9,6 +9,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
         this.events = new ContainerEventsManager();
     }
     MemoryPreferencesContainer.prototype.fireEvent = function (event) {
+        this.events.fireEvent(Object.assign(event, { ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key) }));
     };
     MemoryPreferencesContainer.prototype.newItem = function (item) {
         if (item) {

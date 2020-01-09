@@ -17,6 +17,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
     protected readonly events: ContainerEventsManager = new ContainerEventsManager();
 
     protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>) {
+        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
     }
 
     private getStorageItem(storageKey: string) {

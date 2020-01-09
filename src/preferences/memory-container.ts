@@ -4,6 +4,7 @@ import {deepClone} from "./deep-clone";
 import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions} from "./interfaces";
 import {PreferenceItemImpl} from "./item-impl";
 import {ContainerEventsManager} from "./container-events-manager";
+import {PreferencesItemRefImpl} from "./item-ref-impl";
 
 export interface MemoryPreferencesContainerItem {
     key: any;
@@ -18,6 +19,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
     protected readonly events: ContainerEventsManager = new ContainerEventsManager();
 
     protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>) {
+        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
     }
 
     private newItem(item: MemoryPreferencesContainerItem) {

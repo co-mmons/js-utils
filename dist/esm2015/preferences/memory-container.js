@@ -9,6 +9,7 @@ export class MemoryPreferencesContainer {
         this.events = new ContainerEventsManager();
     }
     fireEvent(event) {
+        this.events.fireEvent(Object.assign(event, { ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key) }));
     }
     newItem(item) {
         if (item) {

@@ -10,6 +10,7 @@ class StoragePreferencesContainer {
         this.events = new container_events_manager_1.ContainerEventsManager();
     }
     fireEvent(event) {
+        this.events.fireEvent(Object.assign(event, { ref: new collection_impl_1.PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key) }));
     }
     getStorageItem(storageKey) {
         return JSON.parse(this.storage.getItem(storageKey));
