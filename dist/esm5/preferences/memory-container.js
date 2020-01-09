@@ -1,7 +1,7 @@
 import { deepEqual } from "fast-equals";
 import { PreferencesCollectionRefImpl } from "./collection-impl";
 import { deepClone } from "./deep-clone";
-import { PreferenceItemImpl } from "./item-impl";
+import { PreferencesItemImpl } from "./item-impl";
 import { ContainerEventsManager } from "./container-events-manager";
 var MemoryPreferencesContainer = /** @class */ (function () {
     function MemoryPreferencesContainer() {
@@ -13,7 +13,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
     };
     MemoryPreferencesContainer.prototype.newItem = function (item) {
         if (item) {
-            return new PreferenceItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
         }
         return undefined;
     };
@@ -109,7 +109,7 @@ var MemoryPreferencesContainer = /** @class */ (function () {
                 }
             }
         }
-        else {
+        else if (arguments.length === 1) {
             for (var _c = 0, _d = this.memory; _c < _d.length; _c++) {
                 var item = _d[_c];
                 if (item.collection === collection) {

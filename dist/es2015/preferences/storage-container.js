@@ -35,7 +35,7 @@ class StoragePreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new item_impl_1.PreferenceItemImpl(this.collection(item.collection), deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value));
+            return new item_impl_1.PreferencesItemImpl(this.collection(item.collection), deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value));
         }
         return undefined;
     }
@@ -134,7 +134,7 @@ class StoragePreferencesContainer {
                 }
             }
         }
-        else {
+        else if (arguments.length === 1) {
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
                 const collectionAndKey = this.collectionAndKey(storageKey);

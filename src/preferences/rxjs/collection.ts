@@ -3,6 +3,7 @@ import {map} from "rxjs/operators";
 import {PreferencesCollectionRefImpl} from "../collection-impl";
 import {deepClone} from "../deep-clone";
 import {PreferencesCollectionRef, PreferencesItem, PreferencesItemEvent} from "../interfaces";
+import {PreferencesItemImpl} from "../item-impl";
 
 class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key, Value>[]> {
 
@@ -17,7 +18,7 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
     private onSubscribe(subscriber: Subscriber<PreferencesItem<Key, Value>[]>) {
 
         this.collection.items().then(items => {
-            subscriber.next(deepClone(items));
+            subscriber.next(items);
 
             if (!this.unlisten) {
                 this.collection.listen(event => this.listener(event));
@@ -41,7 +42,9 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
         const items = await this.collection.items();
 
         for (const subscriber of this.subscribers) {
-            subscriber.next(deepClone(items));
+            subscriber.next(items.slice()
+                .map(item => (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value))) || item)
+            );
         }
     }
 

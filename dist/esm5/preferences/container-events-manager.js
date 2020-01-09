@@ -1,3 +1,5 @@
+import { deepClone } from "./deep-clone";
+import { PreferencesItemRefImpl } from "./item-ref-impl";
 var ContainerEventsManager = /** @class */ (function () {
     function ContainerEventsManager() {
         this.listeners = [];
@@ -18,7 +20,14 @@ var ContainerEventsManager = /** @class */ (function () {
             var listener = _a[_i];
             if (!listener.collection || event.collection === listener.collection) {
                 try {
-                    listener.listener(event);
+                    listener.listener({
+                        ref: new PreferencesItemRefImpl(event.ref.collection, deepClone(event.ref.key)),
+                        type: event.type,
+                        collection: event.collection,
+                        key: deepClone(event.key),
+                        oldValue: deepClone(event.oldValue),
+                        newValue: deepClone(event.newValue)
+                    });
                 }
                 catch (error) {
                     console.log(error);

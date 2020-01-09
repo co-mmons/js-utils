@@ -1,7 +1,7 @@
 import { deepEqual } from "fast-equals";
 import { PreferencesCollectionRefImpl } from "./collection-impl";
 import { deepClone } from "./deep-clone";
-import { PreferenceItemImpl } from "./item-impl";
+import { PreferencesItemImpl } from "./item-impl";
 import { ContainerEventsManager } from "./container-events-manager";
 export class MemoryPreferencesContainer {
     constructor() {
@@ -13,7 +13,7 @@ export class MemoryPreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new PreferenceItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
         }
         return undefined;
     }
@@ -100,7 +100,7 @@ export class MemoryPreferencesContainer {
                 }
             }
         }
-        else {
+        else if (arguments.length === 1) {
             for (const item of this.memory) {
                 if (item.collection === collection) {
                     items.push(this.newItem(item));

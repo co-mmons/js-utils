@@ -5,6 +5,7 @@ const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const collection_impl_1 = require("../collection-impl");
 const deep_clone_1 = require("../deep-clone");
+const item_impl_1 = require("../item-impl");
 class CollectionItemsObserver extends rxjs_1.Observable {
     constructor(collection) {
         super(subscriber => this.onSubscribe(subscriber));
@@ -13,7 +14,7 @@ class CollectionItemsObserver extends rxjs_1.Observable {
     }
     onSubscribe(subscriber) {
         this.collection.items().then(items => {
-            subscriber.next(deep_clone_1.deepClone(items));
+            subscriber.next(items);
             if (!this.unlisten) {
                 this.collection.listen(event => this.listener(event));
             }
@@ -32,7 +33,8 @@ class CollectionItemsObserver extends rxjs_1.Observable {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const items = yield this.collection.items();
             for (const subscriber of this.subscribers) {
-                subscriber.next(deep_clone_1.deepClone(items));
+                subscriber.next(items.slice()
+                    .map(item => (item && new item_impl_1.PreferencesItemImpl(item.ref.collection, deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value))) || item));
             }
         });
     }

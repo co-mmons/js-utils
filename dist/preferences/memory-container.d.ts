@@ -1,5 +1,5 @@
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions } from "./interfaces";
-import { PreferenceItemImpl } from "./item-impl";
+import { PreferencesItemImpl } from "./item-impl";
 import { ContainerEventsManager } from "./container-events-manager";
 export interface MemoryPreferencesContainerItem {
     key: any;
@@ -11,8 +11,8 @@ export declare class MemoryPreferencesContainer implements PreferencesContainer 
     protected readonly events: ContainerEventsManager;
     protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>): void;
     private newItem;
-    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferenceItemImpl<any, any>>;
-    get(collection: string, key: any): Promise<PreferenceItemImpl<any, any>>;
+    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferencesItemImpl<any, any>>;
+    get(collection: string, key: any): Promise<PreferencesItemImpl<any, any>>;
     deleteAll(collection: string): Promise<PreferencesItem<any, any>[]>;
     delete(collection: string, ...keys: any[]): Promise<PreferencesItem<any, any>[]>;
     exists(collection: string, key: any): Promise<boolean>;

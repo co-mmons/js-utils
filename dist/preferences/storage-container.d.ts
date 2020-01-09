@@ -1,6 +1,6 @@
 import { ContainerEventsManager } from "./container-events-manager";
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions } from "./interfaces";
-import { PreferenceItemImpl } from "./item-impl";
+import { PreferencesItemImpl } from "./item-impl";
 export declare class StoragePreferencesContainer implements PreferencesContainer {
     private readonly storage;
     constructor(storage: typeof window.localStorage | typeof window.sessionStorage);
@@ -11,8 +11,8 @@ export declare class StoragePreferencesContainer implements PreferencesContainer
     private storageKey;
     private collectionAndKey;
     private newItem;
-    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferenceItemImpl<any, any>>;
-    get(collection: string, key: any): Promise<PreferenceItemImpl<any, any>>;
+    set(collection: string, key: any, value: any, options?: PreferencesSetOptions): Promise<PreferencesItemImpl<any, any>>;
+    get(collection: string, key: any): Promise<PreferencesItemImpl<any, any>>;
     delete(collection: string, ...keys: any[]): Promise<PreferencesItem<any, any>[]>;
     deleteAll(collection: string): Promise<PreferencesItem<any, any>[]>;
     exists(collection: string, key: any): Promise<boolean>;

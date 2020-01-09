@@ -15,7 +15,7 @@ class MemoryPreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new item_impl_1.PreferenceItemImpl(this.collection(item.collection), deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value));
+            return new item_impl_1.PreferencesItemImpl(this.collection(item.collection), deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value));
         }
         return undefined;
     }
@@ -102,7 +102,7 @@ class MemoryPreferencesContainer {
                 }
             }
         }
-        else {
+        else if (arguments.length === 1) {
             for (const item of this.memory) {
                 if (item.collection === collection) {
                     items.push(this.newItem(item));

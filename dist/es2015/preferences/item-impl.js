@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class PreferenceItemImpl {
+class PreferencesItemImpl {
     constructor(collection, key, value) {
         this.ref = collection.itemRef(key);
         this.value = value;
@@ -9,5 +9,5 @@ class PreferenceItemImpl {
         return this.ref.key;
     }
 }
-exports.PreferenceItemImpl = PreferenceItemImpl;
+exports.PreferencesItemImpl = PreferencesItemImpl;
 //# sourceMappingURL=item-impl.js.map

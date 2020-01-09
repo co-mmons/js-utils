@@ -1,4 +1,4 @@
-export class PreferenceItemImpl {
+export class PreferencesItemImpl {
     constructor(collection, key, value) {
         this.ref = collection.itemRef(key);
         this.value = value;

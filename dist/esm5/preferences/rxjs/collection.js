@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PreferencesCollectionRefImpl } from "../collection-impl";
 import { deepClone } from "../deep-clone";
+import { PreferencesItemImpl } from "../item-impl";
 var CollectionItemsObserver = /** @class */ (function (_super) {
     __extends(CollectionItemsObserver, _super);
     function CollectionItemsObserver(collection) {
@@ -14,7 +15,7 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
     CollectionItemsObserver.prototype.onSubscribe = function (subscriber) {
         var _this = this;
         this.collection.items().then(function (items) {
-            subscriber.next(deepClone(items));
+            subscriber.next(items);
             if (!_this.unlisten) {
                 _this.collection.listen(function (event) { return _this.listener(event); });
             }
@@ -39,7 +40,8 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
                         items = _b.sent();
                         for (_i = 0, _a = this.subscribers; _i < _a.length; _i++) {
                             subscriber = _a[_i];
-                            subscriber.next(deepClone(items));
+                            subscriber.next(items.slice()
+                                .map(function (item) { return (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value))) || item; }));
                         }
                         return [2 /*return*/];
                 }

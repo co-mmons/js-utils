@@ -1,7 +1,7 @@
 import { PreferencesCollectionRefImpl } from "./collection-impl";
 import { ContainerEventsManager } from "./container-events-manager";
 import { deepClone } from "./deep-clone";
-import { PreferenceItemImpl } from "./item-impl";
+import { PreferencesItemImpl } from "./item-impl";
 var StoragePreferencesContainer = /** @class */ (function () {
     function StoragePreferencesContainer(storage) {
         this.storage = storage;
@@ -33,7 +33,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
     };
     StoragePreferencesContainer.prototype.newItem = function (item) {
         if (item) {
-            return new PreferenceItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
         }
         return undefined;
     };
@@ -138,7 +138,7 @@ var StoragePreferencesContainer = /** @class */ (function () {
                 }
             }
         }
-        else {
+        else if (arguments.length === 1) {
             for (var i = 0; i < this.storage.length; i++) {
                 var storageKey = this.storage.key(i);
                 var collectionAndKey = this.collectionAndKey(storageKey);

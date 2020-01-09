@@ -1,3 +1,5 @@
+import { deepClone } from "./deep-clone";
+import { PreferencesItemRefImpl } from "./item-ref-impl";
 export class ContainerEventsManager {
     constructor() {
         this.listeners = [];
@@ -16,7 +18,14 @@ export class ContainerEventsManager {
         for (const listener of this.listeners) {
             if (!listener.collection || event.collection === listener.collection) {
                 try {
-                    listener.listener(event);
+                    listener.listener({
+                        ref: new PreferencesItemRefImpl(event.ref.collection, deepClone(event.ref.key)),
+                        type: event.type,
+                        collection: event.collection,
+                        key: deepClone(event.key),
+                        oldValue: deepClone(event.oldValue),
+                        newValue: deepClone(event.newValue)
+                    });
                 }
                 catch (error) {
                     console.log(error);

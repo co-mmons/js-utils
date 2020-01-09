@@ -2,7 +2,7 @@ import {PreferencesCollectionRefImpl} from "./collection-impl";
 import {ContainerEventsManager} from "./container-events-manager";
 import {deepClone} from "./deep-clone";
 import {PreferencesCollectionRef, PreferencesContainer, PreferencesFilter, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions} from "./interfaces";
-import {PreferenceItemImpl} from "./item-impl";
+import {PreferencesItemImpl} from "./item-impl";
 import {MemoryPreferencesContainerItem} from "./memory-container";
 
 interface StorageItem {
@@ -48,7 +48,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
     private newItem(item: {collection: string, key: any, value: any}) {
         if (item) {
-            return new PreferenceItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
         }
 
         return undefined;
@@ -186,7 +186,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                 }
             }
 
-        } else {
+        } else if (arguments.length === 1) {
 
             for (let i = 0; i < this.storage.length; i++) {
                 const storageKey = this.storage.key(i);
