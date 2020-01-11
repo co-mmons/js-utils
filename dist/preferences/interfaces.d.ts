@@ -12,7 +12,7 @@ export interface PreferencesContainer {
 }
 export declare type PreferencesItemEventListener = (event: PreferencesItemEvent<any, any>) => void;
 export declare type PreferencesItemEventType = "create" | "update" | "delete";
-export interface PreferencesItemEvent<Key, Value> {
+export interface PreferencesItemEvent<Key = any, Value = any> {
     readonly collection: string;
     readonly type: PreferencesItemEventType;
     readonly ref: PreferencesItemRef;

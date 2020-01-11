@@ -25,7 +25,7 @@ export type PreferencesItemEventListener = (event: PreferencesItemEvent<any, any
 
 export type PreferencesItemEventType = "create" | "update" | "delete";
 
-export interface PreferencesItemEvent<Key, Value> {
+export interface PreferencesItemEvent<Key = any, Value = any> {
     readonly collection: string;
     readonly type: PreferencesItemEventType;
     readonly ref: PreferencesItemRef;
