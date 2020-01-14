@@ -26,7 +26,7 @@ export class MemoryPreferencesContainer {
                 collection: collection,
                 type: "update",
                 key: deepClone(key),
-                newValue: deepClone(value),
+                newValue: deepClone(item.value),
                 oldValue: deepClone(old)
             });
             return Promise.resolve(this.newItem(item));

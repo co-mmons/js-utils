@@ -44,7 +44,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 collection: collection,
                 type: "update",
                 key: deepClone(key),
-                newValue: deepClone(value),
+                newValue: deepClone(item.value),
                 oldValue: deepClone(old)
             });
 
