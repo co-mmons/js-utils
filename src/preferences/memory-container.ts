@@ -1,10 +1,9 @@
 import {deepEqual} from "fast-equals";
 import {PreferencesCollectionRefImpl} from "./collection-impl";
+import {ContainerEventsManager} from "./container-events-manager";
 import {deepClone} from "./deep-clone";
 import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions} from "./interfaces";
 import {PreferencesItemImpl} from "./item-impl";
-import {ContainerEventsManager} from "./container-events-manager";
-import {PreferencesItemRefImpl} from "./item-ref-impl";
 
 export interface MemoryPreferencesContainerItem {
     key: any;
@@ -38,7 +37,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
             const old = item.value;
 
-            item.value = options && options.merge ? Object.assign({}, item.value, value) : deepClone(value);
+            item.value = deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
 
             this.fireEvent({
                 collection: collection,

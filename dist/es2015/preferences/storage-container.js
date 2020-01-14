@@ -47,13 +47,13 @@ class StoragePreferencesContainer {
         }
         if (item) {
             const old = item.value;
-            item.value = options && options.merge ? Object.assign({}, item.value, value) : value;
+            item.value = deep_clone_1.deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
             this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,
                 type: "update",
                 key: deep_clone_1.deepClone(key),
-                newValue: deep_clone_1.deepClone(value),
+                newValue: deep_clone_1.deepClone(item.value),
                 oldValue: deep_clone_1.deepClone(old)
             });
         }

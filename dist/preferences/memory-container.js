@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fast_equals_1 = require("fast-equals");
 const collection_impl_1 = require("./collection-impl");
+const container_events_manager_1 = require("./container-events-manager");
 const deep_clone_1 = require("./deep-clone");
 const item_impl_1 = require("./item-impl");
-const container_events_manager_1 = require("./container-events-manager");
 class MemoryPreferencesContainer {
     constructor() {
         this.memory = [];
@@ -23,7 +23,7 @@ class MemoryPreferencesContainer {
         let item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
         if (item) {
             const old = item.value;
-            item.value = options && options.merge ? Object.assign({}, item.value, value) : deep_clone_1.deepClone(value);
+            item.value = deep_clone_1.deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
             this.fireEvent({
                 collection: collection,
                 type: "update",

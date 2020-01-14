@@ -1,6 +1,6 @@
+import { ContainerEventsManager } from "./container-events-manager";
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions } from "./interfaces";
 import { PreferencesItemImpl } from "./item-impl";
-import { ContainerEventsManager } from "./container-events-manager";
 export interface MemoryPreferencesContainerItem {
     key: any;
     value: any;
