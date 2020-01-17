@@ -1,10 +1,10 @@
-import { __extends } from "tslib";
+import * as tslib_1 from "tslib";
 import { Serializer } from "./serialization";
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
  */
 var EnumAsStringSerializer = /** @class */ (function (_super) {
-    __extends(EnumAsStringSerializer, _super);
+    tslib_1.__extends(EnumAsStringSerializer, _super);
     function EnumAsStringSerializer(enumClass) {
         var _this = _super.call(this) || this;
         _this.enumClass = enumClass;

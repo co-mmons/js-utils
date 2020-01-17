@@ -22,7 +22,7 @@
   "devDependencies": {
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.4"
+    "typescript": "~3.4.0"
   },
   "sideEffects": false
 }

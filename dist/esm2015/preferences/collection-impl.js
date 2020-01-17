@@ -1,4 +1,4 @@
-import { __awaiter } from "tslib";
+import * as tslib_1 from "tslib";
 import { PreferencesItemRefImpl } from "./item-ref-impl";
 export class PreferencesCollectionRefImpl {
     constructor(container, name) {
@@ -35,7 +35,7 @@ export class PreferencesCollectionRefImpl {
         return this.container.update(this.name, key, value);
     }
     value(key) {
-        return __awaiter(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const item = yield this.container.get(this.name, key);
             return (item && item.value) || null;
         });
@@ -43,7 +43,7 @@ export class PreferencesCollectionRefImpl {
     values() {
         const args = arguments;
         const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
-        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const values = [];
             try {
                 let items;

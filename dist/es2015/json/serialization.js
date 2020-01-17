@@ -134,11 +134,11 @@ class ArraySerializer extends Serializer {
         }
     }
 }
-exports.ArraySerializer = ArraySerializer;
 ArraySerializer.ofAny = new ArraySerializer();
 ArraySerializer.ofString = new ArraySerializer(String);
 ArraySerializer.ofNumber = new ArraySerializer(Number);
 ArraySerializer.ofBoolean = new ArraySerializer(Boolean);
+exports.ArraySerializer = ArraySerializer;
 /**
  * @deprecated Use {@link ArraySerializer#ofAny}.
  */

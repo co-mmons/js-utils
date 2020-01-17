@@ -1,4 +1,4 @@
-import { __awaiter } from "tslib";
+import * as tslib_1 from "tslib";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PreferencesCollectionRefImpl } from "../collection-impl";
@@ -29,7 +29,7 @@ class CollectionItemsObserver extends Observable {
         };
     }
     listener(event) {
-        return __awaiter(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const items = yield this.collection.items();
             for (const subscriber of this.subscribers) {
                 subscriber.next(items.slice()
