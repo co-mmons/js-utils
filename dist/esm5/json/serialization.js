@@ -16,7 +16,7 @@ export function unserialize(json, targetClass, options) {
         var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
         for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
             var subtype = subtypes_1[_i];
-            if (json[subtype.property] == subtype.value) {
+            if ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value)) {
                 prototype = subtype.typeRef.call(null).prototype;
                 break;
             }

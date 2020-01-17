@@ -17,7 +17,7 @@ function unserialize(json, targetClass, options) {
     if (targetClass.hasOwnProperty("__json__subtypes")) {
         let subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
         for (let subtype of subtypes) {
-            if (json[subtype.property] == subtype.value) {
+            if ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value)) {
                 prototype = subtype.typeRef.call(null).prototype;
                 break;
             }

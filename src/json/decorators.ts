@@ -77,7 +77,7 @@ function setupSerialization(constructor: any) {
 
 interface SubtypeInfo {
 	property: string;
-	value: any;
+	value: (value: any) => boolean | any;
 	typeRef: Function;
 }
 
