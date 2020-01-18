@@ -12,10 +12,10 @@ export function registerSubtype(clazz: Type<any>, matcherOrProperty: SubtypeMatc
     let types: SubtypeInfo[];
 
     if (clazz.hasOwnProperty("__json__subtypes")) {
-        types = Object.getOwnPropertyDescriptor(clazz, "__json__subtypes").value as SubtypeInfo[];
+        types = Object.getOwnPropertyDescriptor(clazz.prototype, "__json__subtypes").value as SubtypeInfo[];
     } else {
         types = [];
-        Object.defineProperty(clazz, "__json__subtypes", { value: types, enumerable: false, configurable: false });
+        Object.defineProperty(clazz.prototype, "__json__subtypes", { value: types, enumerable: false, configurable: false });
     }
 
     types.push({
