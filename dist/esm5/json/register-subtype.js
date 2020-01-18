@@ -1,6 +1,6 @@
 import { setupSerialization } from "./decorators";
 export function registerSubtype(clazz, matcherOrProperty, value, type) {
-    setupSerialization(clazz);
+    setupSerialization(clazz.prototype);
     var types;
     if (clazz.hasOwnProperty("__json__subtypes")) {
         types = Object.getOwnPropertyDescriptor(clazz, "__json__subtypes").value;
