@@ -24,12 +24,12 @@ export function unserialize<T>(json: any, targetClass: Type<any>, options?: Seri
 
                 const match = subtype.matcher(json);
                 if (match) {
-                    prototype = resolveForwardRef(match);
+                    prototype = resolveForwardRef(match).prototype;
                     break;
                 }
 
             } else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                prototype = resolveForwardRef(subtype.type);
+                prototype = resolveForwardRef(subtype.type).prototype;
                 break;
             }
         }

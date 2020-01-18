@@ -20,12 +20,12 @@ function unserialize(json, targetClass, options) {
             if (subtype.matcher) {
                 const match = subtype.matcher(json);
                 if (match) {
-                    prototype = core_1.resolveForwardRef(match);
+                    prototype = core_1.resolveForwardRef(match).prototype;
                     break;
                 }
             }
             else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                prototype = core_1.resolveForwardRef(subtype.type);
+                prototype = core_1.resolveForwardRef(subtype.type).prototype;
                 break;
             }
         }
