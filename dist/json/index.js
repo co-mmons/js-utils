@@ -5,4 +5,5 @@ tslib_1.__exportStar(require("./decorators"), exports);
 tslib_1.__exportStar(require("./enum-serializer"), exports);
 tslib_1.__exportStar(require("./object-as-map-serializer"), exports);
 tslib_1.__exportStar(require("./serialization"), exports);
+tslib_1.__exportStar(require("./register-subtype"), exports);
 //# sourceMappingURL=index.js.map

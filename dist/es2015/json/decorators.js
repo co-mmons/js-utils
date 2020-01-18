@@ -43,19 +43,20 @@ function fromJsonImpl(instance, prototype, json) {
 }
 function setupSerialization(constructor) {
     constructor["__json__serialization"] = true;
-    if (!constructor.hasOwnProperty("toJSON") || constructor.hasOwnProperty("__json__toJSON")) {
+    if (!constructor.hasOwnProperty("toJSON")) {
         constructor["__json__toJSON"] = true;
         constructor.toJSON = function () {
             return toJsonImpl(this, constructor);
         };
     }
-    if (!constructor.hasOwnProperty("fromJSON") || constructor.hasOwnProperty("__json__fromJSON")) {
+    if (!constructor.hasOwnProperty("fromJSON")) {
         constructor["__json__fromJSON"] = true;
         constructor.fromJSON = function (json) {
             return fromJsonImpl(this, constructor, json);
         };
     }
 }
+exports.setupSerialization = setupSerialization;
 function Subtype(propertyOrMatcher, value, typeRef) {
     return function (target) {
         setupSerialization(target);

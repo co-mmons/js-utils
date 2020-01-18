@@ -1,5 +1,6 @@
 import { ForwardRefFn, Type } from "../core";
 import { SerializationOptions, Serializer } from "./serialization";
+export declare function setupSerialization(constructor: any): void;
 export declare type SubtypeMatcher = (json: any) => Type<any> | ForwardRefFn;
 export interface SubtypeInfo {
     matcher?: SubtypeMatcher;
