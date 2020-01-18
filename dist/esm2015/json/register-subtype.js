@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const decorators_1 = require("./decorators");
-function registerSubtype(clazz, matcherOrProperty, value, type) {
-    decorators_1.setupSerialization(clazz.prototype);
+import { setupSerialization } from "./decorators";
+export function registerSubtype(clazz, matcherOrProperty, value, type) {
+    setupSerialization(clazz.prototype);
     let types;
     if (clazz.prototype.hasOwnProperty("__json__subtypes")) {
         types = Object.getOwnPropertyDescriptor(clazz.prototype, "__json__subtypes").value;
@@ -18,5 +16,4 @@ function registerSubtype(clazz, matcherOrProperty, value, type) {
         matcher: typeof matcherOrProperty === "function" ? matcherOrProperty : undefined
     });
 }
-exports.registerSubtype = registerSubtype;
 //# sourceMappingURL=register-subtype.js.map

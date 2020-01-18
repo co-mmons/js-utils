@@ -7,11 +7,11 @@ export function registerSubtype(clazz: Type<any>, property: string, value: ((val
 
 export function registerSubtype(clazz: Type<any>, matcherOrProperty: SubtypeMatcher | string, value?: ((value: any) => boolean) | any, type?: ForwardRefFn | Type<any>) {
 
-    setupSerialization(clazz);
+    setupSerialization(clazz.prototype);
 
     let types: SubtypeInfo[];
 
-    if (clazz.hasOwnProperty("__json__subtypes")) {
+    if (clazz.prototype.hasOwnProperty("__json__subtypes")) {
         types = Object.getOwnPropertyDescriptor(clazz.prototype, "__json__subtypes").value as SubtypeInfo[];
     } else {
         types = [];
