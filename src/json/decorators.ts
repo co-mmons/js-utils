@@ -1,4 +1,4 @@
-import {Type} from "../core";
+import {ForwardRefFn, Type} from "../core";
 import {SerializationOptions, Serializer, serializerForType} from "./serialization";
 
 function toJsonImpl(object: any, prototype: any) {
@@ -74,14 +74,20 @@ function setupSerialization(constructor: any) {
 	}
 }
 
+export type SubtypeMatcher = (json: any) => Type<any> | ForwardRefFn;
 
-interface SubtypeInfo {
-	property: string;
-	value: (value: any) => boolean | any;
-	typeRef: Function;
+export interface SubtypeInfo {
+	matcher?: SubtypeMatcher;
+	property?: string;
+	value?: (value: any) => boolean | any;
+	type?: ForwardRefFn | Type<any>;
 }
 
-export function Subtype(property: string, value: any, typeRef: Function) {
+export function Subtype(matcher: SubtypeMatcher);
+
+export function Subtype(property: string, value: any, typeRef: ForwardRefFn | Type<any>);
+
+export function Subtype(propertyOrMatcher: string | SubtypeMatcher, value?: any, typeRef?: ForwardRefFn | Type<any>) {
 	return function (target: Function) {
 		setupSerialization(target);
 
@@ -94,7 +100,39 @@ export function Subtype(property: string, value: any, typeRef: Function) {
 			Object.defineProperty(target, "__json__subtypes", { value: types, enumerable: false, configurable: false });
 		}
 
-		types.push({ property: property, value: value, typeRef: typeRef });
+		types.push({
+			property: typeof propertyOrMatcher === "string" ? propertyOrMatcher : undefined,
+			value: value,
+			type: typeRef,
+			matcher: typeof propertyOrMatcher === "function" ? propertyOrMatcher : undefined
+		});
+	}
+}
+
+export function Subtypes(matcher: SubtypeMatcher);
+
+export function Subtypes(types: SubtypeInfo[]);
+
+export function Subtypes(matcherOrTypes: SubtypeInfo[] | SubtypeMatcher) {
+	return function (target: Function) {
+		setupSerialization(target);
+
+		let allTypes: SubtypeInfo[];
+
+		if (target.hasOwnProperty("__json__subtypes")) {
+			allTypes = Object.getOwnPropertyDescriptor(target, "__json__subtypes").value as SubtypeInfo[];
+		} else {
+			allTypes = [];
+			Object.defineProperty(target, "__json__subtypes", {value: allTypes, enumerable: false, configurable: false});
+		}
+
+		if (Array.isArray(matcherOrTypes)) {
+			for (const type of matcherOrTypes) {
+				allTypes.push(type);
+			}
+		} else if (typeof matcherOrTypes === "function") {
+			allTypes.push({matcher: matcherOrTypes});
+		}
 	}
 }
 

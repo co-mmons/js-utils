@@ -15,10 +15,17 @@ function unserialize(json, targetClass, options) {
     let prototype = targetClass.prototype;
     // if type has subtypes, find apropriate subtype
     if (targetClass.hasOwnProperty("__json__subtypes")) {
-        let subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
-        for (let subtype of subtypes) {
-            if ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value)) {
-                prototype = subtype.typeRef.call(null).prototype;
+        const subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
+        for (const subtype of subtypes) {
+            if (subtype.matcher) {
+                const match = subtype.matcher(json);
+                if (match) {
+                    prototype = core_1.resolveForwardRef(match);
+                    break;
+                }
+            }
+            else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
+                prototype = core_1.resolveForwardRef(subtype.type);
                 break;
             }
         }

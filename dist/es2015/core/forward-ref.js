@@ -26,8 +26,7 @@ exports.forwardRef = forwardRef;
  * ### Example ([live demo](http://plnkr.co/edit/GU72mJrk1fiodChcmiDR?p=preview))
  */
 function resolveForwardRef(type) {
-    if (typeof type === 'function' && type.hasOwnProperty('__forward_ref__') &&
-        typeof type.__forward_ref__ === "function") {
+    if (typeof type === 'function' && type.hasOwnProperty('__forward_ref__') && typeof type.__forward_ref__ === "function") {
         return type();
     }
     else {

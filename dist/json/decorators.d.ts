@@ -1,5 +1,16 @@
+import { ForwardRefFn, Type } from "../core";
 import { SerializationOptions, Serializer } from "./serialization";
-export declare function Subtype(property: string, value: any, typeRef: Function): (target: Function) => void;
+export declare type SubtypeMatcher = (json: any) => Type<any> | ForwardRefFn;
+export interface SubtypeInfo {
+    matcher?: SubtypeMatcher;
+    property?: string;
+    value?: (value: any) => boolean | any;
+    type?: ForwardRefFn | Type<any>;
+}
+export declare function Subtype(matcher: SubtypeMatcher): any;
+export declare function Subtype(property: string, value: any, typeRef: ForwardRefFn | Type<any>): any;
+export declare function Subtypes(matcher: SubtypeMatcher): any;
+export declare function Subtypes(types: SubtypeInfo[]): any;
 export declare function Property(type: Function | Serializer): Function;
 export declare function Property(type: Function | Serializer, jsonName?: string): Function;
 export declare function Property(type: Function | Serializer, options?: SerializationOptions): Function;

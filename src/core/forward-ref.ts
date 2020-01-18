@@ -1,4 +1,4 @@
-import { Type } from "./type";
+import {Type} from "./type";
 
 /**
  * An interface that a function passed into {@link forwardRef} has to implement.
@@ -20,9 +20,9 @@ export interface ForwardRefFn {
  * @experimental
  */
 export function forwardRef(forwardRefFn: ForwardRefFn): Type<any> {
-  (<any>forwardRefFn).__forward_ref__ = forwardRef;
-  (<any>forwardRefFn).toString = function() { return JSON.stringify(this()); };
-  return (<Type<any>><any>forwardRefFn);
+    (<any>forwardRefFn).__forward_ref__ = forwardRef;
+    (<any>forwardRefFn).toString = function() { return JSON.stringify(this()); };
+    return (<Type<any>><any>forwardRefFn);
 }
 
 /**
@@ -33,10 +33,9 @@ export function forwardRef(forwardRefFn: ForwardRefFn): Type<any> {
  * ### Example ([live demo](http://plnkr.co/edit/GU72mJrk1fiodChcmiDR?p=preview))
  */
 export function resolveForwardRef(type: any): any {
-  if (typeof type === 'function' && type.hasOwnProperty('__forward_ref__') &&
-      typeof type.__forward_ref__ === "function") {
-    return (<ForwardRefFn>type)();
-  } else {
-    return type;
-  }
+    if (typeof type === 'function' && type.hasOwnProperty('__forward_ref__') && typeof type.__forward_ref__ === "function") {
+        return (<ForwardRefFn>type)();
+    } else {
+        return type;
+    }
 }

@@ -54,7 +54,7 @@ function setupSerialization(constructor) {
         };
     }
 }
-export function Subtype(property, value, typeRef) {
+export function Subtype(propertyOrMatcher, value, typeRef) {
     return function (target) {
         setupSerialization(target);
         var types;
@@ -65,7 +65,34 @@ export function Subtype(property, value, typeRef) {
             types = [];
             Object.defineProperty(target, "__json__subtypes", { value: types, enumerable: false, configurable: false });
         }
-        types.push({ property: property, value: value, typeRef: typeRef });
+        types.push({
+            property: typeof propertyOrMatcher === "string" ? propertyOrMatcher : undefined,
+            value: value,
+            type: typeRef,
+            matcher: typeof propertyOrMatcher === "function" ? propertyOrMatcher : undefined
+        });
+    };
+}
+export function Subtypes(matcherOrTypes) {
+    return function (target) {
+        setupSerialization(target);
+        var allTypes;
+        if (target.hasOwnProperty("__json__subtypes")) {
+            allTypes = Object.getOwnPropertyDescriptor(target, "__json__subtypes").value;
+        }
+        else {
+            allTypes = [];
+            Object.defineProperty(target, "__json__subtypes", { value: allTypes, enumerable: false, configurable: false });
+        }
+        if (Array.isArray(matcherOrTypes)) {
+            for (var _i = 0, matcherOrTypes_1 = matcherOrTypes; _i < matcherOrTypes_1.length; _i++) {
+                var type = matcherOrTypes_1[_i];
+                allTypes.push(type);
+            }
+        }
+        else if (typeof matcherOrTypes === "function") {
+            allTypes.push({ matcher: matcherOrTypes });
+        }
     };
 }
 export function Property(type, nameOrOptions, options) {
