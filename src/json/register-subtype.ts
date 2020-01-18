@@ -3,9 +3,9 @@ import {setupSerialization, SubtypeInfo, SubtypeMatcher} from "./decorators";
 
 export function registerSubtype(clazz: Type<any>, matcher: SubtypeMatcher);
 
-export function registerSubtype(clazz: Type<any>, property: string, value: (value: any) => boolean | any, type: ForwardRefFn | Type<any>)
+export function registerSubtype(clazz: Type<any>, property: string, value: ((value: any) => boolean) | any, type: ForwardRefFn | Type<any>)
 
-export function registerSubtype(clazz: Type<any>, matcherOrProperty: SubtypeMatcher | string, value?: (value: any) => boolean | any, type?: ForwardRefFn | Type<any>) {
+export function registerSubtype(clazz: Type<any>, matcherOrProperty: SubtypeMatcher | string, value?: ((value: any) => boolean) | any, type?: ForwardRefFn | Type<any>) {
 
     setupSerialization(clazz);
 
