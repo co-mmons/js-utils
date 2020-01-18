@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const decorators_1 = require("./decorators");
 function registerSubtype(clazz, matcherOrProperty, value, type) {
-    decorators_1.setupSerialization(clazz.prototype);
+    decorators_1.setupSerialization(clazz);
     let types;
-    if (clazz.prototype.hasOwnProperty("__json__subtypes")) {
-        types = Object.getOwnPropertyDescriptor(clazz.prototype, "__json__subtypes").value;
+    if (clazz.hasOwnProperty("__json__subtypes")) {
+        types = Object.getOwnPropertyDescriptor(clazz, "__json__subtypes").value;
     }
     else {
         types = [];
-        Object.defineProperty(clazz.prototype, "__json__subtypes", { value: types, enumerable: false, configurable: false });
+        Object.defineProperty(clazz, "__json__subtypes", { value: types, enumerable: false, configurable: false });
     }
     types.push({
         property: typeof matcherOrProperty === "string" ? matcherOrProperty : undefined,
