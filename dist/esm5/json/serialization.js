@@ -1,6 +1,24 @@
 import * as tslib_1 from "tslib";
 import { resolveForwardRef } from "../core";
 export function serialize(object, options) {
+    if (object && object.toJSON) {
+        return object.toJSON();
+    }
+    else if (Array.isArray(object)) {
+        return ArraySerializer.ofAny.serialize(object, options);
+    }
+    else if (typeof object === "boolean" || object instanceof Boolean) {
+        return BooleanSerializer.instance.serialize(object, options);
+    }
+    else if (typeof object === "number" || object instanceof Number) {
+        return NumberSerializer.instance.serialize(object, options);
+    }
+    else if (typeof object === "string" || object instanceof String) {
+        return StringSerializer.instance.serialize(object, options);
+    }
+    else if (object instanceof Date) {
+        return DateSerializer.instance.serialize(object, options);
+    }
     return ObjectSerializer.instance.serialize(object, options);
 }
 export function unserialize(json, targetClass, options) {
