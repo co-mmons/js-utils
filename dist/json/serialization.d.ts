@@ -8,19 +8,19 @@ export interface SerializationOptions {
     ignoreErrors?: boolean;
     [propName: string]: any;
 }
-export declare abstract class Serializer {
+export declare abstract class Serializer<T = any> {
     serialize(object: any, options?: SerializationOptions): any;
-    abstract unserialize(json: any, options?: SerializationOptions): any;
+    abstract unserialize(json: any, options?: SerializationOptions): T;
     protected isUndefinedOrNull(value: any): boolean;
     protected serializeUndefinedOrNull(value: any, options?: SerializationOptions): any;
     protected unserializeUndefinedOrNull(value: any, options?: SerializationOptions): any;
 }
-export declare class ArraySerializer extends Serializer {
-    static readonly ofAny: ArraySerializer;
-    static readonly ofString: ArraySerializer;
-    static readonly ofNumber: ArraySerializer;
-    static readonly ofBoolean: ArraySerializer;
-    constructor(valueType?: Function | Serializer);
+export declare class ArraySerializer<T> extends Serializer<T[]> {
+    static readonly ofAny: ArraySerializer<any>;
+    static readonly ofString: ArraySerializer<String>;
+    static readonly ofNumber: ArraySerializer<Number>;
+    static readonly ofBoolean: ArraySerializer<Boolean>;
+    constructor(valueType?: Type<T> | Serializer<T>);
     private valueType;
     serialize(value: any, options?: SerializationOptions): any;
     unserialize(json: any, options?: SerializationOptions): any;
@@ -28,16 +28,16 @@ export declare class ArraySerializer extends Serializer {
 /**
  * @deprecated Use {@link ArraySerializer#ofAny}.
  */
-export declare const ArrayOfAny: ArraySerializer;
+export declare const ArrayOfAny: ArraySerializer<any>;
 /**
  * @deprecated Use {@link ArraySerializer#ofString}.
  */
-export declare const ArrayOfString: ArraySerializer;
+export declare const ArrayOfString: ArraySerializer<String>;
 /**
  * @deprecated Use {@link ArraySerializer#ofNumber}.
  */
-export declare const ArrayOfNumber: ArraySerializer;
+export declare const ArrayOfNumber: ArraySerializer<Number>;
 /**
  * @deprecated Use {@link ArraySerializer#ofBoolean}.
  */
-export declare const ArrayOfBoolean: ArraySerializer;
+export declare const ArrayOfBoolean: ArraySerializer<Boolean>;

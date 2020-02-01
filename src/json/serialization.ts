@@ -77,13 +77,13 @@ export interface SerializationOptions {
     [propName: string]: any;
 }
 
-export abstract class Serializer {
+export abstract class Serializer<T = any> {
 
     public serialize(object: any, options?: SerializationOptions): any {
         return object;
     }
 
-    public abstract unserialize(json: any, options?: SerializationOptions): any;
+    public abstract unserialize(json: any, options?: SerializationOptions): T;
 
     protected isUndefinedOrNull(value: any) {
         return value === undefined || value === null;
@@ -104,14 +104,14 @@ export abstract class Serializer {
 }
 
 
-export class ArraySerializer extends Serializer {
+export class ArraySerializer<T> extends Serializer<T[]> {
 
-    static readonly ofAny = new ArraySerializer();
+    static readonly ofAny = new ArraySerializer<any>();
     static readonly ofString = new ArraySerializer(String);
     static readonly ofNumber = new ArraySerializer(Number);
     static readonly ofBoolean = new ArraySerializer(Boolean);
 
-    constructor(valueType?: Function | Serializer) {
+    constructor(valueType?: Type<T> | Serializer<T>) {
         super();
 
         if (arguments.length == 1 && !valueType) {
