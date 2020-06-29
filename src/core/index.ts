@@ -3,6 +3,7 @@ export {Enumerable, Final} from "./classes";
 export {Comparable, compareDate} from "./compare";
 export {DateTimezone} from "./date-timezone";
 export {enumValues} from "./enums";
+export {EnumValueName, Enum, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson} from "./Enum";
 export {Equals, equals} from "./equals";
 export {Exception} from "./exception";
 export {forwardRef, ForwardRefFn, resolveForwardRef} from "./forward-ref";
