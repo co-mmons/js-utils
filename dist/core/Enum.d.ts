@@ -14,7 +14,6 @@ export declare abstract class Enum {
     readonly name: string;
     protected static values(): Enum[];
     protected static fromJSON(value: EnumFromJSONValue): Enum;
-    protected static readonly jsonTypeName: string;
     protected static valueOf(name: EnumValueOfValue): Enum;
     protected constructor(name: string);
     equals(value: string | Enum | EnumValueJson): boolean;
@@ -22,5 +21,4 @@ export declare abstract class Enum {
         "@type": any;
         name: string;
     };
-    private readonly __jsonTypeName;
 }

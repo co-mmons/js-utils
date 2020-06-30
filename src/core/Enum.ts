@@ -39,11 +39,7 @@ export abstract class Enum {
             }
         }
 
-        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
-    }
-
-    protected static get jsonTypeName() {
-        return this.name;
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
 
     protected static valueOf(name: EnumValueOfValue): Enum {
@@ -51,7 +47,7 @@ export abstract class Enum {
         CHECK_NAME: if (name) {
 
             if (typeof name === "object") {
-                if (name["@type"] === this.jsonTypeName) {
+                if (name["@type"] === jsonTypeName(this)) {
                     name = name.name;
                 } else {
                     break CHECK_NAME;
@@ -77,7 +73,7 @@ export abstract class Enum {
         if (typeof value === "string") {
             return value === this.name;
         } else if ("@type" in value) {
-            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+            return value["@type"] === jsonTypeName(this) && value.name === this.name;
         } else if (value.constructor === this.constructor) {
             return value.name === this.name;
         }
@@ -86,13 +82,8 @@ export abstract class Enum {
     }
 
     toJSON() {
-        return {"@type": this.__jsonTypeName, name: this.name};
+        return {"@type": jsonTypeName(this), name: this.name};
     }
-
-    private get __jsonTypeName() {
-        return this.constructor["jsonTypeName"] || this.constructor.name;
-    }
-
 }
 
 function addValue<EnumClass extends Enum>(enumClass: Type<EnumClass>, value: EnumClass) {
@@ -105,4 +96,17 @@ function valuesRef<EnumClass extends Enum>(enumClass: Type<EnumClass>): EnumClas
     }
 
     return enumClass["__enumValues"];
+}
+
+function jsonTypeName(instanceOrClass: Type<any> | Enum) {
+
+    let type: Type<any>;
+
+    if (instanceOrClass instanceof Enum) {
+        type = instanceOrClass.constructor;
+    } else {
+        type = instanceOrClass;
+    }
+
+    return type["jsonTypeName"] || type["__jsonTypeName"] || type.name;
 }

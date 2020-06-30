@@ -1,5 +1,5 @@
 import {forwardRef} from "../../core";
-import { Property, Subtype, Serialize, ArraySerializer } from "../../json";
+import {Property, Subtype, Serialize, ArraySerializer, jsonType} from "../../json";
 
 export class ModelA {
 
@@ -56,4 +56,9 @@ export class ModelD extends ModelB {
 
     @Property(Boolean)
     fieldModelD: boolean;
+}
+
+@jsonType("ModelAutoRegister")
+export class ModelAutoRegister {
+
 }

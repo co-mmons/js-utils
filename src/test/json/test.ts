@@ -1,4 +1,4 @@
-import { ModelA, ModelB, ModelC, ModelD } from "./model";
+import {ModelA, ModelAutoRegister, ModelB, ModelC, ModelD} from "./model";
 import {findTypeByName, registerType, serialize, unserialize} from "../../json";
 
 var model: ModelB = new ModelB();
@@ -52,3 +52,6 @@ console.log("Registered type", findTypeByName("ModelD"));
 console.log("Unserialize with @type")
 const unserializedWithType = unserialize({"@type": "ModelD"});
 console.log(unserializedWithType);
+
+console.log("Auto registered");
+console.log(ModelAutoRegister);

@@ -21,15 +21,12 @@ export class Enum {
                 }
             }
         }
-        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
-    }
-    static get jsonTypeName() {
-        return this.name;
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
     static valueOf(name) {
         CHECK_NAME: if (name) {
             if (typeof name === "object") {
-                if (name["@type"] === this.jsonTypeName) {
+                if (name["@type"] === jsonTypeName(this)) {
                     name = name.name;
                 }
                 else {
@@ -49,7 +46,7 @@ export class Enum {
             return value === this.name;
         }
         else if ("@type" in value) {
-            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+            return value["@type"] === jsonTypeName(this) && value.name === this.name;
         }
         else if (value.constructor === this.constructor) {
             return value.name === this.name;
@@ -57,10 +54,7 @@ export class Enum {
         return false;
     }
     toJSON() {
-        return { "@type": this.__jsonTypeName, name: this.name };
-    }
-    get __jsonTypeName() {
-        return this.constructor["jsonTypeName"] || this.constructor.name;
+        return { "@type": jsonTypeName(this), name: this.name };
     }
 }
 function addValue(enumClass, value) {
@@ -71,5 +65,15 @@ function valuesRef(enumClass) {
         enumClass["__enumValues"] = [];
     }
     return enumClass["__enumValues"];
+}
+function jsonTypeName(instanceOrClass) {
+    let type;
+    if (instanceOrClass instanceof Enum) {
+        type = instanceOrClass.constructor;
+    }
+    else {
+        type = instanceOrClass;
+    }
+    return type["jsonTypeName"] || type["__jsonTypeName"] || type.name;
 }
 //# sourceMappingURL=Enum.js.map

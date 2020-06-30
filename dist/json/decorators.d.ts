@@ -21,3 +21,6 @@ export declare function Ignore(target: any, propertyName: string, propertyDescri
  * Marks a class, that is to be serialized by json serialization engine.
  */
 export declare function Serialize(target: Function): void;
+export declare function jsonType(name: string, options?: {
+    replace?: boolean;
+}): (target: Function) => void;

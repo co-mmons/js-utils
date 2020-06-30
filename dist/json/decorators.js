@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const registerType_1 = require("./registerType");
 const serialization_1 = require("./serialization");
 function toJsonImpl(object, prototype) {
     let json = {};
@@ -146,4 +147,11 @@ function Serialize(target) {
     setupSerialization(target);
 }
 exports.Serialize = Serialize;
+function jsonType(name, options) {
+    return function (target) {
+        registerType_1.registerType(name, target, options);
+        target["__jsonTypeName"] = name;
+    };
+}
+exports.jsonType = jsonType;
 //# sourceMappingURL=decorators.js.map

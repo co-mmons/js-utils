@@ -7,6 +7,7 @@ exports.Serialize = decorators_1.Serialize;
 exports.setupSerialization = decorators_1.setupSerialization;
 exports.Subtype = decorators_1.Subtype;
 exports.Subtypes = decorators_1.Subtypes;
+exports.jsonType = decorators_1.jsonType;
 var enum_serializer_1 = require("./enum-serializer");
 exports.EnumAsStringSerializer = enum_serializer_1.EnumAsStringSerializer;
 var object_as_map_serializer_1 = require("./object-as-map-serializer");

@@ -1,4 +1,5 @@
 import {ForwardRefFn, Type} from "../core";
+import {registerType} from "./registerType";
 import {SerializationOptions, Serializer, serializerForType} from "./serialization";
 
 function toJsonImpl(object: any, prototype: any) {
@@ -205,4 +206,11 @@ export function Ignore(target: any, propertyName: string, propertyDescriptor?: P
  */
 export function Serialize(target: Function) {
 	setupSerialization(target);
+}
+
+export function jsonType(name: string, options?: {replace?: boolean}) {
+	return function (target: Function) {
+		registerType(name, target, options);
+		target["__jsonTypeName"] = name;
+	}
 }

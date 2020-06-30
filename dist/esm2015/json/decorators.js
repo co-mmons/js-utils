@@ -1,3 +1,4 @@
+import { registerType } from "./registerType";
 import { Serializer, serializerForType } from "./serialization";
 function toJsonImpl(object, prototype) {
     let json = {};
@@ -137,5 +138,11 @@ export function Ignore(target, propertyName, propertyDescriptor) {
  */
 export function Serialize(target) {
     setupSerialization(target);
+}
+export function jsonType(name, options) {
+    return function (target) {
+        registerType(name, target, options);
+        target["__jsonTypeName"] = name;
+    };
 }
 //# sourceMappingURL=decorators.js.map

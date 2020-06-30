@@ -22,19 +22,12 @@ var Enum = /** @class */ (function () {
                 }
             }
         }
-        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     };
-    Object.defineProperty(Enum, "jsonTypeName", {
-        get: function () {
-            return this.name;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Enum.valueOf = function (name) {
         CHECK_NAME: if (name) {
             if (typeof name === "object") {
-                if (name["@type"] === this.jsonTypeName) {
+                if (name["@type"] === jsonTypeName(this)) {
                     name = name.name;
                 }
                 else {
@@ -55,7 +48,7 @@ var Enum = /** @class */ (function () {
             return value === this.name;
         }
         else if ("@type" in value) {
-            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+            return value["@type"] === jsonTypeName(this) && value.name === this.name;
         }
         else if (value.constructor === this.constructor) {
             return value.name === this.name;
@@ -63,15 +56,8 @@ var Enum = /** @class */ (function () {
         return false;
     };
     Enum.prototype.toJSON = function () {
-        return { "@type": this.__jsonTypeName, name: this.name };
+        return { "@type": jsonTypeName(this), name: this.name };
     };
-    Object.defineProperty(Enum.prototype, "__jsonTypeName", {
-        get: function () {
-            return this.constructor["jsonTypeName"] || this.constructor.name;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return Enum;
 }());
 export { Enum };
@@ -83,5 +69,15 @@ function valuesRef(enumClass) {
         enumClass["__enumValues"] = [];
     }
     return enumClass["__enumValues"];
+}
+function jsonTypeName(instanceOrClass) {
+    var type;
+    if (instanceOrClass instanceof Enum) {
+        type = instanceOrClass.constructor;
+    }
+    else {
+        type = instanceOrClass;
+    }
+    return type["jsonTypeName"] || type["__jsonTypeName"] || type.name;
 }
 //# sourceMappingURL=Enum.js.map
