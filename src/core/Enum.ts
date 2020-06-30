@@ -98,7 +98,7 @@ function valuesRef<EnumClass extends Enum>(enumClass: Type<EnumClass>): EnumClas
     return enumClass["__enumValues"];
 }
 
-function jsonTypeName(instanceOrClass: Type<any> | Enum) {
+function jsonTypeName(instanceOrClass: Type<any> | Enum): string {
 
     let type: Type<any>;
 
