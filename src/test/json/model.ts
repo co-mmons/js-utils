@@ -1,3 +1,4 @@
+import {forwardRef} from "../../core";
 import { Property, Subtype, Serialize, ArraySerializer } from "../../json";
 
 export class ModelA {
@@ -7,7 +8,7 @@ export class ModelA {
 
 }
 
-@Subtype("type", "D", () => ModelD)
+@Subtype("type", "D", forwardRef(() => ModelD))
 export class ModelB extends ModelA {
 
     constructor() {

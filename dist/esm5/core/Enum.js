@@ -22,32 +22,56 @@ var Enum = /** @class */ (function () {
                 }
             }
         }
-        throw new Error("Invalid value " + value + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
     };
+    Object.defineProperty(Enum, "jsonTypeName", {
+        get: function () {
+            return this.name;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Enum.valueOf = function (name) {
-        if (typeof name === "object") {
-            name = name.name;
-        }
-        for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
-            var v = _a[_i];
-            if (v.name === name) {
-                return v;
+        CHECK_NAME: if (name) {
+            if (typeof name === "object") {
+                if (name["@type"] === this.jsonTypeName) {
+                    name = name.name;
+                }
+                else {
+                    break CHECK_NAME;
+                }
+            }
+            for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
+                var v = _a[_i];
+                if (v.name === name) {
+                    return v;
+                }
             }
         }
-        throw new Error("Invalid value " + name + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     };
-    Enum.prototype.equals = function (name) {
-        if (typeof name === "string") {
-            return name === this.name;
+    Enum.prototype.equals = function (value) {
+        if (typeof value === "string") {
+            return value === this.name;
         }
-        else if (name.name === this.name) {
-            return true;
+        else if ("@type" in value) {
+            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+        }
+        else if (value.constructor === this.constructor) {
+            return value.name === this.name;
         }
         return false;
     };
     Enum.prototype.toJSON = function () {
-        return { name: this.name };
+        return { "@type": this.__jsonTypeName, name: this.name };
     };
+    Object.defineProperty(Enum.prototype, "__jsonTypeName", {
+        get: function () {
+            return this.constructor["jsonTypeName"] || this.constructor.name;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Enum;
 }());
 export { Enum };

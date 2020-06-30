@@ -7,12 +7,13 @@ export interface EnumStatic<T> {
 }
 
 export interface EnumValueJson<TypeOfEnumClass = any> {
+    "@type": string;
     name: TypeOfEnumClass extends EnumStatic<any> ? EnumValueName<TypeOfEnumClass> : string;
 }
 
 export type EnumFromJSONValue = string | EnumValueJson | any;
 export type EnumValueOfValue = string | EnumValueJson;
-export type EnumValueName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof TypeOfEnumClass, "prototype" | "values" | "fromJSON" | "valueOf">, string>;
+export type EnumValueName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof TypeOfEnumClass, "prototype" | "values" | "fromJSON" | "valueOf" | "jsonTypeName">, string>;
 
 export abstract class Enum {
 
@@ -38,41 +39,58 @@ export abstract class Enum {
             }
         }
 
-        throw new Error("Invalid value " + value + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
+    }
+
+    protected static get jsonTypeName() {
+        return this.name;
     }
 
     protected static valueOf(name: EnumValueOfValue): Enum {
 
-        if (typeof name === "object") {
-            name = name.name;
-        }
+        CHECK_NAME: if (name) {
 
-        for (const v of valuesRef(this)) {
-            if (v.name === name) {
-                return v;
+            if (typeof name === "object") {
+                if (name["@type"] === this.jsonTypeName) {
+                    name = name.name;
+                } else {
+                    break CHECK_NAME;
+                }
+            }
+
+            for (const v of valuesRef(this)) {
+                if (v.name === name) {
+                    return v;
+                }
             }
         }
 
-        throw new Error("Invalid value " + name + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     }
 
     protected constructor(public readonly name: string) {
         addValue(this.constructor, this as any);
     }
 
-    equals(name: string | Enum | EnumValueJson): boolean {
+    equals(value: string | Enum | EnumValueJson): boolean {
 
-        if (typeof name === "string") {
-            return name === this.name;
-        } else if (name.name === this.name) {
-            return true;
+        if (typeof value === "string") {
+            return value === this.name;
+        } else if ("@type" in value) {
+            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+        } else if (value.constructor === this.constructor) {
+            return value.name === this.name;
         }
 
         return false;
     }
 
     toJSON() {
-        return {name: this.name};
+        return {"@type": this.__jsonTypeName, name: this.name};
+    }
+
+    private get __jsonTypeName() {
+        return this.constructor["jsonTypeName"] || this.constructor.name;
     }
 
 }

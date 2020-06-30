@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { resolveForwardRef } from "../core";
+import { findTypeByName } from "./findTypeByName";
 export function serialize(object, options) {
     if (object && object.toJSON) {
         return object.toJSON();
@@ -25,35 +26,61 @@ export function unserialize(json, targetClass, options) {
     if (json === undefined || json === null) {
         return json;
     }
-    var serializer = serializerForType(targetClass);
-    if (serializer && serializer !== ObjectSerializer.instance)
-        return serializer.unserialize(json, options);
-    var prototype = targetClass.prototype;
-    // if type has subtypes, find apropriate subtype
-    if (targetClass.hasOwnProperty("__json__subtypes")) {
-        var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
-        for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
-            var subtype = subtypes_1[_i];
-            if (subtype.matcher) {
-                var match = subtype.matcher(json);
-                if (match) {
-                    prototype = resolveForwardRef(match).prototype;
+    if (targetClass) {
+        var serializer = serializerForType(targetClass);
+        if (serializer && serializer !== ObjectSerializer.instance) {
+            return serializer.unserialize(json, options);
+        }
+        var prototype = targetClass.prototype;
+        // if type has subtypes, find apropriate subtype
+        if (targetClass.hasOwnProperty("__json__subtypes")) {
+            var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
+            for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
+                var subtype = subtypes_1[_i];
+                if (subtype.matcher) {
+                    var match = subtype.matcher(json);
+                    if (match) {
+                        prototype = resolveForwardRef(match).prototype;
+                        break;
+                    }
+                }
+                else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
+                    prototype = resolveForwardRef(subtype.type).prototype;
                     break;
                 }
             }
-            else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                prototype = resolveForwardRef(subtype.type).prototype;
-                break;
-            }
+        }
+        if (prototype["fromJSON"]) {
+            var instance = Object.create(prototype);
+            instance.fromJSON(json, options);
+            return instance;
+        }
+        else if (targetClass !== Object) {
+            return new targetClass(json);
         }
     }
-    if (prototype["fromJSON"]) {
-        var instance = Object.create(prototype);
-        instance.fromJSON(json, options);
-        return instance;
+    if (typeof json === "object") {
+        var knownType = findTypeByName(json);
+        if (knownType) {
+            return unserialize(json, knownType);
+        }
+        var niu = {};
+        for (var _a = 0, _b = Object.keys(json); _a < _b.length; _a++) {
+            var property = _b[_a];
+            var value = json[property];
+            if (typeof value === "object") {
+                var knownType_1 = findTypeByName(value);
+                if (knownType_1) {
+                    niu[property] = unserialize(value, knownType_1);
+                    continue;
+                }
+            }
+            niu[property] = unserialize(value);
+        }
+        return niu;
     }
-    else if (targetClass !== Object) {
-        return new targetClass(json);
+    else if (Array.isArray(json)) {
+        return ArraySerializer.ofAny.unserialize(json, options);
     }
     return json;
 }
@@ -132,10 +159,10 @@ var ArraySerializer = /** @class */ (function (_super) {
         }
     };
     ArraySerializer.prototype.unserialize = function (json, options) {
-        var valueType = resolveForwardRef(this.valueType);
+        var valueType = this.valueType && resolveForwardRef(this.valueType);
         if (Array.isArray(json)) {
+            var array = [];
             if (valueType) {
-                var array = [];
                 if (valueType instanceof Serializer) {
                     for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
                         var i = json_1[_i];
@@ -148,11 +175,14 @@ var ArraySerializer = /** @class */ (function (_super) {
                         array.push(unserialize(i, valueType));
                     }
                 }
-                return array;
             }
             else {
-                return json;
+                for (var _b = 0, json_3 = json; _b < json_3.length; _b++) {
+                    var val = json_3[_b];
+                    array.push(unserialize(val));
+                }
             }
+            return array;
         }
         else if (this.isUndefinedOrNull(json)) {
             return this.unserializeUndefinedOrNull(json, options);
@@ -211,12 +241,15 @@ var ObjectSerializer = /** @class */ (function (_super) {
         return object;
     };
     ObjectSerializer.prototype.unserialize = function (json, options) {
-        if (this.isUndefinedOrNull(json))
+        if (this.isUndefinedOrNull(json)) {
             return json;
+        }
         else if (options && typeof options["propertyType"] === "function") {
             return unserialize(json, options["propertyType"]);
         }
-        return json;
+        else {
+            return unserialize(json, findTypeByName(json));
+        }
     };
     ObjectSerializer.instance = new ObjectSerializer();
     return ObjectSerializer;

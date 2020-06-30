@@ -23,30 +23,46 @@ class Enum {
                 }
             }
         }
-        throw new Error("Invalid value " + value + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + this.jsonTypeName);
+    }
+    static get jsonTypeName() {
+        return this.name;
     }
     static valueOf(name) {
-        if (typeof name === "object") {
-            name = name.name;
-        }
-        for (const v of valuesRef(this)) {
-            if (v.name === name) {
-                return v;
+        CHECK_NAME: if (name) {
+            if (typeof name === "object") {
+                if (name["@type"] === this.jsonTypeName) {
+                    name = name.name;
+                }
+                else {
+                    break CHECK_NAME;
+                }
+            }
+            for (const v of valuesRef(this)) {
+                if (v.name === name) {
+                    return v;
+                }
             }
         }
-        throw new Error("Invalid value " + name + " for enum " + this.name);
+        throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     }
-    equals(name) {
-        if (typeof name === "string") {
-            return name === this.name;
+    equals(value) {
+        if (typeof value === "string") {
+            return value === this.name;
         }
-        else if (name.name === this.name) {
-            return true;
+        else if ("@type" in value) {
+            return value["@type"] === this.__jsonTypeName && value.name === this.name;
+        }
+        else if (value.constructor === this.constructor) {
+            return value.name === this.name;
         }
         return false;
     }
     toJSON() {
-        return { name: this.name };
+        return { "@type": this.__jsonTypeName, name: this.name };
+    }
+    get __jsonTypeName() {
+        return this.constructor["jsonTypeName"] || this.constructor.name;
     }
 }
 exports.Enum = Enum;

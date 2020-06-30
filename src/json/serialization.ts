@@ -1,4 +1,5 @@
 import {resolveForwardRef, Type} from "../core";
+import {findTypeByName} from "./findTypeByName";
 
 export function serialize(object: any, options?: SerializationOptions): any {
 
@@ -19,43 +20,78 @@ export function serialize(object: any, options?: SerializationOptions): any {
     return ObjectSerializer.instance.serialize(object, options);
 }
 
-export function unserialize<T>(json: any, targetClass: Type<any>, options?: SerializationOptions): T {
+export function unserialize<T>(json: any, targetClass?: Type<any>, options?: SerializationOptions): T {
 
     if (json === undefined || json === null) {
         return json;
     }
 
-    let serializer: Serializer = serializerForType(targetClass);
-    if (serializer && serializer !== ObjectSerializer.instance) return serializer.unserialize(json, options);
+    if (targetClass) {
 
-    let prototype: any = targetClass.prototype;
+        let serializer: Serializer = serializerForType(targetClass);
+        if (serializer && serializer !== ObjectSerializer.instance) {
+            return serializer.unserialize(json, options);
+        }
 
-    // if type has subtypes, find apropriate subtype
-    if (targetClass.hasOwnProperty("__json__subtypes")) {
-        const subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value/* as SubtypeInfo[]*/;
-        for (const subtype of subtypes) {
+        let prototype: any = targetClass.prototype;
 
-            if (subtype.matcher) {
+        // if type has subtypes, find apropriate subtype
+        if (targetClass.hasOwnProperty("__json__subtypes")) {
+            const subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value/* as SubtypeInfo[]*/;
+            for (const subtype of subtypes) {
 
-                const match = subtype.matcher(json);
-                if (match) {
-                    prototype = resolveForwardRef(match).prototype;
+                if (subtype.matcher) {
+
+                    const match = subtype.matcher(json);
+                    if (match) {
+                        prototype = resolveForwardRef(match).prototype;
+                        break;
+                    }
+
+                } else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
+                    prototype = resolveForwardRef(subtype.type).prototype;
                     break;
                 }
-
-            } else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                prototype = resolveForwardRef(subtype.type).prototype;
-                break;
             }
+        }
+
+        if (prototype["fromJSON"]) {
+            let instance = Object.create(prototype);
+            instance.fromJSON(json, options);
+            return instance;
+        } else if (targetClass !== Object) {
+            return new (targetClass as any)(json);
         }
     }
 
-    if (prototype["fromJSON"]) {
-        let instance = Object.create(prototype);
-        instance.fromJSON(json, options);
-        return instance;
-    } else if (targetClass !== Object) {
-        return new (targetClass as any)(json);
+    if (typeof json === "object") {
+
+        const knownType = findTypeByName(json);
+        if (knownType) {
+            return unserialize(json, knownType);
+        }
+
+        const niu = {};
+
+        for (const property of Object.keys(json)) {
+
+            const value = json[property];
+
+            if (typeof value === "object") {
+                const knownType = findTypeByName(value);
+                if (knownType) {
+                    niu[property] = unserialize(value, knownType);
+                    continue;
+                }
+            }
+
+            niu[property] = unserialize(value);
+        }
+
+        return niu as T;
+
+    } else if (Array.isArray(json)) {
+        return ArraySerializer.ofAny.unserialize(json, options);
     }
 
     return json;
@@ -158,30 +194,33 @@ export class ArraySerializer<T> extends Serializer<T[]> {
 
     public unserialize(json: any, options?: SerializationOptions): any {
 
-        let valueType = resolveForwardRef(this.valueType);
+        let valueType = this.valueType && resolveForwardRef(this.valueType);
 
         if (Array.isArray(json)) {
+            const array: any[] = [];
 
             if (valueType) {
-                let array: any[] = [];
 
                 if (valueType instanceof Serializer) {
 
-                    for (let i of json) {
+                    for (const i of json) {
                         array.push((valueType as Serializer).unserialize(i));
                     }
 
                 } else {
-                    for (let i of json) {
+                    for (const i of json) {
                         array.push(unserialize(i, valueType as Type<any>));
                     }
                 }
 
-                return array;
-
             } else {
-                return json;
+
+                for (const val of json) {
+                    array.push(unserialize(val));
+                }
             }
+
+            return array;
 
         } else if (this.isUndefinedOrNull(json)) {
             return this.unserializeUndefinedOrNull(json, options);
@@ -243,13 +282,14 @@ class ObjectSerializer extends Serializer {
 
     unserialize(json: any, options?: SerializationOptions): any {
 
-        if (this.isUndefinedOrNull(json)) return json;
+        if (this.isUndefinedOrNull(json)) {
+            return json;
 
-        else if (options && typeof options["propertyType"] === "function") {
+        } else if (options && typeof options["propertyType"] === "function") {
             return unserialize(json, options["propertyType"]);
+        } else {
+            return unserialize(json, findTypeByName(json));
         }
-
-        return json;
     }
 }
 
@@ -375,7 +415,7 @@ class DateSerializer extends Serializer {
     }
 
     public unserialize(value: any, options?: SerializationOptions): any {
-        
+
         if (value instanceof Date) {
             return value;
 

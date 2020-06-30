@@ -1,6 +1,6 @@
 import { Type } from "../core";
 export declare function serialize(object: any, options?: SerializationOptions): any;
-export declare function unserialize<T>(json: any, targetClass: Type<any>, options?: SerializationOptions): T;
+export declare function unserialize<T>(json: any, targetClass?: Type<any>, options?: SerializationOptions): T;
 export declare function serializerForType(type: Type<any>): Serializer;
 export interface SerializationOptions {
     notStrict?: boolean;
