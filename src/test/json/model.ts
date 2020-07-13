@@ -1,14 +1,11 @@
-import {forwardRef} from "../../core";
-import {Property, Subtype, Serialize, ArraySerializer, jsonType} from "../../json";
+import {ArraySerializer, jsonIgnore, jsonProperty, jsonSerialize, jsonType} from "../../json";
 
 export class ModelA {
 
-    @Property(String, "baseFieldString")
-    baseFieldString: string;
+    baseFieldString: string = "ssd";
 
 }
 
-@Subtype("type", "D", forwardRef(() => ModelD))
 export class ModelB extends ModelA {
 
     constructor() {
@@ -17,22 +14,21 @@ export class ModelB extends ModelA {
         console.log("called constructor b");
     }
 
-    @Property(String)
+    @jsonProperty()
     type: string;
 
-    @Property(String, "jsonFieldString")
+    @jsonProperty(String, "jsonFieldString")
     fieldString: string;
 
-    @Property(Number)
-    fieldNumber: number;
+    @jsonIgnore()
+    fieldNumber: number = 1;
 
-    @Property(Number)
     fieldNumberAsString: number;
 
-    @Property(Boolean, "__fieldBoolean")
+    @jsonProperty(Boolean, "__fieldBoolean")
     fieldBoolean: boolean;
 
-    @Property(ArraySerializer.ofString)
+    @jsonProperty(ArraySerializer.ofString)
     fieldArray: string[];
 
 }
@@ -41,20 +37,21 @@ export class ModelC {
     constructor(b: ModelB) {
         this.fieldModelB = b;
     }
-    @Property(ModelB)
+
+    @jsonProperty(ModelB)
     fieldModelB: ModelB;
 
 }
 
-@Serialize
+@jsonSerialize()
 export class ModelD extends ModelB {
+
     constructor() {
         super();
         this.type = "D";
         console.log("called constructor d");
     }
 
-    @Property(Boolean)
     fieldModelD: boolean;
 }
 

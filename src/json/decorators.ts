@@ -1,76 +1,29 @@
-import {ForwardRefFn, Type} from "../core";
+import {AssignableType, ForwardRefFn, Type} from "../core";
+import {InternalType} from "./InternalType";
+import {PropertyConfig} from "./PropertyConfig";
 import {registerType} from "./registerType";
-import {SerializationOptions, Serializer, serializerForType} from "./serialization";
+import {serializerForType} from "./serialization";
+import {SerializationOptions} from "./SerializationOptions";
+import {Serializer} from "./Serializer";
+import {fromJsonImpl, toJsonImpl} from "./toFromJsonImpl";
+import "reflect-metadata";
 
-function toJsonImpl(object: any, prototype: any) {
+export function setupSerialization(type: Type<any>) {
 
-	let json: any = {};
+	const internalType = type as InternalType;
+	internalType.__jsonSerialization = true;
 
-	let prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : null;
-	let properties = prototype["__json__properties"];
-	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<string>;
-
-	if (prototype && prototypeOfPrototype && prototypeOfPrototype["toJSON"]) {
-		let prototypeJson = prototypeOfPrototype.toJSON.call(object);
-		if (typeof prototypeJson === "object") {
-			json = prototypeJson;
+	if (!type.prototype.hasOwnProperty("toJSON")) {
+		internalType.__jsonToJson = true;
+		type.prototype.toJSON = function () {
+			return toJsonImpl.call(this);
 		}
 	}
 
-	for (let propertyName in properties) {
-
-		if (!ignoredProperties || ignoredProperties.indexOf(propertyName) < 0) {
-			let propertyConfig = properties[propertyName] as PropertyConfig;
-			let propertyDescriptor = Object.getOwnPropertyDescriptor(object, propertyName) as PropertyDescriptor;
-			//let propertyValue = propertyDescriptor && propertyDescriptor.get ? object[propertyName] : (propertyDescriptor ? propertyDescriptor.value : null);
-			let propertyValue = object[propertyName];
-			let jsonName = propertyConfig.propertyJsonName ? propertyConfig.propertyJsonName : propertyName;
-			let serializer = propertyConfig.propertyType instanceof Serializer ? propertyConfig.propertyType as Serializer : serializerForType(propertyConfig.propertyType as Type<any>);
-
-			json[jsonName] = serializer.serialize(propertyValue, propertyConfig);
-		}
-	}
-
-	return json;
-}
-
-function fromJsonImpl(instance: any, prototype: any, json: any) {
-
-	let prototypeOfPrototype = prototype ? Object.getPrototypeOf(prototype) : undefined;
-
-	if (prototype && prototypeOfPrototype && prototypeOfPrototype["fromJSON"]) {
-		prototypeOfPrototype.fromJSON.apply(instance, [json]);
-	}
-
-	let properties = prototype["__json__properties"];
-	let ignoredProperties = prototype["__json__ignoredProperties"] as Array<string>;
-
-	for (let propertyName in properties) {
-
-		if (!ignoredProperties || ignoredProperties.indexOf(propertyName) < 0) {
-			let propertyConfig = properties[propertyName] as PropertyConfig;
-			let jsonName = propertyConfig.propertyJsonName ? propertyConfig.propertyJsonName : propertyName;
-			let serializer = propertyConfig.propertyType instanceof Serializer ? propertyConfig.propertyType as Serializer : serializerForType(propertyConfig.propertyType as Type<any>);
-			instance[propertyName] = serializer.unserialize(json[jsonName], propertyConfig);
-		}
-	}
-}
-
-export function setupSerialization(constructor: any) {
-
-	constructor["__json__serialization"] = true;
-
-	if (!constructor.hasOwnProperty("toJSON")) {
-		constructor["__json__toJSON"] = true;
-		constructor.toJSON = function () {
-			return toJsonImpl(this, constructor);
-		}
-	}
-
-	if (!constructor.hasOwnProperty("fromJSON")) {
-		constructor["__json__fromJSON"] = true;
-		constructor.fromJSON = function (json: any) {
-			return fromJsonImpl(this, constructor, json);
+	if (!type.hasOwnProperty("fromJSON")) {
+		internalType.__jsonFromJson = true;
+		internalType.fromJSON = function (json: any) {
+			return fromJsonImpl.call(this, json);
 		}
 	}
 }
@@ -89,8 +42,8 @@ export function Subtype(matcher: SubtypeMatcher);
 export function Subtype(property: string, value: any, typeRef: ForwardRefFn | Type<any>);
 
 export function Subtype(propertyOrMatcher: string | SubtypeMatcher, value?: any, typeRef?: ForwardRefFn | Type<any>) {
-	return function (target: Function) {
-		setupSerialization(target);
+	return function (target: Type<any>) {
+		setupSerialization(target.constructor);
 
 		let types: SubtypeInfo[];
 
@@ -116,7 +69,7 @@ export function Subtypes(types: SubtypeInfo[]);
 
 export function Subtypes(matcherOrTypes: SubtypeInfo[] | SubtypeMatcher) {
 	return function (target: Function) {
-		setupSerialization(target);
+		setupSerialization(target.constructor);
 
 		let allTypes: SubtypeInfo[];
 
@@ -138,11 +91,6 @@ export function Subtypes(matcherOrTypes: SubtypeInfo[] | SubtypeMatcher) {
 }
 
 
-interface PropertyConfig extends SerializationOptions {
-	propertyType?: Function | Serializer;
-	propertyJsonName?: string;
-}
-
 export function Property(type: Function | Serializer): Function;
 
 export function Property(type: Function | Serializer, jsonName?: string): Function;
@@ -155,7 +103,7 @@ export function Property(type: Function | Serializer, nameOrOptions?: string | S
 
 	return function (target: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
 
-		let constructor = target;
+		let constructor = target.constructor;
 		let config: PropertyConfig = { propertyType: type };
 
 		if (typeof nameOrOptions === "string") {
@@ -172,11 +120,11 @@ export function Property(type: Function | Serializer, nameOrOptions?: string | S
 
 		let properties: any;
 
-		if (constructor.hasOwnProperty("__json__properties")) {
-			properties = Object.getOwnPropertyDescriptor(constructor, "__json__properties").value;
+		if (constructor.hasOwnProperty("__jsonProperties")) {
+			properties = Object.getOwnPropertyDescriptor(constructor, "__jsonProperties").value;
 		} else {
 			properties = {};
-			Object.defineProperty(constructor, "__json__properties", { value: properties, enumerable: false, configurable: false });
+			Object.defineProperty(constructor, "__jsonProperties", { value: properties, enumerable: false, configurable: false });
 		}
 
 		properties[propertyName] = config;
@@ -191,11 +139,11 @@ export function Ignore(target: any, propertyName: string, propertyDescriptor?: P
 
 	let properties: Array<string>;
 
-	if (constructor.hasOwnProperty("__json__ignoreProperties")) {
-		properties = Object.getOwnPropertyDescriptor(constructor, "__json__ignoreProperties").value;
+	if (constructor.hasOwnProperty("__jsonIgnoredProperties")) {
+		properties = Object.getOwnPropertyDescriptor(constructor, "__jsonIgnoredProperties").value;
 	} else {
 		properties = [];
-		Object.defineProperty(constructor, "__json__ignoreProperties", { value: properties, enumerable: false, configurable: false });
+		Object.defineProperty(constructor, "__jsonIgnoredProperties", { value: properties, enumerable: false, configurable: false });
 	}
 
 	properties.push(propertyName);
@@ -204,13 +152,75 @@ export function Ignore(target: any, propertyName: string, propertyDescriptor?: P
 /**
  * Marks a class, that is to be serialized by json serialization engine.
  */
-export function Serialize(target: Function) {
-	setupSerialization(target);
+export function Serialize(classConstructor: Function) {
+	setupSerialization(classConstructor);
+}
+
+export function jsonSerialize() {
+	return function(classType: Type) {
+		setupSerialization(classType);
+	}
 }
 
 export function jsonType(name: string, options?: {replace?: boolean}) {
-	return function (target: Function) {
-		registerType(name, target, options);
-		target["__jsonTypeName"] = name;
+	return function (classType: Type) {
+		registerType(name, classType, options);
+		(classType as InternalType).__jsonTypeName = name;
+	}
+}
+
+export function jsonIgnore() {
+	return function(classPrototype: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
+
+		const internalType = classPrototype.constructor as InternalType;
+		setupSerialization(internalType);
+
+		const properties = internalType.__jsonIgnoredProperties = internalType.__jsonIgnoredProperties || [];
+		properties.push(propertyName);
+	}
+}
+
+export function jsonProperty(type?: Function | Serializer): Function;
+
+export function jsonProperty(type: Function | Serializer, options?: SerializationOptions): Function;
+
+export function jsonProperty(type: Function | Serializer, jsonName?: string): Function;
+
+export function jsonProperty(type: Function | Serializer, jsonName: string, options?: SerializationOptions): Function;
+
+export function jsonProperty(jsonName?: string): Function;
+
+export function jsonProperty(jsonName: string, options?: SerializationOptions): Function;
+
+export function jsonProperty(): Function {
+
+	let jsonType: Type | Serializer;
+	let jsonName: string;
+	let options: SerializationOptions;
+
+	for (let i = 0; i < arguments.length; i++) {
+
+		if (arguments[i] instanceof Serializer || typeof arguments[i] === "function") {
+			jsonType = arguments[i];
+		} else if (typeof arguments[i] === "string") {
+			jsonName = arguments[i];
+		} else if (typeof arguments[i] === "object") {
+			options = arguments[i];
+		}
+	}
+
+	return function (classPrototype: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
+
+		if (!jsonType) {
+			jsonType = Reflect.getMetadata("design:type", classPrototype, propertyName);
+		}
+
+		const type = classPrototype.constructor as InternalType;
+		const config = Object.assign({propertyType: jsonType, propertyJsonName: jsonName}, options) as PropertyConfig;
+
+		setupSerialization(type);
+
+		const properties = type.__jsonProperties = type.__jsonProperties || [];
+		properties[propertyName] = config;
 	}
 }

@@ -1,4 +1,5 @@
-import {SerializationOptions, Serializer} from "./serialization";
+import {SerializationOptions} from "./SerializationOptions";
+import {Serializer} from "./Serializer";
 
 /**
  * Serializes enum as a String. By default enums are serialized as numbers.
@@ -12,7 +13,7 @@ export class EnumAsStringSerializer extends Serializer {
 
 	private enumClass: any;
 
-	public serialize(value: any, options?: SerializationOptions) {
+	serialize(value: any, options?: SerializationOptions) {
 
 		if (value !== undefined && value !== null) {
 			return this.enumClass[value];
@@ -21,7 +22,7 @@ export class EnumAsStringSerializer extends Serializer {
 		}
 	}
 
-	public unserialize(value: any, options?: SerializationOptions): any {
+	unserialize(value: any, options?: SerializationOptions): any {
 		if (value && typeof value === "string") {
 			return this.enumClass[value];
 		} else {

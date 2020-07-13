@@ -1,5 +1,8 @@
 import {resolveForwardRef, Type} from "../core";
 import {findTypeByName} from "./findTypeByName";
+import {InternalType} from "./InternalType";
+import {SerializationOptions} from "./SerializationOptions";
+import {Serializer} from "./Serializer";
 
 export function serialize(object: any, options?: SerializationOptions): any {
 
@@ -27,6 +30,8 @@ export function unserialize<T>(json: any, targetClass?: Type<any>, options?: Ser
     }
 
     if (targetClass) {
+
+        const internalType = targetClass as InternalType;
 
         let serializer: Serializer = serializerForType(targetClass);
         if (serializer && serializer !== ObjectSerializer.instance) {
@@ -59,6 +64,8 @@ export function unserialize<T>(json: any, targetClass?: Type<any>, options?: Ser
             let instance = Object.create(prototype);
             instance.fromJSON(json, options);
             return instance;
+        } else if (internalType.fromJSON) {
+            return internalType.fromJSON(json, options);
         } else if (targetClass !== Object) {
             return new (targetClass as any)(json);
         }
@@ -106,39 +113,6 @@ export function serializerForType(type: Type<any>): Serializer {
     return ObjectSerializer.instance;
 }
 
-export interface SerializationOptions {
-    notStrict?: boolean;
-    disallowUndefinedOrNull?: boolean;
-    ignoreErrors?: boolean;
-    [propName: string]: any;
-}
-
-export abstract class Serializer<T = any> {
-
-    public serialize(object: any, options?: SerializationOptions): any {
-        return object;
-    }
-
-    public abstract unserialize(json: any, options?: SerializationOptions): T;
-
-    protected isUndefinedOrNull(value: any) {
-        return value === undefined || value === null;
-    }
-
-    protected serializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
-        return value;
-    }
-
-    protected unserializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        } else {
-            return value;
-        }
-    }
-
-}
-
 
 export class ArraySerializer<T> extends Serializer<T[]> {
 
@@ -159,7 +133,7 @@ export class ArraySerializer<T> extends Serializer<T[]> {
 
     private valueType: Function | Serializer;
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
 
         let valueType = resolveForwardRef(this.valueType);
 
@@ -192,7 +166,7 @@ export class ArraySerializer<T> extends Serializer<T[]> {
         }
     }
 
-    public unserialize(json: any, options?: SerializationOptions): any {
+    unserialize(json: any, options?: SerializationOptions): any {
 
         let valueType = this.valueType && resolveForwardRef(this.valueType);
 
@@ -234,27 +208,6 @@ export class ArraySerializer<T> extends Serializer<T[]> {
     }
 }
 
-/**
- * @deprecated Use {@link ArraySerializer#ofAny}.
- */
-export const ArrayOfAny = ArraySerializer.ofAny;
-
-/**
- * @deprecated Use {@link ArraySerializer#ofString}.
- */
-export const ArrayOfString = ArraySerializer.ofString;
-
-/**
- * @deprecated Use {@link ArraySerializer#ofNumber}.
- */
-export const ArrayOfNumber = ArraySerializer.ofNumber;
-
-/**
- * @deprecated Use {@link ArraySerializer#ofBoolean}.
- */
-export const ArrayOfBoolean = ArraySerializer.ofBoolean;
-
-
 class ObjectSerializer extends Serializer {
 
     static readonly instance = new ObjectSerializer();
@@ -293,12 +246,11 @@ class ObjectSerializer extends Serializer {
     }
 }
 
-
 class BooleanSerializer extends Serializer {
 
     static readonly instance = new BooleanSerializer();
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         } else if (typeof value === "boolean") {
@@ -312,7 +264,7 @@ class BooleanSerializer extends Serializer {
         }
     }
 
-    public unserialize(value: any, options?: SerializationOptions): any {
+    unserialize(value: any, options?: SerializationOptions): any {
         if (typeof value === "boolean") {
             return value;
         } else if (this.isUndefinedOrNull(value)) {
@@ -332,7 +284,7 @@ class NumberSerializer extends Serializer {
 
     static readonly instance = new NumberSerializer();
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         } else if (typeof value === "number") {
@@ -346,7 +298,7 @@ class NumberSerializer extends Serializer {
         }
     }
 
-    public unserialize(value: any, options?: SerializationOptions): any {
+    unserialize(value: any, options?: SerializationOptions): any {
         if (typeof value === "number") {
             return value;
         } else if (this.isUndefinedOrNull(value)) {
@@ -366,7 +318,7 @@ class StringSerializer extends Serializer {
 
     static readonly instance = new StringSerializer();
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         } else if (typeof value === "string") {
@@ -380,7 +332,7 @@ class StringSerializer extends Serializer {
         }
     }
 
-    public unserialize(value: any, options?: SerializationOptions): any {
+    unserialize(value: any, options?: SerializationOptions): any {
         if (typeof value === "string") {
             return value;
         } else if (this.isUndefinedOrNull(value)) {
@@ -400,7 +352,7 @@ class DateSerializer extends Serializer {
 
     static readonly instance = new DateSerializer();
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         } else if (value instanceof Date) {
@@ -414,7 +366,7 @@ class DateSerializer extends Serializer {
         }
     }
 
-    public unserialize(value: any, options?: SerializationOptions): any {
+    unserialize(value: any, options?: SerializationOptions): any {
 
         if (value instanceof Date) {
             return value;

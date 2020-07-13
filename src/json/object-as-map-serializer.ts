@@ -1,5 +1,7 @@
 import {Type} from "../core";
-import {SerializationOptions, serialize, Serializer, unserialize} from "./serialization";
+import {serialize, unserialize} from "./serialization";
+import {SerializationOptions} from "./SerializationOptions";
+import {Serializer} from "./Serializer";
 
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
@@ -13,7 +15,7 @@ export class ObjectAsMapSerializer extends Serializer {
 
     private valueType: Type<any> | Serializer;
 
-    public serialize(value: any, options?: SerializationOptions): any {
+    serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
 
@@ -35,7 +37,7 @@ export class ObjectAsMapSerializer extends Serializer {
         }
     }
 
-    public unserialize(value: any, options?: SerializationOptions): any {
+    unserialize(value: any, options?: SerializationOptions): any {
 
         if (typeof value === "object") {
 
