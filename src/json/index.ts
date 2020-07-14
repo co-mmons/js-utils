@@ -1,9 +1,12 @@
-export {Ignore, Property, Serialize, setupSerialization, Subtype, SubtypeInfo, SubtypeMatcher, Subtypes, jsonType, jsonSerialize, jsonIgnore, jsonProperty} from "./decorators";
-export {EnumAsStringSerializer} from "./enum-serializer";
-export {ObjectAsMapSerializer} from "./object-as-map-serializer";
+export {jsonProperty} from "./decorators/jsonProperty";
+export {jsonSerialize} from "./decorators/jsonSerialize";
+export {jsonIgnore} from "./decorators/jsonIgnore";
+export {jsonType} from "./decorators/jsonType";
+export {jsonSubtype} from "./decorators/jsonSubtype";
+export {EnumAsStringSerializer} from "./EnumAsStringSerializer";
+export {ObjectAsMapSerializer} from "./ObjectAsMapSerializer";
 export {serialize, ArraySerializer, serializerForType, unserialize} from "./serialization";
 export {Serializer} from "./Serializer";
 export {SerializationOptions} from "./SerializationOptions";
-export {registerSubtype} from "./register-subtype";
 export {registerType} from "./registerType";
 export {findTypeByName} from "./findTypeByName";

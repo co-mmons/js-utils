@@ -1,7 +1,8 @@
-import {AssignableType, Type} from "../core";
+import {AssignableType, resolveForwardRef, Type} from "../core";
 import {InternalType} from "./InternalType";
 import {PropertyConfig} from "./PropertyConfig";
 import {serializerForType} from "./serialization";
+import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";
 
 export function toJsonImpl(this: any) {
@@ -37,9 +38,43 @@ export function toJsonImpl(this: any) {
     return json;
 }
 
-export function fromJsonImpl(this: AssignableType, json: any) {
+export function fromJsonImpl(this: AssignableType, json: any, options?: SerializationOptions) {
 
-    const instance = new this();
+    const internalType = this as InternalType;
+
+    let instance: any;
+
+    if (internalType.__jsonSubtypes) {
+        for (const subtype of internalType.__jsonSubtypes) {
+
+            let matchedType: InternalType & AssignableType;
+
+            if (subtype.matcher) {
+
+                const match = subtype.matcher(json);
+                if (match) {
+                    matchedType = resolveForwardRef(match);
+                }
+
+            } else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] === subtype.value))) {
+                matchedType = resolveForwardRef(subtype.type);
+            }
+
+            if (matchedType) {
+
+                if (matchedType.hasOwnProperty("fromJSON")) {
+                    return matchedType.fromJSON(json, options);
+                }
+
+                instance = new matchedType;
+                break;
+            }
+        }
+    }
+
+    if (!instance) {
+        instance = new this();
+    }
 
     const prototypes = getPrototypes(instance);
     const types = getTypes(prototypes);

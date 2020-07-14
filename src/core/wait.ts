@@ -1,5 +1,5 @@
 /**
- * Check condition async and re-check every 100ms (or other interval) till it explicitly returns true. 
+ * Check condition async and re-check every 100ms (or other interval) till it explicitly returns true.
  * If condition throws error, the promise will be rejected.
  */
 export function waitTill(condition: () => boolean, interval: number = 100, timeout?: number): Promise<void> {
@@ -14,7 +14,7 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
             try {
 
                 if (condition() === true) {
-                    
+
                     if (intervalId) {
                         clearInterval(intervalId);
                     }
@@ -26,7 +26,7 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
                 }
 
             } catch (error) {
-                
+
                 if (intervalId) {
                     clearInterval(intervalId);
                 }
@@ -37,7 +37,7 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
 
             return false;
         };
-        
+
         if (!test()) {
             intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
 
@@ -45,7 +45,7 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
                 setTimeout(() => {
 
                     if (!finished) {
-                        
+
                         if (intervalId) {
                             clearInterval(intervalId);
                         }
@@ -55,14 +55,5 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
                 }, timeout);
             }
         }
-    });
-}
-
-/**
- * Do nothing but sleep millisec.
- */
-export function sleep(timeout: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => resolve(), timeout);
     });
 }

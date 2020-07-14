@@ -13,14 +13,14 @@
     "build:es2015": "tsc && tsc -p tsconfig.json -d false -m commonjs -t es2015 --outDir dist/es2015"
   },
   "dependencies": {
-    "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git"
+    "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
+    "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.0",
     "fast-equals": "^2.0.0"
   },
   "devDependencies": {
-    "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
     "typescript": "~3.4.0"

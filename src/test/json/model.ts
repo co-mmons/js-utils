@@ -18,10 +18,10 @@ export class ModelB extends ModelA {
     type: string;
 
     @jsonProperty(String, "jsonFieldString")
-    fieldString: string;
+    fieldWithJsonName: string;
 
     @jsonIgnore()
-    fieldNumber: number = 1;
+    ignoredFieldModelB: number;
 
     fieldNumberAsString: number;
 

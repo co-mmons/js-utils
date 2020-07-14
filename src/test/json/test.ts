@@ -1,11 +1,11 @@
 import {findTypeByName, registerType, serialize, unserialize} from "../../json";
 import {ModelAutoRegister, ModelB, ModelD} from "./model";
 
-if (true) {
+if (false) {
 
-    var model: ModelB = new ModelB();
-    model.fieldString = "aaaa";
-    model.fieldNumber = 121212;
+    const model: ModelB = new ModelB();
+    model.fieldWithJsonName = "aaaa";
+    model.ignoredFieldModelB = 121212;
     model.fieldNumberAsString = 232323;
     model.fieldBoolean = true;
     model.baseFieldString = "bbbb";
@@ -14,11 +14,11 @@ if (true) {
     console.log("ModelB:");
     console.log(model);
 
-    var modelSerialized: any = serialize(model);
+    const modelSerialized: any = serialize(model);
     console.log("Serialize ModelB:");
     console.log(modelSerialized);
 
-    var modelUnserialized: ModelB = unserialize(modelSerialized, ModelB) as ModelB;
+    const modelUnserialized: ModelB = unserialize(modelSerialized, ModelB) as ModelB;
     console.log("Unserialize ModelB:");
     console.log(modelUnserialized);
     /*
@@ -59,3 +59,6 @@ if (true) {
     console.log(ModelAutoRegister);
 }
 
+if (true) {
+    import("./test-subtype").then(test => console.log(test.test()));
+}
