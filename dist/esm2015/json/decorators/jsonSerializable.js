@@ -1,7 +1,7 @@
 import { setupSerialization } from "../setupSerialization";
-export function jsonSerialize() {
+export function jsonSerializable() {
     return function (classType) {
         setupSerialization(classType);
     };
 }
-//# sourceMappingURL=jsonSerialize.js.map
+//# sourceMappingURL=jsonSerializable.js.map

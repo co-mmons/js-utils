@@ -1,7 +1,7 @@
 import {Type} from "../../core";
 import {setupSerialization} from "../setupSerialization";
 
-export function jsonSerialize() {
+export function jsonSerializable() {
     return function(classType: Type) {
         setupSerialization(classType);
     }

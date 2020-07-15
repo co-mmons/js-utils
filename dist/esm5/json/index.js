@@ -1,5 +1,5 @@
 export { jsonProperty } from "./decorators/jsonProperty";
-export { jsonSerialize } from "./decorators/jsonSerialize";
+export { jsonSerializable } from "./decorators/jsonSerializable";
 export { jsonIgnore } from "./decorators/jsonIgnore";
 export { jsonType } from "./decorators/jsonType";
 export { jsonSubtype } from "./decorators/jsonSubtype";

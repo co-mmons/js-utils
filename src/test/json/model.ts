@@ -1,4 +1,4 @@
-import {ArraySerializer, jsonIgnore, jsonProperty, jsonSerialize, jsonType} from "../../json";
+import {ArraySerializer, jsonIgnore, jsonProperty, jsonSerializable, jsonType} from "../../json";
 
 export class ModelA {
 
@@ -43,7 +43,7 @@ export class ModelC {
 
 }
 
-@jsonSerialize()
+@jsonSerializable()
 export class ModelD extends ModelB {
 
     constructor() {

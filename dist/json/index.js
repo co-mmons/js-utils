@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsonProperty_1 = require("./decorators/jsonProperty");
 Object.defineProperty(exports, "jsonProperty", { enumerable: true, get: function () { return jsonProperty_1.jsonProperty; } });
-var jsonSerialize_1 = require("./decorators/jsonSerialize");
-Object.defineProperty(exports, "jsonSerialize", { enumerable: true, get: function () { return jsonSerialize_1.jsonSerialize; } });
+var jsonSerializable_1 = require("./decorators/jsonSerializable");
+Object.defineProperty(exports, "jsonSerializable", { enumerable: true, get: function () { return jsonSerializable_1.jsonSerializable; } });
 var jsonIgnore_1 = require("./decorators/jsonIgnore");
 Object.defineProperty(exports, "jsonIgnore", { enumerable: true, get: function () { return jsonIgnore_1.jsonIgnore; } });
 var jsonType_1 = require("./decorators/jsonType");
