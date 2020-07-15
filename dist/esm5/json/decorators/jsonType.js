@@ -2,7 +2,7 @@ import { registerType } from "../registerType";
 import { setupSerialization } from "../setupSerialization";
 export function jsonType(name, options) {
     return function (classType) {
-        registerType(name, classType, options);
+        registerType(classType, name, options);
         setupSerialization(classType);
         classType.__jsonTypeName = name;
     };

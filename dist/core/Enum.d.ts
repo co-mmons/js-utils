@@ -1,10 +1,10 @@
+import { TypedJson } from "../json";
 export interface EnumStatic<T> {
     fromJSON(value: EnumFromJSONValue): T;
     values(): T[];
     valueOf(name: EnumValueOfValue): T;
 }
-export interface EnumValueJson<TypeOfEnumClass = any> {
-    "@type": string;
+export interface EnumValueJson<TypeOfEnumClass = any> extends TypedJson {
     name: TypeOfEnumClass extends EnumStatic<any> ? EnumValueName<TypeOfEnumClass> : string;
 }
 export declare type EnumFromJSONValue = string | EnumValueJson | any;

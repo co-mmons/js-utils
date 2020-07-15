@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var EnumAsStringSerializer_1 = require("./EnumAsStringSerializer");
+Object.defineProperty(exports, "EnumAsStringSerializer", { enumerable: true, get: function () { return EnumAsStringSerializer_1.EnumAsStringSerializer; } });
+var findTypeByName_1 = require("./findTypeByName");
+Object.defineProperty(exports, "findTypeByName", { enumerable: true, get: function () { return findTypeByName_1.findTypeByName; } });
+var jsonIgnore_1 = require("./decorators/jsonIgnore");
+Object.defineProperty(exports, "jsonIgnore", { enumerable: true, get: function () { return jsonIgnore_1.jsonIgnore; } });
 var jsonProperty_1 = require("./decorators/jsonProperty");
 Object.defineProperty(exports, "jsonProperty", { enumerable: true, get: function () { return jsonProperty_1.jsonProperty; } });
 var jsonSerializable_1 = require("./decorators/jsonSerializable");
 Object.defineProperty(exports, "jsonSerializable", { enumerable: true, get: function () { return jsonSerializable_1.jsonSerializable; } });
-var jsonIgnore_1 = require("./decorators/jsonIgnore");
-Object.defineProperty(exports, "jsonIgnore", { enumerable: true, get: function () { return jsonIgnore_1.jsonIgnore; } });
-var jsonType_1 = require("./decorators/jsonType");
-Object.defineProperty(exports, "jsonType", { enumerable: true, get: function () { return jsonType_1.jsonType; } });
 var jsonSubtype_1 = require("./decorators/jsonSubtype");
 Object.defineProperty(exports, "jsonSubtype", { enumerable: true, get: function () { return jsonSubtype_1.jsonSubtype; } });
-var EnumAsStringSerializer_1 = require("./EnumAsStringSerializer");
-Object.defineProperty(exports, "EnumAsStringSerializer", { enumerable: true, get: function () { return EnumAsStringSerializer_1.EnumAsStringSerializer; } });
+var jsonType_1 = require("./decorators/jsonType");
+Object.defineProperty(exports, "jsonType", { enumerable: true, get: function () { return jsonType_1.jsonType; } });
 var ObjectAsMapSerializer_1 = require("./ObjectAsMapSerializer");
 Object.defineProperty(exports, "ObjectAsMapSerializer", { enumerable: true, get: function () { return ObjectAsMapSerializer_1.ObjectAsMapSerializer; } });
+var registerType_1 = require("./registerType");
+Object.defineProperty(exports, "registerType", { enumerable: true, get: function () { return registerType_1.registerType; } });
 var serialization_1 = require("./serialization");
 Object.defineProperty(exports, "serialize", { enumerable: true, get: function () { return serialization_1.serialize; } });
 Object.defineProperty(exports, "ArraySerializer", { enumerable: true, get: function () { return serialization_1.ArraySerializer; } });
@@ -21,8 +25,4 @@ Object.defineProperty(exports, "serializerForType", { enumerable: true, get: fun
 Object.defineProperty(exports, "unserialize", { enumerable: true, get: function () { return serialization_1.unserialize; } });
 var Serializer_1 = require("./Serializer");
 Object.defineProperty(exports, "Serializer", { enumerable: true, get: function () { return Serializer_1.Serializer; } });
-var registerType_1 = require("./registerType");
-Object.defineProperty(exports, "registerType", { enumerable: true, get: function () { return registerType_1.registerType; } });
-var findTypeByName_1 = require("./findTypeByName");
-Object.defineProperty(exports, "findTypeByName", { enumerable: true, get: function () { return findTypeByName_1.findTypeByName; } });
 //# sourceMappingURL=index.js.map
