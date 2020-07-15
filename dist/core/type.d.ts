@@ -16,12 +16,12 @@ interface FunctionConstructor {
     readonly prototype: Function;
 }
 export declare const Type: FunctionConstructor;
-export interface Type<T> extends Function {
+export interface Type<T = any> extends Function {
     new?(...args: any[]): T;
     readonly prototype: T;
 }
 export declare const AssignableType: FunctionConstructor;
-export interface AssignableType<T> extends Function {
+export interface AssignableType<T = any> extends Function {
     new (...args: any[]): T;
 }
 export {};

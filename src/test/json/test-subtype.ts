@@ -26,5 +26,15 @@ export function test() {
     const aUnserialized = unserialize(bSerialized, A);
     console.log("a unserialized", aUnserialized);
 
+    const c = new A();
+    c.type = "C";
+    console.log("c", c);
+
+    const cSerialized = serialize(c);
+    console.log("c serialized", cSerialized);
+
+    const cUnserialized = unserialize(c, A);
+    console.log("c unserialized", cUnserialized);
+
     return aUnserialized instanceof B;
 }

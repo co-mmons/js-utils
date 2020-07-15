@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MemoryPreferencesContainer = void 0;
 const fast_equals_1 = require("fast-equals");
 const collection_impl_1 = require("./collection-impl");
 const container_events_manager_1 = require("./container-events-manager");

@@ -1,5 +1,6 @@
 import { resolveForwardRef } from "../core";
 import { findTypeByName } from "./findTypeByName";
+import { Serializer } from "./Serializer";
 export function serialize(object, options) {
     if (object && object.toJSON) {
         return object.toJSON();
@@ -26,32 +27,18 @@ export function unserialize(json, targetClass, options) {
         return json;
     }
     if (targetClass) {
-        let serializer = serializerForType(targetClass);
+        const internalType = targetClass;
+        const serializer = serializerForType(targetClass);
         if (serializer && serializer !== ObjectSerializer.instance) {
             return serializer.unserialize(json, options);
         }
-        let prototype = targetClass.prototype;
-        // if type has subtypes, find apropriate subtype
-        if (targetClass.hasOwnProperty("__json__subtypes")) {
-            const subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
-            for (const subtype of subtypes) {
-                if (subtype.matcher) {
-                    const match = subtype.matcher(json);
-                    if (match) {
-                        prototype = resolveForwardRef(match).prototype;
-                        break;
-                    }
-                }
-                else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                    prototype = resolveForwardRef(subtype.type).prototype;
-                    break;
-                }
-            }
-        }
-        if (prototype["fromJSON"]) {
-            let instance = Object.create(prototype);
+        if (targetClass.prototype["fromJSON"]) {
+            const instance = Object.create(targetClass.prototype);
             instance.fromJSON(json, options);
             return instance;
+        }
+        else if (internalType.fromJSON) {
+            return internalType.fromJSON(json, options);
         }
         else if (targetClass !== Object) {
             return new targetClass(json);
@@ -93,25 +80,6 @@ export function serializerForType(type) {
     if (type === Date)
         return DateSerializer.instance;
     return ObjectSerializer.instance;
-}
-export class Serializer {
-    serialize(object, options) {
-        return object;
-    }
-    isUndefinedOrNull(value) {
-        return value === undefined || value === null;
-    }
-    serializeUndefinedOrNull(value, options) {
-        return value;
-    }
-    unserializeUndefinedOrNull(value, options) {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        }
-        else {
-            return value;
-        }
-    }
 }
 export class ArraySerializer extends Serializer {
     constructor(valueType) {
@@ -185,22 +153,6 @@ ArraySerializer.ofAny = new ArraySerializer();
 ArraySerializer.ofString = new ArraySerializer(String);
 ArraySerializer.ofNumber = new ArraySerializer(Number);
 ArraySerializer.ofBoolean = new ArraySerializer(Boolean);
-/**
- * @deprecated Use {@link ArraySerializer#ofAny}.
- */
-export const ArrayOfAny = ArraySerializer.ofAny;
-/**
- * @deprecated Use {@link ArraySerializer#ofString}.
- */
-export const ArrayOfString = ArraySerializer.ofString;
-/**
- * @deprecated Use {@link ArraySerializer#ofNumber}.
- */
-export const ArrayOfNumber = ArraySerializer.ofNumber;
-/**
- * @deprecated Use {@link ArraySerializer#ofBoolean}.
- */
-export const ArrayOfBoolean = ArraySerializer.ofBoolean;
 class ObjectSerializer extends Serializer {
     serialize(object, options) {
         if (object === null || object === undefined)

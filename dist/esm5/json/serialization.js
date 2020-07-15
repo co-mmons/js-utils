@@ -1,6 +1,7 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import { resolveForwardRef } from "../core";
 import { findTypeByName } from "./findTypeByName";
+import { Serializer } from "./Serializer";
 export function serialize(object, options) {
     if (object && object.toJSON) {
         return object.toJSON();
@@ -27,33 +28,18 @@ export function unserialize(json, targetClass, options) {
         return json;
     }
     if (targetClass) {
+        var internalType = targetClass;
         var serializer = serializerForType(targetClass);
         if (serializer && serializer !== ObjectSerializer.instance) {
             return serializer.unserialize(json, options);
         }
-        var prototype = targetClass.prototype;
-        // if type has subtypes, find apropriate subtype
-        if (targetClass.hasOwnProperty("__json__subtypes")) {
-            var subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
-            for (var _i = 0, subtypes_1 = subtypes; _i < subtypes_1.length; _i++) {
-                var subtype = subtypes_1[_i];
-                if (subtype.matcher) {
-                    var match = subtype.matcher(json);
-                    if (match) {
-                        prototype = resolveForwardRef(match).prototype;
-                        break;
-                    }
-                }
-                else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                    prototype = resolveForwardRef(subtype.type).prototype;
-                    break;
-                }
-            }
-        }
-        if (prototype["fromJSON"]) {
-            var instance = Object.create(prototype);
+        if (targetClass.prototype["fromJSON"]) {
+            var instance = Object.create(targetClass.prototype);
             instance.fromJSON(json, options);
             return instance;
+        }
+        else if (internalType.fromJSON) {
+            return internalType.fromJSON(json, options);
         }
         else if (targetClass !== Object) {
             return new targetClass(json);
@@ -65,8 +51,8 @@ export function unserialize(json, targetClass, options) {
             return unserialize(json, knownType);
         }
         var niu = {};
-        for (var _a = 0, _b = Object.keys(json); _a < _b.length; _a++) {
-            var property = _b[_a];
+        for (var _i = 0, _a = Object.keys(json); _i < _a.length; _i++) {
+            var property = _a[_i];
             var value = json[property];
             if (typeof value === "object") {
                 var knownType_1 = findTypeByName(value);
@@ -97,31 +83,8 @@ export function serializerForType(type) {
         return DateSerializer.instance;
     return ObjectSerializer.instance;
 }
-var Serializer = /** @class */ (function () {
-    function Serializer() {
-    }
-    Serializer.prototype.serialize = function (object, options) {
-        return object;
-    };
-    Serializer.prototype.isUndefinedOrNull = function (value) {
-        return value === undefined || value === null;
-    };
-    Serializer.prototype.serializeUndefinedOrNull = function (value, options) {
-        return value;
-    };
-    Serializer.prototype.unserializeUndefinedOrNull = function (value, options) {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        }
-        else {
-            return value;
-        }
-    };
-    return Serializer;
-}());
-export { Serializer };
 var ArraySerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(ArraySerializer, _super);
+    __extends(ArraySerializer, _super);
     function ArraySerializer(valueType) {
         var _this = _super.call(this) || this;
         if (arguments.length == 1 && !valueType) {
@@ -201,24 +164,8 @@ var ArraySerializer = /** @class */ (function (_super) {
     return ArraySerializer;
 }(Serializer));
 export { ArraySerializer };
-/**
- * @deprecated Use {@link ArraySerializer#ofAny}.
- */
-export var ArrayOfAny = ArraySerializer.ofAny;
-/**
- * @deprecated Use {@link ArraySerializer#ofString}.
- */
-export var ArrayOfString = ArraySerializer.ofString;
-/**
- * @deprecated Use {@link ArraySerializer#ofNumber}.
- */
-export var ArrayOfNumber = ArraySerializer.ofNumber;
-/**
- * @deprecated Use {@link ArraySerializer#ofBoolean}.
- */
-export var ArrayOfBoolean = ArraySerializer.ofBoolean;
 var ObjectSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(ObjectSerializer, _super);
+    __extends(ObjectSerializer, _super);
     function ObjectSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -255,7 +202,7 @@ var ObjectSerializer = /** @class */ (function (_super) {
     return ObjectSerializer;
 }(Serializer));
 var BooleanSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(BooleanSerializer, _super);
+    __extends(BooleanSerializer, _super);
     function BooleanSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -297,7 +244,7 @@ var BooleanSerializer = /** @class */ (function (_super) {
     return BooleanSerializer;
 }(Serializer));
 var NumberSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(NumberSerializer, _super);
+    __extends(NumberSerializer, _super);
     function NumberSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -339,7 +286,7 @@ var NumberSerializer = /** @class */ (function (_super) {
     return NumberSerializer;
 }(Serializer));
 var StringSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(StringSerializer, _super);
+    __extends(StringSerializer, _super);
     function StringSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -381,7 +328,7 @@ var StringSerializer = /** @class */ (function (_super) {
     return StringSerializer;
 }(Serializer));
 var DateSerializer = /** @class */ (function (_super) {
-    tslib_1.__extends(DateSerializer, _super);
+    __extends(DateSerializer, _super);
     function DateSerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }

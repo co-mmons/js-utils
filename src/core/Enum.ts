@@ -98,9 +98,9 @@ function valuesRef<EnumClass extends Enum>(enumClass: Type<EnumClass>): EnumClas
     return enumClass["__enumValues"];
 }
 
-function jsonTypeName(instanceOrClass: Type<any> | Enum): string {
+function jsonTypeName(instanceOrClass: Type | Enum): string {
 
-    let type: Type<any>;
+    let type: Type;
 
     if (instanceOrClass instanceof Enum) {
         type = instanceOrClass.constructor;

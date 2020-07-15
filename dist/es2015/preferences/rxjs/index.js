@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.injectPreferencesRxjs = void 0;
 require("./collection");
 const collection_1 = require("./collection");
 function injectPreferencesRxjs() {

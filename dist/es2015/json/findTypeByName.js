@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findTypeByName = void 0;
 const types_1 = require("./types");
 function findTypeByName(name) {
     if (typeof name === "object") {

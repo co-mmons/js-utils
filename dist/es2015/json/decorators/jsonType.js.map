@@ -1,0 +1,1 @@
+{"version":3,"file":"jsonType.js","sourceRoot":"","sources":["../../../../src/json/decorators/jsonType.ts"],"names":[],"mappings":";;;AAEA,kDAA6C;AAC7C,8DAAyD;AAEzD,SAAgB,QAAQ,CAAC,IAAY,EAAE,OAA6B;IAChE,OAAO,UAAU,SAAe;QAC5B,2BAAY,CAAC,IAAI,EAAE,SAAS,EAAE,OAAO,CAAC,CAAC;QACvC,uCAAkB,CAAC,SAAS,CAAC,CAAC;QAC7B,SAA0B,CAAC,cAAc,GAAG,IAAI,CAAC;IACtD,CAAC,CAAA;AACL,CAAC;AAND,4BAMC"}

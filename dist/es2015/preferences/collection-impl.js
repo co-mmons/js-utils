@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PreferencesCollectionRefImpl = void 0;
 const tslib_1 = require("tslib");
 const item_ref_impl_1 = require("./item-ref-impl");
 class PreferencesCollectionRefImpl {

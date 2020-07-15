@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StoragePreferencesContainer = void 0;
 const collection_impl_1 = require("./collection-impl");
 const container_events_manager_1 = require("./container-events-manager");
 const deep_clone_1 = require("./deep-clone");

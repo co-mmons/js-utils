@@ -21,9 +21,11 @@
     "fast-equals": "^2.0.0"
   },
   "devDependencies": {
+    "bignumber.js": "^9.0.0",
+    "fast-equals": "^2.0.0",
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
-    "typescript": "~3.4.0"
+    "typescript": "~3.9.6"
   },
   "sideEffects": false
 }

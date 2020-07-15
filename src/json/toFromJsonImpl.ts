@@ -35,6 +35,10 @@ export function toJsonImpl(this: any) {
         json[jsonName] = serializer.serialize(propertyValue, propertyConfig);
     }
 
+    if ((types[0] as InternalType).__jsonTypeName) {
+        json["@type"] = (types[0] as InternalType).__jsonTypeName;
+    }
+
     return json;
 }
 

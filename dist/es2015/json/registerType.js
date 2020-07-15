@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerType = void 0;
 const types_1 = require("./types");
 function registerType(typeName, typeClass, options) {
     if (types_1.types[typeName] && types_1.types[typeName] !== typeClass && (!options || !options.replace)) {

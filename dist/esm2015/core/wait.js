@@ -41,12 +41,4 @@ export function waitTill(condition, interval = 100, timeout) {
         }
     });
 }
-/**
- * Do nothing but sleep millisec.
- */
-export function sleep(timeout) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => resolve(), timeout);
-    });
-}
 //# sourceMappingURL=wait.js.map

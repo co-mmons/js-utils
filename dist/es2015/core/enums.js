@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.enumValues = void 0;
 function enumValues(enumClass) {
     let values = [];
     for (let key in enumClass) {

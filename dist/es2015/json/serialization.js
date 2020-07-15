@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ArraySerializer = exports.serializerForType = exports.unserialize = exports.serialize = void 0;
 const core_1 = require("../core");
 const findTypeByName_1 = require("./findTypeByName");
+const Serializer_1 = require("./Serializer");
 function serialize(object, options) {
     if (object && object.toJSON) {
         return object.toJSON();
@@ -29,32 +31,18 @@ function unserialize(json, targetClass, options) {
         return json;
     }
     if (targetClass) {
-        let serializer = serializerForType(targetClass);
+        const internalType = targetClass;
+        const serializer = serializerForType(targetClass);
         if (serializer && serializer !== ObjectSerializer.instance) {
             return serializer.unserialize(json, options);
         }
-        let prototype = targetClass.prototype;
-        // if type has subtypes, find apropriate subtype
-        if (targetClass.hasOwnProperty("__json__subtypes")) {
-            const subtypes = Object.getOwnPropertyDescriptor(targetClass, "__json__subtypes").value /* as SubtypeInfo[]*/;
-            for (const subtype of subtypes) {
-                if (subtype.matcher) {
-                    const match = subtype.matcher(json);
-                    if (match) {
-                        prototype = core_1.resolveForwardRef(match).prototype;
-                        break;
-                    }
-                }
-                else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] == subtype.value))) {
-                    prototype = core_1.resolveForwardRef(subtype.type).prototype;
-                    break;
-                }
-            }
-        }
-        if (prototype["fromJSON"]) {
-            let instance = Object.create(prototype);
+        if (targetClass.prototype["fromJSON"]) {
+            const instance = Object.create(targetClass.prototype);
             instance.fromJSON(json, options);
             return instance;
+        }
+        else if (internalType.fromJSON) {
+            return internalType.fromJSON(json, options);
         }
         else if (targetClass !== Object) {
             return new targetClass(json);
@@ -99,27 +87,7 @@ function serializerForType(type) {
     return ObjectSerializer.instance;
 }
 exports.serializerForType = serializerForType;
-class Serializer {
-    serialize(object, options) {
-        return object;
-    }
-    isUndefinedOrNull(value) {
-        return value === undefined || value === null;
-    }
-    serializeUndefinedOrNull(value, options) {
-        return value;
-    }
-    unserializeUndefinedOrNull(value, options) {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        }
-        else {
-            return value;
-        }
-    }
-}
-exports.Serializer = Serializer;
-class ArraySerializer extends Serializer {
+class ArraySerializer extends Serializer_1.Serializer {
     constructor(valueType) {
         super();
         if (arguments.length == 1 && !valueType) {
@@ -134,7 +102,7 @@ class ArraySerializer extends Serializer {
         }
         else if (Array.isArray(value)) {
             let array = [];
-            if (valueType instanceof Serializer) {
+            if (valueType instanceof Serializer_1.Serializer) {
                 for (let i of value) {
                     array.push(valueType.serialize(i, options));
                 }
@@ -158,7 +126,7 @@ class ArraySerializer extends Serializer {
         if (Array.isArray(json)) {
             const array = [];
             if (valueType) {
-                if (valueType instanceof Serializer) {
+                if (valueType instanceof Serializer_1.Serializer) {
                     for (const i of json) {
                         array.push(valueType.unserialize(i));
                     }
@@ -187,28 +155,12 @@ class ArraySerializer extends Serializer {
         }
     }
 }
+exports.ArraySerializer = ArraySerializer;
 ArraySerializer.ofAny = new ArraySerializer();
 ArraySerializer.ofString = new ArraySerializer(String);
 ArraySerializer.ofNumber = new ArraySerializer(Number);
 ArraySerializer.ofBoolean = new ArraySerializer(Boolean);
-exports.ArraySerializer = ArraySerializer;
-/**
- * @deprecated Use {@link ArraySerializer#ofAny}.
- */
-exports.ArrayOfAny = ArraySerializer.ofAny;
-/**
- * @deprecated Use {@link ArraySerializer#ofString}.
- */
-exports.ArrayOfString = ArraySerializer.ofString;
-/**
- * @deprecated Use {@link ArraySerializer#ofNumber}.
- */
-exports.ArrayOfNumber = ArraySerializer.ofNumber;
-/**
- * @deprecated Use {@link ArraySerializer#ofBoolean}.
- */
-exports.ArrayOfBoolean = ArraySerializer.ofBoolean;
-class ObjectSerializer extends Serializer {
+class ObjectSerializer extends Serializer_1.Serializer {
     serialize(object, options) {
         if (object === null || object === undefined)
             return object;
@@ -240,7 +192,7 @@ class ObjectSerializer extends Serializer {
     }
 }
 ObjectSerializer.instance = new ObjectSerializer();
-class BooleanSerializer extends Serializer {
+class BooleanSerializer extends Serializer_1.Serializer {
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
@@ -277,7 +229,7 @@ class BooleanSerializer extends Serializer {
     }
 }
 BooleanSerializer.instance = new BooleanSerializer();
-class NumberSerializer extends Serializer {
+class NumberSerializer extends Serializer_1.Serializer {
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
@@ -314,7 +266,7 @@ class NumberSerializer extends Serializer {
     }
 }
 NumberSerializer.instance = new NumberSerializer();
-class StringSerializer extends Serializer {
+class StringSerializer extends Serializer_1.Serializer {
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
@@ -351,7 +303,7 @@ class StringSerializer extends Serializer {
     }
 }
 StringSerializer.instance = new StringSerializer();
-class DateSerializer extends Serializer {
+class DateSerializer extends Serializer_1.Serializer {
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);

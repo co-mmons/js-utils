@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __generator, __spreadArrays } from "tslib";
 import { PreferencesItemRefImpl } from "./item-ref-impl";
 var PreferencesCollectionRefImpl = /** @class */ (function () {
     function PreferencesCollectionRefImpl(container, name) {
@@ -13,7 +13,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var args = arguments;
         var keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
         if (keys) {
-            return (_a = this.container).items.apply(_a, [this.name].concat(keys));
+            return (_a = this.container).items.apply(_a, __spreadArrays([this.name], keys));
         }
         else if (arguments.length === 0) {
             return this.container.items(this.name);
@@ -36,9 +36,9 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         return this.container.update(this.name, key, value);
     };
     PreferencesCollectionRefImpl.prototype.value = function (key) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var item;
-            return tslib_1.__generator(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.container.get(this.name, key)];
                     case 1:
@@ -52,9 +52,10 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var _this = this;
         var args = arguments;
         var keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
-        return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var _a, values, items, _i, _b, item, error_1;
-            return tslib_1.__generator(this, function (_c) {
+        return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+            var values, items, _i, _a, item, error_1;
+            var _b;
+            return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         values = [];
@@ -63,7 +64,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                         _c.trys.push([1, 6, , 7]);
                         items = void 0;
                         if (keys) {
-                            items = (_a = this.container).items.apply(_a, [this.name].concat(keys));
+                            items = (_b = this.container).items.apply(_b, __spreadArrays([this.name], keys));
                         }
                         else if (args.length === 0) {
                             items = this.container.items(this.name);
@@ -72,11 +73,11 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
                         _i = 0;
                         return [4 /*yield*/, items];
                     case 2:
-                        _b = _c.sent();
+                        _a = _c.sent();
                         _c.label = 3;
                     case 3:
-                        if (!(_i < _b.length)) return [3 /*break*/, 5];
-                        item = _b[_i];
+                        if (!(_i < _a.length)) return [3 /*break*/, 5];
+                        item = _a[_i];
                         values.push(item.value);
                         _c.label = 4;
                     case 4:

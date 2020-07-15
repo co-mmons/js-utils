@@ -1,16 +1,16 @@
-import * as tslib_1 from "tslib";
+import { __awaiter } from "tslib";
 export class PreferencesItemRefImpl {
     constructor(collection, key) {
         this.collection = collection;
         this.key = key;
     }
     delete() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             return (yield this.collection.delete(this.key)).length === 1;
         });
     }
     value() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             return yield this.collection.value(this.key);
         });
     }

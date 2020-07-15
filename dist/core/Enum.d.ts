@@ -18,7 +18,7 @@ export declare abstract class Enum {
     protected constructor(name: string);
     equals(value: string | Enum | EnumValueJson): boolean;
     toJSON(): {
-        "@type": any;
+        "@type": string;
         name: string;
     };
 }

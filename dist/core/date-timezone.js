@@ -1,9 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DateTimezone = void 0;
 const offsetDateRegex = /(\d+).(\d+).(\d+),?\s+(\d+).(\d+)(.(\d+))?/;
 const offsetFormatOptions = { timeZone: "UTC", hour12: false, year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
 const offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
 class DateTimezone {
+    constructor(dateOrEpoch, timezone) {
+        this.$constructor(dateOrEpoch, timezone);
+    }
     static timezoneOffset(timezone, date) {
         if (!date) {
             date = new Date();
@@ -24,9 +28,6 @@ class DateTimezone {
         }
         const formatter = new Intl.DateTimeFormat("en-US", Object.assign({}, offsetFormatOptions, { timeZone: timezone }));
         return diffMinutes(parseDate(offsetUsFormatter.format(date)), parseDate(formatter.format(date)));
-    }
-    constructor(dateOrEpoch, timezone) {
-        this.$constructor(dateOrEpoch, timezone);
     }
     $constructor(dateOrEpoch, timezone) {
         this["timezone"] = timezone;

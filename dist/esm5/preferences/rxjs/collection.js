@@ -1,11 +1,11 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __extends, __generator } from "tslib";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PreferencesCollectionRefImpl } from "../collection-impl";
 import { deepClone } from "../deep-clone";
 import { PreferencesItemImpl } from "../item-impl";
 var CollectionItemsObserver = /** @class */ (function (_super) {
-    tslib_1.__extends(CollectionItemsObserver, _super);
+    __extends(CollectionItemsObserver, _super);
     function CollectionItemsObserver(collection) {
         var _this = _super.call(this, function (subscriber) { return _this.onSubscribe(subscriber); }) || this;
         _this.collection = collection;
@@ -32,9 +32,9 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
         };
     };
     CollectionItemsObserver.prototype.listener = function (event) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var items, _i, _a, subscriber;
-            return tslib_1.__generator(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.collection.items()];
                     case 1:

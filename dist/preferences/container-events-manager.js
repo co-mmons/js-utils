@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContainerEventsManager = void 0;
 const deep_clone_1 = require("./deep-clone");
 const item_ref_impl_1 = require("./item-ref-impl");
 class ContainerEventsManager {

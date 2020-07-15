@@ -7,7 +7,7 @@ var PreferencesItemImpl = /** @class */ (function () {
         get: function () {
             return this.ref.key;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return PreferencesItemImpl;
