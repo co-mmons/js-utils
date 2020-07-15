@@ -23,7 +23,7 @@ export function jsonProperty() {
         var type = classPrototype.constructor;
         var config = Object.assign({ propertyType: jsonType, propertyJsonName: jsonName }, options);
         setupSerialization(type);
-        var properties = type.__jsonProperties = type.__jsonProperties || [];
+        var properties = type.__jsonProperties = type.__jsonProperties || {};
         properties[propertyName] = config;
     };
 }

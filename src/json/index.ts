@@ -11,3 +11,4 @@ export {SerializationOptions} from "./SerializationOptions";
 export {serialize, ArraySerializer, serializerForType, unserialize} from "./serialization";
 export {Serializer} from "./Serializer";
 export {TypedJson} from "./TypedJson";
+export {JsonTypeName} from "./JsonTypeName";

@@ -1,6 +1,6 @@
 import {AssignableType, resolveForwardRef, Type} from "../core";
 import {InternalType} from "./InternalType";
-import {PropertyConfig} from "./PropertyConfig";
+import {PropertyConfig} from "./decorators/PropertyConfig";
 import {serializerForType} from "./serialization";
 import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";

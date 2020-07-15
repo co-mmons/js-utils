@@ -1,6 +1,6 @@
 import {Type} from "../../core";
 import {InternalType} from "../InternalType";
-import {PropertyConfig} from "../PropertyConfig";
+import {PropertyConfig} from "./PropertyConfig";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
 import {setupSerialization} from "../setupSerialization";
@@ -46,7 +46,7 @@ export function jsonProperty(): Function {
 
         setupSerialization(type);
 
-        const properties = type.__jsonProperties = type.__jsonProperties || [];
+        const properties = type.__jsonProperties = type.__jsonProperties || {};
         properties[propertyName] = config;
     }
 }

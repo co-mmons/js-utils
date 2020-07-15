@@ -1,7 +1,6 @@
 import { Type } from "../core";
-export declare function registerType(typeClass: Type & {
-    jsonTypeName: string;
-}, options?: {
+import { JsonTypeName } from "./JsonTypeName";
+export declare function registerType(typeClass: Type & JsonTypeName, options?: {
     replace?: boolean;
 }): any;
 export declare function registerType(typeClass: Type, typeName: string, options?: {
