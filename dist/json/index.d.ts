@@ -4,7 +4,7 @@ export { jsonIgnore } from "./decorators/jsonIgnore";
 export { jsonProperty } from "./decorators/jsonProperty";
 export { jsonSerializable } from "./decorators/jsonSerializable";
 export { jsonSubtype } from "./decorators/jsonSubtype";
-export { jsonType } from "./decorators/jsonType";
+export { jsonRegisteredType } from "./decorators/jsonRegisteredType";
 export { ObjectAsMapSerializer } from "./ObjectAsMapSerializer";
 export { registerType } from "./registerType";
 export { SerializationOptions } from "./SerializationOptions";

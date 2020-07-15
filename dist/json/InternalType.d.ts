@@ -3,7 +3,6 @@ import { PropertyConfig } from "./decorators/PropertyConfig";
 import { SerializationOptions } from "./SerializationOptions";
 import { SubtypeInfo } from "./SubtypeInfo";
 export interface InternalType<T = any> extends Type<T> {
-    __jsonTypeName?: string;
     __jsonSerialization?: boolean;
     __jsonToJson?: boolean;
     __jsonFromJson?: boolean;
@@ -12,5 +11,6 @@ export interface InternalType<T = any> extends Type<T> {
     };
     __jsonIgnoredProperties?: string[];
     __jsonSubtypes?: SubtypeInfo[];
+    jsonTypeName?: string;
     fromJSON?: (json: any, options?: SerializationOptions) => T;
 }

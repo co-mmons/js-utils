@@ -1,3 +1,3 @@
 import {Type} from "../core";
 
-export const types: {[typeName: string]: Type<any>} = {};
+export const types: {[typeName: string]: Type} = {};

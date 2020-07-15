@@ -1,4 +1,5 @@
 import {Type} from "../../core";
+import {getSupertypes} from "../getSupertypes";
 import {InternalType} from "../InternalType";
 import {JsonTypeName} from "../JsonTypeName";
 import {registerType} from "../registerType";
@@ -21,6 +22,21 @@ export function jsonSerializable(options?: JsonSerializableOptions) {
             }
         }
 
+        if (type.jsonTypeName) {
+            for (const supertype of getSupertypes(type)) {
+                if (supertype.__jsonSerialization) {
+
+                    const types = supertype.__jsonSubtypes = supertype.__jsonSubtypes || [];
+                    types.push({
+                        type: classType,
+                        property: "@type",
+                        value: type.jsonTypeName
+                    });
+
+                    break;
+                }
+            }
+        }
     }
 }
 

@@ -1,6 +1,8 @@
 import {AssignableType, resolveForwardRef, Type} from "../core";
-import {InternalType} from "./InternalType";
 import {PropertyConfig} from "./decorators/PropertyConfig";
+import {getPrototypes} from "./getPrototypes";
+import {getTypesFromPrototypes} from "./getTypesFromPrototypes";
+import {InternalType} from "./InternalType";
 import {serializerForType} from "./serialization";
 import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";
@@ -8,7 +10,7 @@ import {Serializer} from "./Serializer";
 export function toJsonImpl(this: any) {
 
     const prototypes = getPrototypes(this);
-    const types = getTypes(prototypes);
+    const types = getTypesFromPrototypes(prototypes);
 
     let json: any = {};
 
@@ -35,8 +37,8 @@ export function toJsonImpl(this: any) {
         json[jsonName] = serializer.serialize(propertyValue, propertyConfig);
     }
 
-    if ((types[0] as InternalType).__jsonTypeName) {
-        json["@type"] = (types[0] as InternalType).__jsonTypeName;
+    if ((types[0] as InternalType).jsonTypeName) {
+        json["@type"] = (types[0] as InternalType).jsonTypeName;
     }
 
     return json;
@@ -48,7 +50,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
 
     let instance: any;
 
-    if (internalType.__jsonSubtypes) {
+    if (!instance && internalType.__jsonSubtypes) {
         for (const subtype of internalType.__jsonSubtypes) {
 
             let matchedType: InternalType & AssignableType;
@@ -64,7 +66,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
                 matchedType = resolveForwardRef(subtype.type);
             }
 
-            if (matchedType) {
+            if (matchedType && matchedType !== this) {
 
                 if (matchedType.hasOwnProperty("fromJSON")) {
                     return matchedType.fromJSON(json, options);
@@ -81,7 +83,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
     }
 
     const prototypes = getPrototypes(instance);
-    const types = getTypes(prototypes);
+    const types = getTypesFromPrototypes(prototypes);
 
     const properties = getProperties(instance, types);
 
@@ -96,23 +98,6 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
     }
 
     return instance;
-}
-
-
-function getPrototypes(thiz: any): any[] {
-    const types: any[] = [];
-
-    let prototype: any = Object.getPrototypeOf(thiz);
-    while (prototype.constructor !== Object) {
-        types.push(prototype);
-        prototype = Object.getPrototypeOf(prototype);
-    }
-
-    return types;
-}
-
-function getTypes(prototypes: any[]): Array<Type & InternalType> {
-    return prototypes.map(type => type.constructor);
 }
 
 function getProperties(thiz: any, types: Type[]): {[propertyName: string]: {}} {

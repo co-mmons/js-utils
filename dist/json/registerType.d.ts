@@ -6,3 +6,6 @@ export declare function registerType(typeClass: Type & JsonTypeName, options?: {
 export declare function registerType(typeClass: Type, typeName: string, options?: {
     replace?: boolean;
 }): any;
+export interface RegisterTypeOptions {
+    replace?: boolean;
+}

@@ -1,9 +1,11 @@
 import { resolveForwardRef } from "../core";
+import { getPrototypes } from "./getPrototypes";
+import { getTypesFromPrototypes } from "./getTypesFromPrototypes";
 import { serializerForType } from "./serialization";
 import { Serializer } from "./Serializer";
 export function toJsonImpl() {
     var prototypes = getPrototypes(this);
-    var types = getTypes(prototypes);
+    var types = getTypesFromPrototypes(prototypes);
     var json = {};
     // call toJSON for super types, only if hard coded in a class
     for (var t = 1; t < types.length; t++) {
@@ -23,15 +25,15 @@ export function toJsonImpl() {
         var serializer = propertyConfig.propertyType instanceof Serializer ? propertyConfig.propertyType : serializerForType(propertyConfig.propertyType);
         json[jsonName] = serializer.serialize(propertyValue, propertyConfig);
     }
-    if (types[0].__jsonTypeName) {
-        json["@type"] = types[0].__jsonTypeName;
+    if (types[0].jsonTypeName) {
+        json["@type"] = types[0].jsonTypeName;
     }
     return json;
 }
 export function fromJsonImpl(json, options) {
     var internalType = this;
     var instance;
-    if (internalType.__jsonSubtypes) {
+    if (!instance && internalType.__jsonSubtypes) {
         for (var _i = 0, _a = internalType.__jsonSubtypes; _i < _a.length; _i++) {
             var subtype = _a[_i];
             var matchedType = void 0;
@@ -44,7 +46,7 @@ export function fromJsonImpl(json, options) {
             else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] === subtype.value))) {
                 matchedType = resolveForwardRef(subtype.type);
             }
-            if (matchedType) {
+            if (matchedType && matchedType !== this) {
                 if (matchedType.hasOwnProperty("fromJSON")) {
                     return matchedType.fromJSON(json, options);
                 }
@@ -57,7 +59,7 @@ export function fromJsonImpl(json, options) {
         instance = new this();
     }
     var prototypes = getPrototypes(instance);
-    var types = getTypes(prototypes);
+    var types = getTypesFromPrototypes(prototypes);
     var properties = getProperties(instance, types);
     for (var propertyName in properties) {
         var propertyConfig = properties[propertyName];
@@ -68,18 +70,6 @@ export function fromJsonImpl(json, options) {
         }
     }
     return instance;
-}
-function getPrototypes(thiz) {
-    var types = [];
-    var prototype = Object.getPrototypeOf(thiz);
-    while (prototype.constructor !== Object) {
-        types.push(prototype);
-        prototype = Object.getPrototypeOf(prototype);
-    }
-    return types;
-}
-function getTypes(prototypes) {
-    return prototypes.map(function (type) { return type.constructor; });
 }
 function getProperties(thiz, types) {
     var names = Object.getOwnPropertyNames(thiz);

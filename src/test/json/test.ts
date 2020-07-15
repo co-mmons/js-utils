@@ -50,7 +50,7 @@ import {ModelAutoRegister, ModelB, ModelD} from "./model";
         console.log(modelDUnserialized);
 
         console.log("Register type")
-        registerType("ModelD", ModelD);
+        registerType(ModelD, "ModelD");
         console.log("Registered type", findTypeByName("ModelD"));
 
         console.log("Unserialize with @type")

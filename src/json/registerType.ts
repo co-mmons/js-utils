@@ -19,3 +19,6 @@ export function registerType() {
     types[typeName] = typeClass;
 }
 
+export interface RegisterTypeOptions {
+    replace?: boolean;
+}

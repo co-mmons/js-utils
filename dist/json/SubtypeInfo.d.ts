@@ -4,5 +4,5 @@ export interface SubtypeInfo {
     type: Type;
     matcher?: SubtypeMatcher;
     property?: string;
-    value?: (value: any) => boolean | any;
+    value?: ((value: any) => boolean) | any;
 }

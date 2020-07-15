@@ -108,5 +108,5 @@ function jsonTypeName(instanceOrClass: Type | Enum): string {
         type = instanceOrClass;
     }
 
-    return type["jsonTypeName"] || type["__jsonTypeName"] || type.name;
+    return type["jsonTypeName"] || type.name;
 }

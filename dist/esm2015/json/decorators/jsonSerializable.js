@@ -1,3 +1,4 @@
+import { getSupertypes } from "../getSupertypes";
 import { registerType } from "../registerType";
 import { setupSerialization } from "../setupSerialization";
 export function jsonSerializable(options) {
@@ -10,6 +11,19 @@ export function jsonSerializable(options) {
         if (options === null || options === void 0 ? void 0 : options.types) {
             for (const typ of options.types) {
                 registerType(typ);
+            }
+        }
+        if (type.jsonTypeName) {
+            for (const supertype of getSupertypes(type)) {
+                if (supertype.__jsonSerialization) {
+                    const types = supertype.__jsonSubtypes = supertype.__jsonSubtypes || [];
+                    types.push({
+                        type: classType,
+                        property: "@type",
+                        value: type.jsonTypeName
+                    });
+                    break;
+                }
             }
         }
     };

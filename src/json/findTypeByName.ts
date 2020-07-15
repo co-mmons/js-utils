@@ -1,3 +1,4 @@
+import {AssignableType} from "../core";
 import {types} from "./types";
 
 export function findTypeByName(name: string | {"@type": string}) {
@@ -11,6 +12,6 @@ export function findTypeByName(name: string | {"@type": string}) {
     }
 
     if (name) {
-        return types[name];
+        return types[name] as AssignableType;
     }
 }

@@ -1,19 +1,29 @@
-import {jsonType, serialize, unserialize} from "../../json";
+import {jsonRegisteredType, jsonSerializable, serialize, unserialize} from "../../json";
 
-@jsonType("A")
-export class A {
+@jsonSerializable()
+export class X {
+    static readonly jsonTypeName: string = "X";
+}
+
+@jsonRegisteredType()
+@jsonSerializable()
+export class A extends X {
+    static readonly jsonTypeName: string = "A";
 }
 
 export function test() {
 
     const a = new A;
-    console.log("instance", a);
+    console.log("a instance", a);
 
-    const serialized = serialize(a);
-    console.log("serialized", serialized);
+    const aSerialized = serialize(a);
+    console.log("a serialized", aSerialized);
 
-    const unserialized = unserialize(serialized);
-    console.log("unserialized", unserialized);
+    const aUnserialized = unserialize(aSerialized);
+    console.log("a unserialized", aUnserialized);
 
-    return unserialized instanceof A;
+    const xUnserialized = unserialize(aSerialized, X);
+    console.log("x unserialized", xUnserialized);
+
+    return aUnserialized instanceof A && xUnserialized instanceof A;
 }
