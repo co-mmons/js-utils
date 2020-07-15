@@ -1,1 +1,0 @@
-{"version":3,"file":"jsonRegisteredType.js","sourceRoot":"","sources":["../../../../src/json/decorators/jsonRegisteredType.ts"],"names":[],"mappings":"AAEA,OAAO,EAAC,YAAY,EAAsB,MAAM,iBAAiB,CAAC;AAElE,MAAM,UAAU,kBAAkB,CAAC,OAA6B;IAC5D,OAAO,UAAS,SAA8B;QAC1C,YAAY,CAAC,SAAS,EAAE,SAAS,CAAC,YAAY,EAAE,OAAO,CAAC,CAAC;IAC7D,CAAC,CAAA;AACL,CAAC"}

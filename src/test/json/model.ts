@@ -1,4 +1,4 @@
-import {ArraySerializer, jsonIgnore, jsonProperty, jsonSerializable, jsonRegisteredType} from "../../json";
+import {ArraySerializer, ignore, property, serializable, registeredType} from "../../json";
 
 export class ModelA {
 
@@ -14,21 +14,21 @@ export class ModelB extends ModelA {
         console.log("called constructor b");
     }
 
-    @jsonProperty()
+    @property()
     type: string;
 
-    @jsonProperty(String, "jsonFieldString")
+    @property(String, "jsonFieldString")
     fieldWithJsonName: string;
 
-    @jsonIgnore()
+    @ignore()
     ignoredFieldModelB: number;
 
     fieldNumberAsString: number;
 
-    @jsonProperty(Boolean, "__fieldBoolean")
+    @property(Boolean, "__fieldBoolean")
     fieldBoolean: boolean;
 
-    @jsonProperty(ArraySerializer.ofString)
+    @property(ArraySerializer.ofString)
     fieldArray: string[];
 
 }
@@ -38,12 +38,12 @@ export class ModelC {
         this.fieldModelB = b;
     }
 
-    @jsonProperty(ModelB)
+    @property(ModelB)
     fieldModelB: ModelB;
 
 }
 
-@jsonSerializable()
+@serializable()
 export class ModelD extends ModelB {
 
     constructor() {
@@ -55,7 +55,7 @@ export class ModelD extends ModelB {
     fieldModelD: boolean;
 }
 
-@jsonRegisteredType()
+@registeredType()
 export class ModelAutoRegister {
     static readonly jsonTypeName = "ModelAutoRegister";
 }

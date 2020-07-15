@@ -1,12 +1,12 @@
-import {jsonRegisteredType, jsonSerializable, serialize, unserialize} from "../../json";
+import {registeredType, serializable, serialize, unserialize} from "../../json";
 
-@jsonSerializable()
+@serializable()
 export class X {
     static readonly jsonTypeName: string = "X";
 }
 
-@jsonRegisteredType()
-@jsonSerializable()
+@registeredType()
+@serializable()
 export class A extends X {
     static readonly jsonTypeName: string = "A";
 }

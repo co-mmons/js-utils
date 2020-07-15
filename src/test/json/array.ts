@@ -1,8 +1,8 @@
-import {ArraySerializer, serialize, jsonProperty} from "../../json";
+import {ArraySerializer, serialize, property} from "../../json";
 
 class Model {
 
-    @jsonProperty(String)
+    @property(String)
     property: string;
 }
 

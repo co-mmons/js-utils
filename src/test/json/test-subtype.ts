@@ -1,10 +1,10 @@
-import {jsonSubtype, serialize, unserialize} from "../../json/";
+import {subtype, serialize, unserialize} from "../../json/";
 
 class A {
     type: string;
 }
 
-@jsonSubtype(A, "type", "B")
+@subtype(A, "type", "B")
 class B extends A {
     constructor() {
         super();
