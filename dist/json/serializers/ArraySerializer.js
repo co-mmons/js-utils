@@ -25,7 +25,7 @@ class ArraySerializer extends Serializer_1.Serializer {
                 }
             }
             else {
-                const serializer = this.typeOrSerializer ? findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
+                const serializer = (this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer_1.ObjectSerializer.instance;
                 for (const i of value) {
                     array.push(serializer.serialize(i, options));
                 }
@@ -48,7 +48,7 @@ class ArraySerializer extends Serializer_1.Serializer {
                 }
             }
             else {
-                const serializer = this.typeOrSerializer ? findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
+                const serializer = (this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer_1.ObjectSerializer.instance;
                 for (const i of json) {
                     array.push(serializer.unserialize(i, options));
                 }

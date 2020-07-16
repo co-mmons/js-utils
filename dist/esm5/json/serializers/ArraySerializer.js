@@ -26,7 +26,7 @@ var ArraySerializer = /** @class */ (function (_super) {
                 }
             }
             else {
-                var serializer = this.typeOrSerializer ? findTypeSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                var serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
                 for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
                     var i = value_2[_a];
                     array.push(serializer.serialize(i, options));
@@ -51,7 +51,7 @@ var ArraySerializer = /** @class */ (function (_super) {
                 }
             }
             else {
-                var serializer = this.typeOrSerializer ? findTypeSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                var serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
                 for (var _a = 0, json_2 = json; _a < json_2.length; _a++) {
                     var i = json_2[_a];
                     array.push(serializer.unserialize(i, options));

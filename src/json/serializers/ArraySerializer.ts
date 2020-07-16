@@ -34,7 +34,7 @@ export class ArraySerializer<T> extends Serializer<T[]> {
                 }
 
             } else {
-                const serializer = this.typeOrSerializer ? findTypeSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                const serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
                 for (const i of value) {
                     array.push(serializer.serialize(i, options));
                 }
@@ -63,7 +63,7 @@ export class ArraySerializer<T> extends Serializer<T[]> {
                 }
 
             } else {
-                const serializer = this.typeOrSerializer ? findTypeSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                const serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
                 for (const i of json) {
                     array.push(serializer.unserialize(i, options));
                 }
