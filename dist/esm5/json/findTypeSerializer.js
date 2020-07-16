@@ -4,8 +4,8 @@ export function findTypeSerializer(type, typeProviders) {
         return;
     }
     if (typeProviders) {
-        for (var _i = 0, typeProviders_1 = typeProviders; _i < typeProviders_1.length; _i++) {
-            var provider = typeProviders_1[_i];
+        for (var _i = 0, _a = typeProviders; _i < _a.length; _i++) {
+            var provider = _a[_i];
             if (Array.isArray(provider)) {
                 var result = findTypeSerializer(type, provider);
                 if (result) {
@@ -17,8 +17,8 @@ export function findTypeSerializer(type, typeProviders) {
             }
         }
     }
-    for (var _a = 0, globalProviders_1 = globalProviders; _a < globalProviders_1.length; _a++) {
-        var provider = globalProviders_1[_a];
+    for (var _b = 0, globalProviders_1 = globalProviders; _b < globalProviders_1.length; _b++) {
+        var provider = globalProviders_1[_b];
         if (provider.type === type && provider.serializer) {
             return provider.serializer;
         }

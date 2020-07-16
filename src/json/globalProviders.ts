@@ -1,11 +1,7 @@
-import {ArraySerializer} from "./serializers/ArraySerializer";
-import {BooleanSerializer} from "./serializers/BooleanSerializer";
-import {DateSerializer} from "./serializers/DateSerializer";
-import {NumberSerializer} from "./serializers/NumberSerializer";
-import {StringSerializer} from "./serializers/StringSerializer";
-import {TypeProviderLike} from "./TypeProvider";
+import {ArraySerializer, BooleanSerializer, DateSerializer, NumberSerializer, StringSerializer} from "./serializers";
+import {InternalTypeProvider} from "./TypeProvider";
 
-export const globalProviders: TypeProviderLike[] = [
+export const globalProviders: InternalTypeProvider[] = [
     {type: Boolean, serializer: BooleanSerializer.instance},
     {type: Number, serializer: NumberSerializer.instance},
     {type: Date, name: "Date", serializer: DateSerializer.instance},

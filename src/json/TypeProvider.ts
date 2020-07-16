@@ -16,7 +16,7 @@ export interface TypeNameSerializerProvider {
     serializer: Serializer;
 }
 
-export interface TypeProviderLike {
+export interface InternalTypeProvider {
     type?: Type;
     name?: string;
     serializer?: Serializer;
@@ -24,5 +24,6 @@ export interface TypeProviderLike {
 
 export type TypeProvider = TypeSerializerProvider | TypeNameProvider | TypeNameSerializerProvider;
 
-export type TypeProviders = Array<TypeProviderLike | TypeProviderLike[] | TypeProviders>;
+export type TypeProviders = Array<TypeProvider | TypeProvider[] | TypeProviders>;
 
+export type InternalTypeProviders = Array<InternalTypeProvider | InternalTypeProvider[] | TypeProviders>;

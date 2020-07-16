@@ -1,2 +1,2 @@
-import { TypeProviderLike } from "./TypeProvider";
-export declare const globalProviders: TypeProviderLike[];
+import { InternalTypeProvider } from "./TypeProvider";
+export declare const globalProviders: InternalTypeProvider[];

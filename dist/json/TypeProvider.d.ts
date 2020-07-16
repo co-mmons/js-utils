@@ -12,10 +12,11 @@ export interface TypeNameSerializerProvider {
     name: string;
     serializer: Serializer;
 }
-export interface TypeProviderLike {
+export interface InternalTypeProvider {
     type?: Type;
     name?: string;
     serializer?: Serializer;
 }
 export declare type TypeProvider = TypeSerializerProvider | TypeNameProvider | TypeNameSerializerProvider;
-export declare type TypeProviders = Array<TypeProviderLike | TypeProviderLike[] | TypeProviders>;
+export declare type TypeProviders = Array<TypeProvider | TypeProvider[] | TypeProviders>;
+export declare type InternalTypeProviders = Array<InternalTypeProvider | InternalTypeProvider[] | TypeProviders>;

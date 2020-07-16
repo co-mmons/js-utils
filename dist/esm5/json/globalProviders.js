@@ -1,8 +1,4 @@
-import { ArraySerializer } from "./serializers/ArraySerializer";
-import { BooleanSerializer } from "./serializers/BooleanSerializer";
-import { DateSerializer } from "./serializers/DateSerializer";
-import { NumberSerializer } from "./serializers/NumberSerializer";
-import { StringSerializer } from "./serializers/StringSerializer";
+import { ArraySerializer, BooleanSerializer, DateSerializer, NumberSerializer, StringSerializer } from "./serializers";
 export var globalProviders = [
     { type: Boolean, serializer: BooleanSerializer.instance },
     { type: Number, serializer: NumberSerializer.instance },
