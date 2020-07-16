@@ -4,7 +4,7 @@ import {types} from "./types";
 export function findTypeByName(name: string | {"@type": string}) {
 
     if (typeof name === "object") {
-        if (typeof name["@type"] !== "string") {
+        if (typeof name?.["@type"] !== "string") {
             return undefined;
         }
 

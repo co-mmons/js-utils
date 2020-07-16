@@ -35,40 +35,35 @@ export class DateTimezone {
         );
     }
 
+    static fromJSON(json: any) {
+        if (typeof json === "object" && json && json["timezone"] && json["date"]) {
+            return new DateTimezone(json["date"], json["timezone"]);
+        } else if (typeof json === "number") {
+            return new DateTimezone(json);
+        }
+    }
+
     constructor(epoch: number, timezone?: string);
 
     constructor(date: Date, timezone?: string);
 
     constructor(dateOrEpoch: Date | number, timezone?: string) {
-        this.$constructor(dateOrEpoch, timezone);
-    }
 
-    private $constructor(dateOrEpoch: Date | number, timezone?: string) {
-
-        this["timezone" as any] = timezone;
+        this.timezone = timezone;
 
         if (typeof dateOrEpoch === "number") {
-            this["date" as any] = new Date(dateOrEpoch);
+            this.date = new Date(dateOrEpoch);
         } else if (dateOrEpoch instanceof Date) {
-            this["date" as any] = new Date(dateOrEpoch.getTime());
+            this.date = new Date(dateOrEpoch.getTime());
         }
 
     }
-
 
     readonly date: Date;
 
     readonly timezone: string;
 
     toJSON() {
-        return {date: this.date.getTime(), timezone: this.timezone};
-    }
-
-    fromJSON(json: any) {
-        if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.$constructor(json["date"], json["timezone"]);
-        } else if (typeof json === "number") {
-            this.$constructor(json);
-        }
+        return {"@type": "intl/DateTimezone", date: this.date.getTime(), timezone: this.timezone};
     }
 }

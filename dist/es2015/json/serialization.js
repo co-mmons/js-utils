@@ -6,7 +6,7 @@ const findTypeByName_1 = require("./findTypeByName");
 const Serializer_1 = require("./Serializer");
 function serialize(object, options) {
     if (object && object.toJSON) {
-        return object.toJSON();
+        return object.toJSON(options);
     }
     else if (Array.isArray(object)) {
         return ArraySerializer.ofAny.serialize(object, options);
@@ -56,14 +56,14 @@ function unserialize(json, targetClass, options) {
         const niu = {};
         for (const property of Object.keys(json)) {
             const value = json[property];
-            if (typeof value === "object") {
+            if (typeof value === "object" && value) {
                 const knownType = findTypeByName_1.findTypeByName(value);
                 if (knownType) {
-                    niu[property] = unserialize(value, knownType);
+                    niu[property] = unserialize(value, knownType, options);
                     continue;
                 }
             }
-            niu[property] = unserialize(value);
+            niu[property] = unserialize(value, undefined, options);
         }
         return niu;
     }
@@ -109,7 +109,7 @@ class ArraySerializer extends Serializer_1.Serializer {
             }
             else {
                 for (let i of value) {
-                    array.push(serialize(i));
+                    array.push(serialize(i, options));
                 }
             }
             return array;
@@ -128,18 +128,18 @@ class ArraySerializer extends Serializer_1.Serializer {
             if (valueType) {
                 if (valueType instanceof Serializer_1.Serializer) {
                     for (const i of json) {
-                        array.push(valueType.unserialize(i));
+                        array.push(valueType.unserialize(i, options));
                     }
                 }
                 else {
                     for (const i of json) {
-                        array.push(unserialize(i, valueType));
+                        array.push(unserialize(i, valueType, options));
                     }
                 }
             }
             else {
                 for (const val of json) {
-                    array.push(unserialize(val));
+                    array.push(unserialize(val, undefined, options));
                 }
             }
             return array;
@@ -165,7 +165,7 @@ class ObjectSerializer extends Serializer_1.Serializer {
         if (object === null || object === undefined)
             return object;
         if (object.toJSON) {
-            object = object.toJSON();
+            object = object.toJSON(options);
         }
         /*
         if (typeof object == "object") {
@@ -183,11 +183,11 @@ class ObjectSerializer extends Serializer_1.Serializer {
         if (this.isUndefinedOrNull(json)) {
             return json;
         }
-        else if (options && typeof options["propertyType"] === "function") {
-            return unserialize(json, options["propertyType"]);
+        else if (options && typeof (options === null || options === void 0 ? void 0 : options["propertyType"]) === "function") {
+            return unserialize(json, options["propertyType"], options);
         }
         else {
-            return unserialize(json, findTypeByName_1.findTypeByName(json));
+            return unserialize(json, findTypeByName_1.findTypeByName(json), options);
         }
     }
 }

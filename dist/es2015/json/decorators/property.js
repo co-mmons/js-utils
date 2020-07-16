@@ -15,7 +15,7 @@ function property() {
         else if (typeof arguments[i] === "string") {
             jsonName = arguments[i];
         }
-        else if (typeof arguments[i] === "object") {
+        else if (arguments[i] && typeof arguments[i] === "object") {
             options = arguments[i];
         }
     }

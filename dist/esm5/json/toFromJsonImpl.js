@@ -3,15 +3,15 @@ import { getPrototypes } from "./getPrototypes";
 import { getTypesFromPrototypes } from "./getTypesFromPrototypes";
 import { serializerForType } from "./serialization";
 import { Serializer } from "./Serializer";
-export function toJsonImpl() {
+export function toJsonImpl(options) {
     var prototypes = getPrototypes(this);
     var types = getTypesFromPrototypes(prototypes);
     var json = {};
     // call toJSON for super types, only if hard coded in a class
     for (var t = 1; t < types.length; t++) {
         if (!types[t].__jsonToJson && prototypes[t].hasOwnProperty("toJSON")) {
-            var prototypeJson = prototypes[t].toJSON.call(this);
-            if (typeof prototypeJson === "object") {
+            var prototypeJson = prototypes[t].toJSON.call(this, options);
+            if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
             break;

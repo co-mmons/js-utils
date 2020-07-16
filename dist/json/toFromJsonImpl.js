@@ -6,15 +6,15 @@ const getPrototypes_1 = require("./getPrototypes");
 const getTypesFromPrototypes_1 = require("./getTypesFromPrototypes");
 const serialization_1 = require("./serialization");
 const Serializer_1 = require("./Serializer");
-function toJsonImpl() {
+function toJsonImpl(options) {
     const prototypes = getPrototypes_1.getPrototypes(this);
     const types = getTypesFromPrototypes_1.getTypesFromPrototypes(prototypes);
     let json = {};
     // call toJSON for super types, only if hard coded in a class
     for (let t = 1; t < types.length; t++) {
         if (!types[t].__jsonToJson && prototypes[t].hasOwnProperty("toJSON")) {
-            const prototypeJson = prototypes[t].toJSON.call(this);
-            if (typeof prototypeJson === "object") {
+            const prototypeJson = prototypes[t].toJSON.call(this, options);
+            if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
             break;

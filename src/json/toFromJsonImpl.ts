@@ -7,7 +7,7 @@ import {serializerForType} from "./serialization";
 import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";
 
-export function toJsonImpl(this: any) {
+export function toJsonImpl(this: any, options?: SerializationOptions) {
 
     const prototypes = getPrototypes(this);
     const types = getTypesFromPrototypes(prototypes);
@@ -18,8 +18,8 @@ export function toJsonImpl(this: any) {
     for (let t = 1; t < types.length; t++) {
         if (!types[t].__jsonToJson && prototypes[t].hasOwnProperty("toJSON")) {
 
-            const prototypeJson = prototypes[t].toJSON.call(this);
-            if (typeof prototypeJson === "object") {
+            const prototypeJson = prototypes[t].toJSON.call(this, options);
+            if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
 

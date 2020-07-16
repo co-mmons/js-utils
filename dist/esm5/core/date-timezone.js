@@ -3,7 +3,13 @@ var offsetFormatOptions = { timeZone: "UTC", hour12: false, year: "numeric", mon
 var offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
 var DateTimezone = /** @class */ (function () {
     function DateTimezone(dateOrEpoch, timezone) {
-        this.$constructor(dateOrEpoch, timezone);
+        this.timezone = timezone;
+        if (typeof dateOrEpoch === "number") {
+            this.date = new Date(dateOrEpoch);
+        }
+        else if (dateOrEpoch instanceof Date) {
+            this.date = new Date(dateOrEpoch.getTime());
+        }
     }
     DateTimezone.timezoneOffset = function (timezone, date) {
         if (!date) {
@@ -26,25 +32,16 @@ var DateTimezone = /** @class */ (function () {
         var formatter = new Intl.DateTimeFormat("en-US", Object.assign({}, offsetFormatOptions, { timeZone: timezone }));
         return diffMinutes(parseDate(offsetUsFormatter.format(date)), parseDate(formatter.format(date)));
     };
-    DateTimezone.prototype.$constructor = function (dateOrEpoch, timezone) {
-        this["timezone"] = timezone;
-        if (typeof dateOrEpoch === "number") {
-            this["date"] = new Date(dateOrEpoch);
+    DateTimezone.fromJSON = function (json) {
+        if (typeof json === "object" && json && json["timezone"] && json["date"]) {
+            return new DateTimezone(json["date"], json["timezone"]);
         }
-        else if (dateOrEpoch instanceof Date) {
-            this["date"] = new Date(dateOrEpoch.getTime());
+        else if (typeof json === "number") {
+            return new DateTimezone(json);
         }
     };
     DateTimezone.prototype.toJSON = function () {
-        return { date: this.date.getTime(), timezone: this.timezone };
-    };
-    DateTimezone.prototype.fromJSON = function (json) {
-        if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.$constructor(json["date"], json["timezone"]);
-        }
-        else if (typeof json === "number") {
-            this.$constructor(json);
-        }
+        return { "@type": "intl/DateTimezone", date: this.date.getTime(), timezone: this.timezone };
     };
     return DateTimezone;
 }());

@@ -11,7 +11,7 @@ export class Enum {
         if (typeof value === "string") {
             name = value;
         }
-        else if (typeof value === "object" && typeof value.name === "string") {
+        else if (typeof value === "object" && typeof (value === null || value === void 0 ? void 0 : value.name) === "string") {
             name = value.name;
         }
         if (name) {
@@ -25,7 +25,7 @@ export class Enum {
     }
     static valueOf(name) {
         CHECK_NAME: if (name) {
-            if (typeof name === "object") {
+            if (typeof name === "object" && name) {
                 if (name["@type"] === jsonTypeName(this)) {
                     name = name.name;
                 }

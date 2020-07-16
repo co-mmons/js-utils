@@ -30,7 +30,10 @@ class ObjectAsMapSerializer extends Serializer_1.Serializer {
         }
     }
     unserialize(value, options) {
-        if (typeof value === "object") {
+        if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+        }
+        else if (typeof value === "object") {
             if (this.valueType) {
                 let object = {};
                 for (let i in value) {
@@ -41,9 +44,6 @@ class ObjectAsMapSerializer extends Serializer_1.Serializer {
             else {
                 return value;
             }
-        }
-        else if (this.isUndefinedOrNull(value)) {
-            return this.unserializeUndefinedOrNull(value, options);
         }
         else if (!options || !options.ignoreErrors) {
             throw 'Cannot unserialize "' + value + " to object.";

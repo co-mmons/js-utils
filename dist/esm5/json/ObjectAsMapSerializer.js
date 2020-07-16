@@ -30,7 +30,10 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
         }
     };
     ObjectAsMapSerializer.prototype.unserialize = function (value, options) {
-        if (typeof value === "object") {
+        if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+        }
+        else if (typeof value === "object") {
             if (this.valueType) {
                 var object = {};
                 for (var i in value) {
@@ -41,9 +44,6 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
             else {
                 return value;
             }
-        }
-        else if (this.isUndefinedOrNull(value)) {
-            return this.unserializeUndefinedOrNull(value, options);
         }
         else if (!options || !options.ignoreErrors) {
             throw 'Cannot unserialize "' + value + " to object.";

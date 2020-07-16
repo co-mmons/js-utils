@@ -7,7 +7,7 @@ import {Serializer} from "./Serializer";
 export function serialize(object: any, options?: SerializationOptions): any {
 
     if (object && object.toJSON) {
-        return object.toJSON();
+        return object.toJSON(options);
     } else if (Array.isArray(object)) {
         return ArraySerializer.ofAny.serialize(object, options);
     } else if (typeof object === "boolean" || object instanceof Boolean) {
@@ -62,15 +62,15 @@ export function unserialize<T>(json: any, targetClass?: Type, options?: Serializ
 
             const value = json[property];
 
-            if (typeof value === "object") {
+            if (typeof value === "object" && value) {
                 const knownType = findTypeByName(value);
                 if (knownType) {
-                    niu[property] = unserialize(value, knownType);
+                    niu[property] = unserialize(value, knownType, options);
                     continue;
                 }
             }
 
-            niu[property] = unserialize(value);
+            niu[property] = unserialize(value, undefined, options);
         }
 
         return niu as T;
@@ -129,7 +129,7 @@ export class ArraySerializer<T> extends Serializer<T[]> {
 
             } else {
                 for (let i of value) {
-                    array.push(serialize(i));
+                    array.push(serialize(i, options));
                 }
             }
 
@@ -155,19 +155,19 @@ export class ArraySerializer<T> extends Serializer<T[]> {
                 if (valueType instanceof Serializer) {
 
                     for (const i of json) {
-                        array.push((valueType as Serializer).unserialize(i));
+                        array.push((valueType as Serializer).unserialize(i, options));
                     }
 
                 } else {
                     for (const i of json) {
-                        array.push(unserialize(i, valueType as Type<any>));
+                        array.push(unserialize(i, valueType as Type<any>, options));
                     }
                 }
 
             } else {
 
                 for (const val of json) {
-                    array.push(unserialize(val));
+                    array.push(unserialize(val, undefined, options));
                 }
             }
 
@@ -194,7 +194,7 @@ class ObjectSerializer extends Serializer {
         if (object === null || object === undefined) return object;
 
         if (object.toJSON) {
-            object = object.toJSON();
+            object = object.toJSON(options);
         }
 		/*
 		if (typeof object == "object") {
@@ -215,10 +215,10 @@ class ObjectSerializer extends Serializer {
         if (this.isUndefinedOrNull(json)) {
             return json;
 
-        } else if (options && typeof options["propertyType"] === "function") {
-            return unserialize(json, options["propertyType"]);
+        } else if (options && typeof options?.["propertyType"] === "function") {
+            return unserialize(json, options["propertyType"], options);
         } else {
-            return unserialize(json, findTypeByName(json));
+            return unserialize(json, findTypeByName(json), options);
         }
     }
 }

@@ -6,7 +6,13 @@ const offsetFormatOptions = { timeZone: "UTC", hour12: false, year: "numeric", m
 const offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
 class DateTimezone {
     constructor(dateOrEpoch, timezone) {
-        this.$constructor(dateOrEpoch, timezone);
+        this.timezone = timezone;
+        if (typeof dateOrEpoch === "number") {
+            this.date = new Date(dateOrEpoch);
+        }
+        else if (dateOrEpoch instanceof Date) {
+            this.date = new Date(dateOrEpoch.getTime());
+        }
     }
     static timezoneOffset(timezone, date) {
         if (!date) {
@@ -29,25 +35,16 @@ class DateTimezone {
         const formatter = new Intl.DateTimeFormat("en-US", Object.assign({}, offsetFormatOptions, { timeZone: timezone }));
         return diffMinutes(parseDate(offsetUsFormatter.format(date)), parseDate(formatter.format(date)));
     }
-    $constructor(dateOrEpoch, timezone) {
-        this["timezone"] = timezone;
-        if (typeof dateOrEpoch === "number") {
-            this["date"] = new Date(dateOrEpoch);
+    static fromJSON(json) {
+        if (typeof json === "object" && json && json["timezone"] && json["date"]) {
+            return new DateTimezone(json["date"], json["timezone"]);
         }
-        else if (dateOrEpoch instanceof Date) {
-            this["date"] = new Date(dateOrEpoch.getTime());
+        else if (typeof json === "number") {
+            return new DateTimezone(json);
         }
     }
     toJSON() {
-        return { date: this.date.getTime(), timezone: this.timezone };
-    }
-    fromJSON(json) {
-        if (typeof json === "object" && json["timezone"] && json["date"]) {
-            this.$constructor(json["date"], json["timezone"]);
-        }
-        else if (typeof json === "number") {
-            this.$constructor(json);
-        }
+        return { "@type": "intl/DateTimezone", date: this.date.getTime(), timezone: this.timezone };
     }
 }
 exports.DateTimezone = DateTimezone;

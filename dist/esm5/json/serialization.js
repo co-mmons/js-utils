@@ -4,7 +4,7 @@ import { findTypeByName } from "./findTypeByName";
 import { Serializer } from "./Serializer";
 export function serialize(object, options) {
     if (object && object.toJSON) {
-        return object.toJSON();
+        return object.toJSON(options);
     }
     else if (Array.isArray(object)) {
         return ArraySerializer.ofAny.serialize(object, options);
@@ -54,14 +54,14 @@ export function unserialize(json, targetClass, options) {
         for (var _i = 0, _a = Object.keys(json); _i < _a.length; _i++) {
             var property = _a[_i];
             var value = json[property];
-            if (typeof value === "object") {
+            if (typeof value === "object" && value) {
                 var knownType_1 = findTypeByName(value);
                 if (knownType_1) {
-                    niu[property] = unserialize(value, knownType_1);
+                    niu[property] = unserialize(value, knownType_1, options);
                     continue;
                 }
             }
-            niu[property] = unserialize(value);
+            niu[property] = unserialize(value, undefined, options);
         }
         return niu;
     }
@@ -109,7 +109,7 @@ var ArraySerializer = /** @class */ (function (_super) {
             else {
                 for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
                     var i = value_2[_a];
-                    array.push(serialize(i));
+                    array.push(serialize(i, options));
                 }
             }
             return array;
@@ -129,20 +129,20 @@ var ArraySerializer = /** @class */ (function (_super) {
                 if (valueType instanceof Serializer) {
                     for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
                         var i = json_1[_i];
-                        array.push(valueType.unserialize(i));
+                        array.push(valueType.unserialize(i, options));
                     }
                 }
                 else {
                     for (var _a = 0, json_2 = json; _a < json_2.length; _a++) {
                         var i = json_2[_a];
-                        array.push(unserialize(i, valueType));
+                        array.push(unserialize(i, valueType, options));
                     }
                 }
             }
             else {
                 for (var _b = 0, json_3 = json; _b < json_3.length; _b++) {
                     var val = json_3[_b];
-                    array.push(unserialize(val));
+                    array.push(unserialize(val, undefined, options));
                 }
             }
             return array;
@@ -173,7 +173,7 @@ var ObjectSerializer = /** @class */ (function (_super) {
         if (object === null || object === undefined)
             return object;
         if (object.toJSON) {
-            object = object.toJSON();
+            object = object.toJSON(options);
         }
         /*
         if (typeof object == "object") {
@@ -191,11 +191,11 @@ var ObjectSerializer = /** @class */ (function (_super) {
         if (this.isUndefinedOrNull(json)) {
             return json;
         }
-        else if (options && typeof options["propertyType"] === "function") {
-            return unserialize(json, options["propertyType"]);
+        else if (options && typeof (options === null || options === void 0 ? void 0 : options["propertyType"]) === "function") {
+            return unserialize(json, options["propertyType"], options);
         }
         else {
-            return unserialize(json, findTypeByName(json));
+            return unserialize(json, findTypeByName(json), options);
         }
     };
     ObjectSerializer.instance = new ObjectSerializer();
