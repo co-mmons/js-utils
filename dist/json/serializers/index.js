@@ -14,4 +14,6 @@ var ObjectAsMapSerializer_1 = require("./ObjectAsMapSerializer");
 Object.defineProperty(exports, "ObjectAsMapSerializer", { enumerable: true, get: function () { return ObjectAsMapSerializer_1.ObjectAsMapSerializer; } });
 var StringSerializer_1 = require("./StringSerializer");
 Object.defineProperty(exports, "StringSerializer", { enumerable: true, get: function () { return StringSerializer_1.StringSerializer; } });
+var EnumAsStringSerializer_1 = require("./EnumAsStringSerializer");
+Object.defineProperty(exports, "EnumAsStringSerializer", { enumerable: true, get: function () { return EnumAsStringSerializer_1.EnumAsStringSerializer; } });
 //# sourceMappingURL=index.js.map
