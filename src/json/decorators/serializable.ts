@@ -3,7 +3,7 @@ import {getSupertypes} from "../getSupertypes";
 import {InternalType} from "../InternalType";
 import {JsonTypeName} from "../JsonTypeName";
 import {setupSerialization} from "../setupSerialization";
-import {TypeNameProvider, TypeProvider, TypeSerializerProvider} from "../TypeProvider";
+import {TypeProvider, TypeProviderLike} from "../TypeProvider";
 import {PropertyConfig} from "./PropertyConfig";
 
 export function serializable(options?: JsonSerializableOptions) {
@@ -48,7 +48,9 @@ export function serializable(options?: JsonSerializableOptions) {
     }
 }
 
+type Types = Array<TypeProvider | TypeProvider[] | (Type & JsonTypeName) | Types>;
+
 export interface JsonSerializableOptions {
-    types?: Array<(Type & JsonTypeName) | TypeProvider | Array<(Type & JsonTypeName) | TypeProvider>>;
+    types?: Types;
     properties?: {[propertyName: string]: PropertyConfig};
 }

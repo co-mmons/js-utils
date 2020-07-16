@@ -3,9 +3,11 @@ import { JsonTypeName } from "../JsonTypeName";
 import { TypeProvider } from "../TypeProvider";
 import { PropertyConfig } from "./PropertyConfig";
 export declare function serializable(options?: JsonSerializableOptions): (classType: Type) => void;
+declare type Types = Array<TypeProvider | TypeProvider[] | (Type & JsonTypeName) | Types>;
 export interface JsonSerializableOptions {
-    types?: Array<(Type & JsonTypeName) | TypeProvider | Array<(Type & JsonTypeName) | TypeProvider>>;
+    types?: Types;
     properties?: {
         [propertyName: string]: PropertyConfig;
     };
 }
+export {};
