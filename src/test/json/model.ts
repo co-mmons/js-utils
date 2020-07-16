@@ -1,4 +1,5 @@
-import {ArraySerializer, ignore, property, serializable, registeredType} from "../../json";
+import {ignore, property, serializable, globalType} from "../../json";
+import {ArraySerializer} from "../../json/serializers";
 
 export class ModelA {
 
@@ -55,7 +56,7 @@ export class ModelD extends ModelB {
     fieldModelD: boolean;
 }
 
-@registeredType()
+@globalType()
 export class ModelAutoRegister {
     static readonly jsonTypeName = "ModelAutoRegister";
 }

@@ -1,32 +1,39 @@
 import { resolveForwardRef } from "../core";
-import { getPrototypes } from "./getPrototypes";
-import { getTypesFromPrototypes } from "./getTypesFromPrototypes";
-import { serializerForType } from "./serialization";
+import { findTypeSerializer } from "./findTypeSerializer";
+import { getPrototypesTree } from "./getPrototypesTree";
+import { identifyType } from "./identifyType";
 import { Serializer } from "./Serializer";
+import { ObjectSerializer } from "./serializers/ObjectSerializer";
 export function toJsonImpl(options) {
-    var prototypes = getPrototypes(this);
-    var types = getTypesFromPrototypes(prototypes);
+    var prototypesTree = getPrototypesTree(this);
+    var typesTree = getTypesTree(prototypesTree);
     var json = {};
     // call toJSON for super types, only if hard coded in a class
-    for (var t = 1; t < types.length; t++) {
-        if (!types[t].__jsonToJson && prototypes[t].hasOwnProperty("toJSON")) {
-            var prototypeJson = prototypes[t].toJSON.call(this, options);
+    for (var t = 1; t < typesTree.length; t++) {
+        if (!typesTree[t].__jsonToJson && prototypesTree[t].hasOwnProperty("toJSON")) {
+            var prototypeJson = prototypesTree[t].toJSON.call(this, options);
             if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
             break;
         }
     }
-    var properties = getProperties(this, types);
+    var properties = getDeclaredProperties(this, typesTree);
     for (var propertyName in properties) {
-        var propertyConfig = properties[propertyName];
-        var propertyValue = this[propertyName];
-        var jsonName = propertyConfig.propertyJsonName ? propertyConfig.propertyJsonName : propertyName;
-        var serializer = propertyConfig.propertyType instanceof Serializer ? propertyConfig.propertyType : serializerForType(propertyConfig.propertyType);
-        json[jsonName] = serializer.serialize(propertyValue, propertyConfig);
+        var config = properties[propertyName];
+        var value = this[propertyName];
+        var type = config.propertyType ? config.propertyType : identifyType(value);
+        var serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
+        var name_1 = config.propertyJsonName ? config.propertyJsonName : propertyName;
+        if (serializer) {
+            json[name_1] = serializer.serialize(value);
+        }
+        else {
+            json[name_1] = ObjectSerializer.instance.serialize(value);
+        }
     }
-    if (types[0].jsonTypeName) {
-        json["@type"] = types[0].jsonTypeName;
+    if (typesTree[0].jsonTypeName) {
+        json["@type"] = typesTree[0].jsonTypeName;
     }
     return json;
 }
@@ -58,20 +65,35 @@ export function fromJsonImpl(json, options) {
     if (!instance) {
         instance = new this();
     }
-    var prototypes = getPrototypes(instance);
-    var types = getTypesFromPrototypes(prototypes);
-    var properties = getProperties(instance, types);
+    var prototypesTree = getPrototypesTree(instance);
+    var typesTree = getTypesTree(prototypesTree);
+    var properties = getDeclaredProperties(instance, typesTree);
+    // property names that already unserialized
+    var unserializedProperties = [];
+    // unserialize known properties
     for (var propertyName in properties) {
-        var propertyConfig = properties[propertyName];
-        var jsonName = propertyConfig.propertyJsonName ? propertyConfig.propertyJsonName : propertyName;
-        var serializer = propertyConfig.propertyType instanceof Serializer ? propertyConfig.propertyType : serializerForType(propertyConfig.propertyType);
-        if (jsonName in json) {
-            instance[propertyName] = serializer.unserialize(json[jsonName], propertyConfig);
+        var config = properties[propertyName];
+        var name_2 = config.propertyJsonName ? config.propertyJsonName : propertyName;
+        if (name_2 in json) {
+            var value = json[name_2];
+            var type = config.propertyType ? config.propertyType : identifyType(value);
+            var serializer = type instanceof Serializer ? type : findTypeSerializer(type) || ObjectSerializer.instance;
+            instance[propertyName] = serializer.unserialize(value, config);
+            unserializedProperties.push(name_2);
+        }
+    }
+    // copy json properties, that were not unserialized above
+    for (var propertyName in json) {
+        if (unserializedProperties.indexOf(propertyName) < 0) {
+            instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName]);
         }
     }
     return instance;
 }
-function getProperties(thiz, types) {
+function getTypesTree(prototypes) {
+    return prototypes.map(function (type) { return type.constructor; });
+}
+function getDeclaredProperties(thiz, types) {
     var names = Object.getOwnPropertyNames(thiz);
     var properties = {};
     for (var propertyName in thiz) {

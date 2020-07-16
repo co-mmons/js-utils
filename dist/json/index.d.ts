@@ -1,14 +1,12 @@
-export { EnumAsStringSerializer } from "./EnumAsStringSerializer";
-export { findTypeByName } from "./findTypeByName";
+export { findTypeOrSerializerByName } from "./findTypeOrSerializerByName";
+export { globalType } from "./decorators/globalType";
 export { ignore } from "./decorators/ignore";
 export { JsonTypeName } from "./JsonTypeName";
-export { ObjectAsMapSerializer } from "./ObjectAsMapSerializer";
 export { property } from "./decorators/property";
-export { registeredType } from "./decorators/registeredType";
-export { registerType } from "./registerType";
+export { registerGlobalProvider } from "./registerGlobalProvider";
 export { serializable } from "./decorators/serializable";
 export { SerializationOptions } from "./SerializationOptions";
-export { serialize, ArraySerializer, serializerForType, unserialize } from "./serialization";
+export { serialize, unserialize } from "./serialization";
 export { Serializer } from "./Serializer";
 export { subtype } from "./decorators/subtype";
 export { TypedJson } from "./TypedJson";

@@ -1,0 +1,10 @@
+{
+    "name": "@co.mmons/js-utils/preferences",
+    "main": "../dist/preferences/index.js",
+    "module": "../esm5/preferences/index.js",
+    "es5": "../dist/preferences/index.js",
+    "esm5": "../dist/esm5/preferences/index.js",
+    "es2015": "../dist/es2015/preferences/index.js",
+    "esm2015": "../dist/esm2015/preferences/index.js",
+    "sideEffects": false
+}

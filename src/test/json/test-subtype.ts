@@ -33,7 +33,7 @@ export function test() {
     const cSerialized = serialize(c);
     console.log("c serialized", cSerialized);
 
-    const cUnserialized = unserialize(c, A);
+    const cUnserialized = unserialize(cSerialized, A);
     console.log("c unserialized", cUnserialized);
 
     return aUnserialized instanceof B;

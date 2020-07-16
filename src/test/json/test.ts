@@ -1,4 +1,4 @@
-import {findTypeByName, registerType, serialize, unserialize} from "../../json";
+import {findTypeOrSerializerByName, registerGlobalProvider, serialize, unserialize} from "../../json";
 import {ModelAutoRegister, ModelB, ModelD} from "./model";
 
 (async () => {
@@ -50,8 +50,8 @@ import {ModelAutoRegister, ModelB, ModelD} from "./model";
         console.log(modelDUnserialized);
 
         console.log("Register type")
-        registerType(ModelD, "ModelD");
-        console.log("Registered type", findTypeByName("ModelD"));
+        registerGlobalProvider(ModelD, "ModelD");
+        console.log("Registered type", findTypeOrSerializerByName("ModelD"));
 
         console.log("Unserialize with @type")
         const unserializedWithType = unserialize({"@type": "ModelD"});

@@ -1,5 +1,5 @@
-import { getPrototypes } from "./getPrototypes";
+import { getPrototypesTree } from "./getPrototypesTree";
 export function getSupertypes(type) {
-    return getPrototypes(type.prototype).map(function (type) { return type.constructor; });
+    return getPrototypesTree(type.prototype).map(function (type) { return type.constructor; });
 }
 //# sourceMappingURL=getSupertypes.js.map
