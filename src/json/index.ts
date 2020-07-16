@@ -10,3 +10,4 @@ export {serialize, unserialize} from "./serialization";
 export {Serializer} from "./Serializer";
 export {subtype} from "./decorators/subtype";
 export {TypedJson} from "./TypedJson";
+export {TypeProviders, TypeProvider, TypeNameProvider, TypeSerializerProvider, TypeNameSerializerProvider} from "./TypeProvider";
