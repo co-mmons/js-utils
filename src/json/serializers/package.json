@@ -1,10 +1,10 @@
 {
     "name": "@co.mmons/js-utils/json/serializers",
     "main": "index.js",
-    "module": "../../esm5/json/index.js",
+    "module": "../../esm5/json/serializers/index.js",
     "es5": "index.js",
-    "esm5": "../../esm5/json/index.js",
-    "es2015": "../../es2015/json/index.js",
-    "esm2015": "../../esm2015/json/index.js",
+    "esm5": "../../esm5/json/serializers/index.js",
+    "es2015": "../../es2015/json/serializers/index.js",
+    "esm2015": "../../esm2015/json/serializers/index.js",
     "sideEffects": false
 }
