@@ -1,15 +1,13 @@
 import {AssignableType, resolveForwardRef, Type} from "../core";
-import {property} from "./decorators/property";
 import {PropertyConfig} from "./decorators/PropertyConfig";
 import {findTypeSerializer} from "./findTypeSerializer";
 import {getPrototypesTree} from "./getPrototypesTree";
 import {identifyType} from "./identifyType";
 import {InternalType} from "./InternalType";
-import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";
-import {ObjectSerializer} from "./serializers/ObjectSerializer";
+import {ObjectSerializer} from "./serializers";
 
-export function toJsonImpl(this: any, options?: SerializationOptions) {
+export function toJsonImpl(this: any) {
 
     const prototypesTree = getPrototypesTree(this);
     const typesTree = getTypesTree(prototypesTree);
@@ -20,7 +18,7 @@ export function toJsonImpl(this: any, options?: SerializationOptions) {
     for (let t = 1; t < typesTree.length; t++) {
         if (!typesTree[t].__jsonToJson && prototypesTree[t].hasOwnProperty("toJSON")) {
 
-            const prototypeJson = prototypesTree[t].toJSON.call(this, options);
+            const prototypeJson = prototypesTree[t].toJSON.call(this);
             if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
@@ -41,7 +39,7 @@ export function toJsonImpl(this: any, options?: SerializationOptions) {
         if (serializer) {
             json[name] = serializer.serialize(value);
         } else {
-            json[name] = ObjectSerializer.instance.serialize(value);
+            json[name] = new ObjectSerializer(type).serialize(value, {typeProviders: typesTree[0].__jsonTypes});
         }
     }
 
@@ -52,7 +50,7 @@ export function toJsonImpl(this: any, options?: SerializationOptions) {
     return json;
 }
 
-export function fromJsonImpl(this: AssignableType, json: any, options?: SerializationOptions) {
+export function fromJsonImpl(this: AssignableType, json: any) {
 
     const internalType = this as InternalType;
 
@@ -77,7 +75,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
             if (matchedType && matchedType !== this) {
 
                 if (matchedType.hasOwnProperty("fromJSON")) {
-                    return matchedType.fromJSON(json, options);
+                    return matchedType.fromJSON(json);
                 }
 
                 instance = new matchedType;
@@ -106,9 +104,13 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
         if (name in json) {
             const value = json[name];
             const type = config.propertyType ? config.propertyType : identifyType(value);
-            const serializer = type instanceof Serializer ? type : findTypeSerializer(type) || ObjectSerializer.instance;
 
-            instance[propertyName] = serializer.unserialize(value, config);
+            let serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
+            if (!serializer) {
+                serializer = new ObjectSerializer(type);
+            }
+
+            instance[propertyName] = serializer.unserialize(value, {typeProviders: typesTree[0].__jsonTypes});
             unserializedProperties.push(name);
         }
     }
@@ -116,7 +118,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
     // copy json properties, that were not unserialized above
     for (const propertyName in json) {
         if (unserializedProperties.indexOf(propertyName) < 0) {
-            instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName]);
+            instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName], {typeProviders: typesTree[0].__jsonTypes});
         }
     }
 
