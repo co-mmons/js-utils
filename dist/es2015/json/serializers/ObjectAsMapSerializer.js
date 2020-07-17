@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ObjectAsMapSerializer = void 0;
-const findTypeSerializer_1 = require("../findTypeSerializer");
 const Serializer_1 = require("../Serializer");
 const ObjectSerializer_1 = require("./ObjectSerializer");
 /**
@@ -17,7 +16,7 @@ class ObjectAsMapSerializer extends Serializer_1.Serializer {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer) || ObjectSerializer_1.ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
             const json = {};
             for (const i in value) {
                 json[i] = serializer.serialize(value[i], options);
@@ -36,7 +35,7 @@ class ObjectAsMapSerializer extends Serializer_1.Serializer {
             return this.unserializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer) || ObjectSerializer_1.ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
             const object = {};
             for (const i in value) {
                 object[i] = serializer.unserialize(value[i], options);

@@ -43,7 +43,7 @@ export function toJsonImpl(this: any) {
         }
     }
 
-    if ((typesTree[0] as InternalType).jsonTypeName) {
+    if (typesTree[0].hasOwnProperty("jsonTypeName")) {
         json["@type"] = (typesTree[0] as InternalType).jsonTypeName;
     }
 
@@ -117,6 +117,11 @@ export function fromJsonImpl(this: AssignableType, json: any) {
 
     // copy json properties, that were not unserialized above
     for (const propertyName in json) {
+
+        if (propertyName === "@type" && (typesTree[0] as InternalType).jsonTypeName) {
+            continue;
+        }
+
         if (unserializedProperties.indexOf(propertyName) < 0) {
             instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName], {typeProviders: typesTree[0].__jsonTypes});
         }

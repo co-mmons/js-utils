@@ -40,7 +40,7 @@ class ObjectSerializer extends Serializer_1.Serializer {
                 return this.unserializeToType(this.type, json);
             }
         }
-        if (!this.type && typeof json !== "object") {
+        if (!this.type && (typeof json !== "object" || Array.isArray(json))) {
             const type = identifyType_1.identifyType(json);
             if (type !== Object) {
                 const serializer = findTypeSerializer_1.findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders);

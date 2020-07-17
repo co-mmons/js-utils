@@ -1,5 +1,4 @@
 import { __extends } from "tslib";
-import { findTypeSerializer } from "../findTypeSerializer";
 import { Serializer } from "../Serializer";
 import { ObjectSerializer } from "./ObjectSerializer";
 /**
@@ -17,7 +16,7 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
             var json = {};
             for (var i in value) {
                 json[i] = serializer.serialize(value[i], options);
@@ -36,7 +35,7 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
             return this.unserializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
             var object = {};
             for (var i in value) {
                 object[i] = serializer.unserialize(value[i], options);

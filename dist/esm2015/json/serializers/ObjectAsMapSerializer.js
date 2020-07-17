@@ -1,4 +1,3 @@
-import { findTypeSerializer } from "../findTypeSerializer";
 import { Serializer } from "../Serializer";
 import { ObjectSerializer } from "./ObjectSerializer";
 /**
@@ -14,7 +13,7 @@ export class ObjectAsMapSerializer extends Serializer {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
             const json = {};
             for (const i in value) {
                 json[i] = serializer.serialize(value[i], options);
@@ -33,7 +32,7 @@ export class ObjectAsMapSerializer extends Serializer {
             return this.unserializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object") {
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
             const object = {};
             for (const i in value) {
                 object[i] = serializer.unserialize(value[i], options);

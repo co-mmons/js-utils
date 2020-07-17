@@ -40,7 +40,7 @@ var ObjectSerializer = /** @class */ (function (_super) {
                 return this.unserializeToType(this.type, json);
             }
         }
-        if (!this.type && typeof json !== "object") {
+        if (!this.type && (typeof json !== "object" || Array.isArray(json))) {
             var type = identifyType(json);
             if (type !== Object) {
                 var serializer = findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders);

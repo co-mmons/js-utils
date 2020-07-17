@@ -63,7 +63,11 @@ import {ModelAutoRegister, ModelB, ModelD} from "./model";
 
     if (true) {
 
-        for (const file of ["test-subtype", "test-type"]) {
+        for (const file of [
+            // "test-subtype",
+            // "test-type",
+            "test-array"
+        ]) {
             console.log("---", file, "---");
             const test = await import(`./${file}`);
             const result = test.test();

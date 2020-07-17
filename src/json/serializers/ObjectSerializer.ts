@@ -51,8 +51,7 @@ export class ObjectSerializer extends Serializer {
             }
         }
 
-        if (!this.type && typeof json !== "object") {
-
+        if (!this.type && (typeof json !== "object" || Array.isArray(json))) {
             const type = identifyType(json);
             if (type !== Object) {
                 const serializer = findTypeSerializer(type, options?.typeProviders);
@@ -71,7 +70,6 @@ export class ObjectSerializer extends Serializer {
 
             if (typeOrSerializer instanceof Serializer) {
                 return typeOrSerializer.unserialize(json, options);
-
             } else if (typeOrSerializer) {
                 return this.unserializeToType(typeOrSerializer, json);
             }

@@ -35,7 +35,7 @@ function toJsonImpl() {
             json[name] = new serializers_1.ObjectSerializer(type).serialize(value, { typeProviders: typesTree[0].__jsonTypes });
         }
     }
-    if (typesTree[0].jsonTypeName) {
+    if (typesTree[0].hasOwnProperty("jsonTypeName")) {
         json["@type"] = typesTree[0].jsonTypeName;
     }
     return json;
@@ -90,6 +90,9 @@ function fromJsonImpl(json) {
     }
     // copy json properties, that were not unserialized above
     for (const propertyName in json) {
+        if (propertyName === "@type" && typesTree[0].jsonTypeName) {
+            continue;
+        }
         if (unserializedProperties.indexOf(propertyName) < 0) {
             instance[propertyName] = serializers_1.ObjectSerializer.instance.unserialize(json[propertyName], { typeProviders: typesTree[0].__jsonTypes });
         }
