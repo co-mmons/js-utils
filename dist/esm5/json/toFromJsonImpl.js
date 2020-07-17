@@ -3,15 +3,15 @@ import { findTypeSerializer } from "./findTypeSerializer";
 import { getPrototypesTree } from "./getPrototypesTree";
 import { identifyType } from "./identifyType";
 import { Serializer } from "./Serializer";
-import { ObjectSerializer } from "./serializers/ObjectSerializer";
-export function toJsonImpl(options) {
+import { ObjectSerializer } from "./serializers";
+export function toJsonImpl() {
     var prototypesTree = getPrototypesTree(this);
     var typesTree = getTypesTree(prototypesTree);
     var json = {};
     // call toJSON for super types, only if hard coded in a class
     for (var t = 1; t < typesTree.length; t++) {
         if (!typesTree[t].__jsonToJson && prototypesTree[t].hasOwnProperty("toJSON")) {
-            var prototypeJson = prototypesTree[t].toJSON.call(this, options);
+            var prototypeJson = prototypesTree[t].toJSON.call(this);
             if (prototypeJson && typeof prototypeJson === "object") {
                 json = prototypeJson;
             }
@@ -29,7 +29,7 @@ export function toJsonImpl(options) {
             json[name_1] = serializer.serialize(value);
         }
         else {
-            json[name_1] = ObjectSerializer.instance.serialize(value);
+            json[name_1] = new ObjectSerializer(type).serialize(value, { typeProviders: typesTree[0].__jsonTypes });
         }
     }
     if (typesTree[0].jsonTypeName) {
@@ -37,7 +37,7 @@ export function toJsonImpl(options) {
     }
     return json;
 }
-export function fromJsonImpl(json, options) {
+export function fromJsonImpl(json) {
     var internalType = this;
     var instance;
     if (!instance && internalType.__jsonSubtypes) {
@@ -55,7 +55,7 @@ export function fromJsonImpl(json, options) {
             }
             if (matchedType && matchedType !== this) {
                 if (matchedType.hasOwnProperty("fromJSON")) {
-                    return matchedType.fromJSON(json, options);
+                    return matchedType.fromJSON(json);
                 }
                 instance = new matchedType;
                 break;
@@ -77,15 +77,18 @@ export function fromJsonImpl(json, options) {
         if (name_2 in json) {
             var value = json[name_2];
             var type = config.propertyType ? config.propertyType : identifyType(value);
-            var serializer = type instanceof Serializer ? type : findTypeSerializer(type) || ObjectSerializer.instance;
-            instance[propertyName] = serializer.unserialize(value, config);
+            var serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
+            if (!serializer) {
+                serializer = new ObjectSerializer(type);
+            }
+            instance[propertyName] = serializer.unserialize(value, { typeProviders: typesTree[0].__jsonTypes });
             unserializedProperties.push(name_2);
         }
     }
     // copy json properties, that were not unserialized above
     for (var propertyName in json) {
         if (unserializedProperties.indexOf(propertyName) < 0) {
-            instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName]);
+            instance[propertyName] = ObjectSerializer.instance.unserialize(json[propertyName], { typeProviders: typesTree[0].__jsonTypes });
         }
     }
     return instance;

@@ -8,7 +8,9 @@ export class ArraySerializer extends Serializer {
         if (arguments.length == 1 && !valueTypeOrSerializer) {
             throw new Error("Value type passed to Json Array Serializer is undefined - check, whether class reference cycle");
         }
-        this.typeOrSerializer = valueTypeOrSerializer && resolveForwardRef(valueTypeOrSerializer);
+        if (valueTypeOrSerializer) {
+            this.typeOrSerializer = resolveForwardRef(valueTypeOrSerializer);
+        }
     }
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
@@ -22,7 +24,10 @@ export class ArraySerializer extends Serializer {
                 }
             }
             else {
-                const serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
+                let serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
+                if (!serializer) {
+                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                }
                 for (const i of value) {
                     array.push(serializer.serialize(i, options));
                 }
@@ -45,7 +50,10 @@ export class ArraySerializer extends Serializer {
                 }
             }
             else {
-                const serializer = (this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer.instance;
+                let serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
+                if (!serializer) {
+                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
+                }
                 for (const i of json) {
                     array.push(serializer.unserialize(i, options));
                 }

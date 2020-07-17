@@ -5,15 +5,19 @@ import { identifyType } from "../identifyType";
 import { Serializer } from "../Serializer";
 var ObjectSerializer = /** @class */ (function (_super) {
     __extends(ObjectSerializer, _super);
-    function ObjectSerializer() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function ObjectSerializer(type) {
+        var _this = _super.call(this) || this;
+        if (type && type !== Object) {
+            _this.type = type;
+        }
+        return _this;
     }
     ObjectSerializer.prototype.serialize = function (object, options) {
         if (this.isUndefinedOrNull(object)) {
             return object;
         }
         else {
-            var serializer = findTypeSerializer(identifyType(object));
+            var serializer = findTypeSerializer(this.type ? this.type : identifyType(object), options === null || options === void 0 ? void 0 : options.typeProviders);
             if (serializer && serializer !== this) {
                 return serializer.serialize(object, options);
             }
@@ -27,10 +31,19 @@ var ObjectSerializer = /** @class */ (function (_super) {
         if (this.isUndefinedOrNull(json)) {
             return json;
         }
-        else if (typeof json !== "object") {
+        if (this.type) {
+            var serializer = findTypeSerializer(this.type, options === null || options === void 0 ? void 0 : options.typeProviders);
+            if (serializer) {
+                return serializer.unserialize(json, options);
+            }
+            else {
+                return this.unserializeToType(this.type, json);
+            }
+        }
+        if (!this.type && typeof json !== "object") {
             var type = identifyType(json);
             if (type !== Object) {
-                var serializer = findTypeSerializer(type);
+                var serializer = findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders);
                 if (serializer) {
                     return serializer.unserialize(json, options);
                 }
@@ -43,29 +56,32 @@ var ObjectSerializer = /** @class */ (function (_super) {
             }
         }
         else {
-            var typeOrSerializer = findTypeOrSerializerByName(json);
+            var typeOrSerializer = findTypeOrSerializerByName(json, options === null || options === void 0 ? void 0 : options.typeProviders);
             if (typeOrSerializer instanceof Serializer) {
                 return typeOrSerializer.unserialize(json, options);
             }
             else if (typeOrSerializer) {
-                if (typeOrSerializer.prototype["fromJSON"]) {
-                    var instance = Object.create(typeOrSerializer.prototype);
-                    instance.fromJSON(json);
-                    return instance;
-                }
-                else if (typeOrSerializer["fromJSON"]) {
-                    return typeOrSerializer["fromJSON"](json);
-                }
-                else if (typeOrSerializer !== Object) {
-                    return new typeOrSerializer(json);
-                }
+                return this.unserializeToType(typeOrSerializer, json);
             }
             var niu = {};
             for (var _i = 0, _a = Object.keys(json); _i < _a.length; _i++) {
                 var property = _a[_i];
-                niu[property] = this.unserialize(json[property]);
+                niu[property] = this.unserialize(json[property], options);
             }
             return niu;
+        }
+    };
+    ObjectSerializer.prototype.unserializeToType = function (type, json) {
+        if (type.prototype["fromJSON"]) {
+            var instance = Object.create(type.prototype);
+            instance.fromJSON(json);
+            return instance;
+        }
+        else if (type["fromJSON"]) {
+            return type["fromJSON"](json);
+        }
+        else if (type !== Object) {
+            return new type(json);
         }
     };
     return ObjectSerializer;

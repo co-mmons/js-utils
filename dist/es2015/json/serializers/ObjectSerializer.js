@@ -6,12 +6,18 @@ const findTypeSerializer_1 = require("../findTypeSerializer");
 const identifyType_1 = require("../identifyType");
 const Serializer_1 = require("../Serializer");
 class ObjectSerializer extends Serializer_1.Serializer {
+    constructor(type) {
+        super();
+        if (type && type !== Object) {
+            this.type = type;
+        }
+    }
     serialize(object, options) {
         if (this.isUndefinedOrNull(object)) {
             return object;
         }
         else {
-            const serializer = findTypeSerializer_1.findTypeSerializer(identifyType_1.identifyType(object));
+            const serializer = findTypeSerializer_1.findTypeSerializer(this.type ? this.type : identifyType_1.identifyType(object), options === null || options === void 0 ? void 0 : options.typeProviders);
             if (serializer && serializer !== this) {
                 return serializer.serialize(object, options);
             }
@@ -25,10 +31,19 @@ class ObjectSerializer extends Serializer_1.Serializer {
         if (this.isUndefinedOrNull(json)) {
             return json;
         }
-        else if (typeof json !== "object") {
+        if (this.type) {
+            const serializer = findTypeSerializer_1.findTypeSerializer(this.type, options === null || options === void 0 ? void 0 : options.typeProviders);
+            if (serializer) {
+                return serializer.unserialize(json, options);
+            }
+            else {
+                return this.unserializeToType(this.type, json);
+            }
+        }
+        if (!this.type && typeof json !== "object") {
             const type = identifyType_1.identifyType(json);
             if (type !== Object) {
-                const serializer = findTypeSerializer_1.findTypeSerializer(type);
+                const serializer = findTypeSerializer_1.findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders);
                 if (serializer) {
                     return serializer.unserialize(json, options);
                 }
@@ -41,28 +56,31 @@ class ObjectSerializer extends Serializer_1.Serializer {
             }
         }
         else {
-            const typeOrSerializer = findTypeOrSerializerByName_1.findTypeOrSerializerByName(json);
+            const typeOrSerializer = findTypeOrSerializerByName_1.findTypeOrSerializerByName(json, options === null || options === void 0 ? void 0 : options.typeProviders);
             if (typeOrSerializer instanceof Serializer_1.Serializer) {
                 return typeOrSerializer.unserialize(json, options);
             }
             else if (typeOrSerializer) {
-                if (typeOrSerializer.prototype["fromJSON"]) {
-                    const instance = Object.create(typeOrSerializer.prototype);
-                    instance.fromJSON(json);
-                    return instance;
-                }
-                else if (typeOrSerializer["fromJSON"]) {
-                    return typeOrSerializer["fromJSON"](json);
-                }
-                else if (typeOrSerializer !== Object) {
-                    return new typeOrSerializer(json);
-                }
+                return this.unserializeToType(typeOrSerializer, json);
             }
             const niu = {};
             for (const property of Object.keys(json)) {
-                niu[property] = this.unserialize(json[property]);
+                niu[property] = this.unserialize(json[property], options);
             }
             return niu;
+        }
+    }
+    unserializeToType(type, json) {
+        if (type.prototype["fromJSON"]) {
+            const instance = Object.create(type.prototype);
+            instance.fromJSON(json);
+            return instance;
+        }
+        else if (type["fromJSON"]) {
+            return type["fromJSON"](json);
+        }
+        else if (type !== Object) {
+            return new type(json);
         }
     }
 }

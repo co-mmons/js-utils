@@ -11,7 +11,9 @@ class ArraySerializer extends Serializer_1.Serializer {
         if (arguments.length == 1 && !valueTypeOrSerializer) {
             throw new Error("Value type passed to Json Array Serializer is undefined - check, whether class reference cycle");
         }
-        this.typeOrSerializer = valueTypeOrSerializer && core_1.resolveForwardRef(valueTypeOrSerializer);
+        if (valueTypeOrSerializer) {
+            this.typeOrSerializer = core_1.resolveForwardRef(valueTypeOrSerializer);
+        }
     }
     serialize(value, options) {
         if (this.isUndefinedOrNull(value)) {
@@ -25,7 +27,10 @@ class ArraySerializer extends Serializer_1.Serializer {
                 }
             }
             else {
-                const serializer = (this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer_1.ObjectSerializer.instance;
+                let serializer = this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
+                if (!serializer) {
+                    serializer = this.typeOrSerializer ? new ObjectSerializer_1.ObjectSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
+                }
                 for (const i of value) {
                     array.push(serializer.serialize(i, options));
                 }
@@ -48,7 +53,10 @@ class ArraySerializer extends Serializer_1.Serializer {
                 }
             }
             else {
-                const serializer = (this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer)) || ObjectSerializer_1.ObjectSerializer.instance;
+                let serializer = this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
+                if (!serializer) {
+                    serializer = this.typeOrSerializer ? new ObjectSerializer_1.ObjectSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
+                }
                 for (const i of json) {
                     array.push(serializer.unserialize(i, options));
                 }
