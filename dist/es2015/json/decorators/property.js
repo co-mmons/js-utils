@@ -26,7 +26,7 @@ function property() {
         const type = classPrototype.constructor;
         const config = Object.assign({ propertyType: jsonType, propertyJsonName: jsonName }, options);
         setupSerialization_1.setupSerialization(type);
-        const properties = type.__jsonProperties = type.__jsonProperties || {};
+        const properties = type.__jsonProperties = (type.hasOwnProperty("__jsonProperties") && type.__jsonProperties) || {};
         properties[propertyName] = config;
     };
 }

@@ -7,7 +7,7 @@ export function ignore() {
         const internalType = classPrototype.constructor as InternalType;
         setupSerialization(internalType);
 
-        const properties = internalType.__jsonIgnoredProperties = internalType.__jsonIgnoredProperties || [];
+        const properties = internalType.__jsonIgnoredProperties = (internalType.hasOwnProperty("__jsonIgnoredProperties") && internalType.__jsonIgnoredProperties) || [];
         properties.push(propertyName);
     }
 }

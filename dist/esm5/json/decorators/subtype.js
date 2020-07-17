@@ -3,7 +3,7 @@ export function subtype(supertype, propertyOrMatcher, value) {
     return function (classType) {
         setupSerialization(supertype);
         var internalType = supertype;
-        var types = internalType.__jsonSubtypes = internalType.__jsonSubtypes || [];
+        var types = internalType.__jsonSubtypes = (internalType.hasOwnProperty("__jsonSubtypes") && internalType.__jsonSubtypes) || [];
         types.push({
             type: classType,
             property: typeof propertyOrMatcher === "string" ? propertyOrMatcher : undefined,

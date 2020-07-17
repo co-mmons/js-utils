@@ -13,11 +13,11 @@ export function serializable(options?: JsonSerializableOptions) {
         const classInternalType = classType as InternalType;
 
         if (options?.properties) {
-            classInternalType.__jsonProperties = Object.assign(classInternalType.__jsonProperties || {}, options.properties);
+            classInternalType.__jsonProperties = Object.assign((classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {}, options.properties);
         }
 
         if (options?.types) {
-            classInternalType.__jsonTypes = classInternalType.__jsonTypes || [];
+            classInternalType.__jsonTypes = (classInternalType.hasOwnProperty("__jsonTypes") && classInternalType.__jsonTypes) || [];
 
             for (const types of options.types) {
                 for (const type of Array.isArray(types) ? types : [types]) {
@@ -30,11 +30,11 @@ export function serializable(options?: JsonSerializableOptions) {
             }
         }
 
-        if (classInternalType.jsonTypeName) {
+        if (classInternalType.hasOwnProperty("jsonTypeName") && classInternalType.jsonTypeName) {
             for (const supertype of getSupertypes(classInternalType)) {
-                if (supertype.__jsonSerialization) {
+                if (supertype.hasOwnProperty("__jsonSerialization") && supertype.__jsonSerialization) {
 
-                    const types = supertype.__jsonSubtypes = supertype.__jsonSubtypes || [];
+                    const types = supertype.__jsonSubtypes = (supertype.hasOwnProperty("__jsonSubtypes") && supertype.__jsonSubtypes) || [];
                     types.push({
                         type: classType,
                         property: "@type",

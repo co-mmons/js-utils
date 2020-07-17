@@ -13,7 +13,7 @@ export function subtype(supertype: Type, propertyOrMatcher: string | SubtypeMatc
 
         const internalType = supertype as InternalType;
 
-        const types = internalType.__jsonSubtypes = internalType.__jsonSubtypes || [];
+        const types = internalType.__jsonSubtypes = (internalType.hasOwnProperty("__jsonSubtypes") && internalType.__jsonSubtypes) || [];
 
         types.push({
             type: classType,

@@ -46,7 +46,7 @@ export function property(): Function {
 
         setupSerialization(type);
 
-        const properties = type.__jsonProperties = type.__jsonProperties || {};
+        const properties = type.__jsonProperties = (type.hasOwnProperty("__jsonProperties") && type.__jsonProperties) || {};
         properties[propertyName] = config;
     }
 }
