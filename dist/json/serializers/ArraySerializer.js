@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArraySerializer = void 0;
 const core_1 = require("../../core");
-const findTypeSerializer_1 = require("../findTypeSerializer");
 const Serializer_1 = require("../Serializer");
 const ObjectSerializer_1 = require("./ObjectSerializer");
 class ArraySerializer extends Serializer_1.Serializer {
@@ -21,19 +20,9 @@ class ArraySerializer extends Serializer_1.Serializer {
         }
         else if (Array.isArray(value)) {
             const array = [];
-            if (this.typeOrSerializer instanceof Serializer_1.Serializer) {
-                for (const i of value) {
-                    array.push(this.typeOrSerializer.serialize(i, options));
-                }
-            }
-            else {
-                let serializer = this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer_1.ObjectSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
-                }
-                for (const i of value) {
-                    array.push(serializer.serialize(i, options));
-                }
+            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
+            for (const i of value) {
+                array.push(serializer.serialize(i, options));
             }
             return array;
         }
@@ -47,19 +36,9 @@ class ArraySerializer extends Serializer_1.Serializer {
     unserialize(json, options) {
         if (Array.isArray(json)) {
             const array = [];
-            if (this.typeOrSerializer instanceof Serializer_1.Serializer) {
-                for (const i of json) {
-                    array.push(this.typeOrSerializer.unserialize(i, options));
-                }
-            }
-            else {
-                let serializer = this.typeOrSerializer && findTypeSerializer_1.findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer_1.ObjectSerializer(this.typeOrSerializer) : ObjectSerializer_1.ObjectSerializer.instance;
-                }
-                for (const i of json) {
-                    array.push(serializer.unserialize(i, options));
-                }
+            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
+            for (const i of json) {
+                array.push(serializer.unserialize(i, options));
             }
             return array;
         }

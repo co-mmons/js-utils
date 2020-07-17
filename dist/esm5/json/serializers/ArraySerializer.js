@@ -1,6 +1,5 @@
 import { __extends } from "tslib";
 import { resolveForwardRef } from "../../core";
-import { findTypeSerializer } from "../findTypeSerializer";
 import { Serializer } from "../Serializer";
 import { ObjectSerializer } from "./ObjectSerializer";
 var ArraySerializer = /** @class */ (function (_super) {
@@ -21,21 +20,10 @@ var ArraySerializer = /** @class */ (function (_super) {
         }
         else if (Array.isArray(value)) {
             var array = [];
-            if (this.typeOrSerializer instanceof Serializer) {
-                for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-                    var i = value_1[_i];
-                    array.push(this.typeOrSerializer.serialize(i, options));
-                }
-            }
-            else {
-                var serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
-                }
-                for (var _a = 0, value_2 = value; _a < value_2.length; _a++) {
-                    var i = value_2[_a];
-                    array.push(serializer.serialize(i, options));
-                }
+            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
+            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                var i = value_1[_i];
+                array.push(serializer.serialize(i, options));
             }
             return array;
         }
@@ -49,21 +37,10 @@ var ArraySerializer = /** @class */ (function (_super) {
     ArraySerializer.prototype.unserialize = function (json, options) {
         if (Array.isArray(json)) {
             var array = [];
-            if (this.typeOrSerializer instanceof Serializer) {
-                for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
-                    var i = json_1[_i];
-                    array.push(this.typeOrSerializer.unserialize(i, options));
-                }
-            }
-            else {
-                var serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
-                }
-                for (var _a = 0, json_2 = json; _a < json_2.length; _a++) {
-                    var i = json_2[_a];
-                    array.push(serializer.unserialize(i, options));
-                }
+            var serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
+            for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
+                var i = json_1[_i];
+                array.push(serializer.unserialize(i, options));
             }
             return array;
         }

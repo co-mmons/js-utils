@@ -83,5 +83,15 @@ export class ObjectSerializer extends Serializer {
 }
 (function (ObjectSerializer) {
     ObjectSerializer.instance = new ObjectSerializer();
+    function getTypeSerializer(type, typeProviders) {
+        const serializer = findTypeSerializer(type, typeProviders);
+        if (serializer) {
+            return serializer;
+        }
+        else {
+            return new ObjectSerializer(type);
+        }
+    }
+    ObjectSerializer.getTypeSerializer = getTypeSerializer;
 })(ObjectSerializer || (ObjectSerializer = {}));
 //# sourceMappingURL=ObjectSerializer.js.map

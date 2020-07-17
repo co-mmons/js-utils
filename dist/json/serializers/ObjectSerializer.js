@@ -87,5 +87,15 @@ class ObjectSerializer extends Serializer_1.Serializer {
 exports.ObjectSerializer = ObjectSerializer;
 (function (ObjectSerializer) {
     ObjectSerializer.instance = new ObjectSerializer();
+    function getTypeSerializer(type, typeProviders) {
+        const serializer = findTypeSerializer_1.findTypeSerializer(type, typeProviders);
+        if (serializer) {
+            return serializer;
+        }
+        else {
+            return new ObjectSerializer(type);
+        }
+    }
+    ObjectSerializer.getTypeSerializer = getTypeSerializer;
 })(ObjectSerializer = exports.ObjectSerializer || (exports.ObjectSerializer = {}));
 //# sourceMappingURL=ObjectSerializer.js.map

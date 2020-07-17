@@ -1,5 +1,4 @@
 import { resolveForwardRef } from "../../core";
-import { findTypeSerializer } from "../findTypeSerializer";
 import { Serializer } from "../Serializer";
 import { ObjectSerializer } from "./ObjectSerializer";
 export class ArraySerializer extends Serializer {
@@ -18,19 +17,9 @@ export class ArraySerializer extends Serializer {
         }
         else if (Array.isArray(value)) {
             const array = [];
-            if (this.typeOrSerializer instanceof Serializer) {
-                for (const i of value) {
-                    array.push(this.typeOrSerializer.serialize(i, options));
-                }
-            }
-            else {
-                let serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
-                }
-                for (const i of value) {
-                    array.push(serializer.serialize(i, options));
-                }
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
+            for (const i of value) {
+                array.push(serializer.serialize(i, options));
             }
             return array;
         }
@@ -44,19 +33,9 @@ export class ArraySerializer extends Serializer {
     unserialize(json, options) {
         if (Array.isArray(json)) {
             const array = [];
-            if (this.typeOrSerializer instanceof Serializer) {
-                for (const i of json) {
-                    array.push(this.typeOrSerializer.unserialize(i, options));
-                }
-            }
-            else {
-                let serializer = this.typeOrSerializer && findTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders);
-                if (!serializer) {
-                    serializer = this.typeOrSerializer ? new ObjectSerializer(this.typeOrSerializer) : ObjectSerializer.instance;
-                }
-                for (const i of json) {
-                    array.push(serializer.unserialize(i, options));
-                }
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer.instance;
+            for (const i of json) {
+                array.push(serializer.unserialize(i, options));
             }
             return array;
         }

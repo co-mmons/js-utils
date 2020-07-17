@@ -89,5 +89,15 @@ var ObjectSerializer = /** @class */ (function (_super) {
 export { ObjectSerializer };
 (function (ObjectSerializer) {
     ObjectSerializer.instance = new ObjectSerializer();
+    function getTypeSerializer(type, typeProviders) {
+        var serializer = findTypeSerializer(type, typeProviders);
+        if (serializer) {
+            return serializer;
+        }
+        else {
+            return new ObjectSerializer(type);
+        }
+    }
+    ObjectSerializer.getTypeSerializer = getTypeSerializer;
 })(ObjectSerializer || (ObjectSerializer = {}));
 //# sourceMappingURL=ObjectSerializer.js.map

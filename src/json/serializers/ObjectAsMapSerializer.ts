@@ -23,7 +23,7 @@ export class ObjectAsMapSerializer extends Serializer {
 
         } else if (typeof value === "object") {
 
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
             const json = {};
 
             for (const i in value) {
@@ -47,7 +47,7 @@ export class ObjectAsMapSerializer extends Serializer {
 
         } else if (typeof value === "object") {
 
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : findTypeSerializer(this.typeOrSerializer) || ObjectSerializer.instance;
+            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
             const object = {};
 
             for (const i in value) {

@@ -4,6 +4,7 @@ import {findTypeSerializer} from "../findTypeSerializer";
 import {identifyType} from "../identifyType";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
+import {TypeProvider} from "../TypeProvider";
 
 export class ObjectSerializer extends Serializer {
 
@@ -100,4 +101,13 @@ export class ObjectSerializer extends Serializer {
 
 export namespace ObjectSerializer {
     export const instance = new ObjectSerializer();
+
+    export function getTypeSerializer(type: Type, typeProviders?: TypeProvider[]) {
+        const serializer = findTypeSerializer(type, typeProviders);
+        if (serializer) {
+            return serializer;
+        } else {
+            return new ObjectSerializer(type);
+        }
+    }
 }
