@@ -1,23 +1,37 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BitFlagsMutable = void 0;
-const BitFlags_1 = require("./BitFlags");
-class BitFlagsMutable extends BitFlags_1.BitFlags {
-    constructor(value) {
-        super(value);
+var BitFlags_1 = require("./BitFlags");
+var BitFlagsMutable = /** @class */ (function (_super) {
+    __extends(BitFlagsMutable, _super);
+    function BitFlagsMutable(value) {
+        return _super.call(this, value) || this;
     }
-    add(flag) {
+    BitFlagsMutable.prototype.add = function (flag) {
         this._value |= flag;
         return this;
-    }
-    remove(flag) {
+    };
+    BitFlagsMutable.prototype.remove = function (flag) {
         this._value &= ~flag;
         return this;
-    }
-    toggle(flag) {
+    };
+    BitFlagsMutable.prototype.toggle = function (flag) {
         this._value ^= flag;
         return this;
-    }
-}
+    };
+    return BitFlagsMutable;
+}(BitFlags_1.BitFlags));
 exports.BitFlagsMutable = BitFlagsMutable;
-//# sourceMappingURL=BitFlagsMutable.js.map

@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupSerialization = void 0;
-const toFromJsonImpl_1 = require("./toFromJsonImpl");
+var toFromJsonImpl_1 = require("./toFromJsonImpl");
 function setupSerialization(type) {
-    const internalType = type;
+    var internalType = type;
     internalType.__jsonSerialization = true;
     if (!type.prototype.hasOwnProperty("toJSON")) {
         internalType.__jsonToJson = true;
@@ -19,4 +19,3 @@ function setupSerialization(type) {
     }
 }
 exports.setupSerialization = setupSerialization;
-//# sourceMappingURL=setupSerialization.js.map

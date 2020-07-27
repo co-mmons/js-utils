@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalProviders = void 0;
-const serializers_1 = require("./serializers");
+var serializers_1 = require("./serializers");
 exports.globalProviders = [
     { type: Boolean, serializer: serializers_1.BooleanSerializer.instance },
     { type: Number, serializer: serializers_1.NumberSerializer.instance },
@@ -9,4 +9,3 @@ exports.globalProviders = [
     { type: Array, serializer: serializers_1.ArraySerializer.ofAny },
     { type: String, serializer: serializers_1.StringSerializer.instance }
 ];
-//# sourceMappingURL=globalProviders.js.map

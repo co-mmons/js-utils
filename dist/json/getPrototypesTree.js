@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPrototypesTree = void 0;
 function getPrototypesTree(thiz) {
-    const types = [];
-    let prototype = Object.getPrototypeOf(thiz);
+    var types = [];
+    var prototype = Object.getPrototypeOf(thiz);
     while (prototype.constructor !== Object) {
         types.push(prototype);
         prototype = Object.getPrototypeOf(prototype);
@@ -11,4 +11,3 @@ function getPrototypesTree(thiz) {
     return types;
 }
 exports.getPrototypesTree = getPrototypesTree;
-//# sourceMappingURL=getPrototypesTree.js.map

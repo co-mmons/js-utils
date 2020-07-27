@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
+var tslib_1 = require("tslib");
 var collection_impl_1 = require("./collection-impl");
 Object.defineProperty(exports, "PreferencesCollectionRefImpl", { enumerable: true, get: function () { return collection_impl_1.PreferencesCollectionRefImpl; } });
 tslib_1.__exportStar(require("./interfaces"), exports);

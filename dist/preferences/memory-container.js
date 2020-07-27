@@ -1,29 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemoryPreferencesContainer = void 0;
-const fast_equals_1 = require("fast-equals");
-const collection_impl_1 = require("./collection-impl");
-const container_events_manager_1 = require("./container-events-manager");
-const deep_clone_1 = require("./deep-clone");
-const item_impl_1 = require("./item-impl");
-class MemoryPreferencesContainer {
-    constructor() {
+var fast_equals_1 = require("fast-equals");
+var collection_impl_1 = require("./collection-impl");
+var container_events_manager_1 = require("./container-events-manager");
+var deep_clone_1 = require("./deep-clone");
+var item_impl_1 = require("./item-impl");
+var MemoryPreferencesContainer = /** @class */ (function () {
+    function MemoryPreferencesContainer() {
         this.memory = [];
         this.events = new container_events_manager_1.ContainerEventsManager();
     }
-    fireEvent(event) {
+    MemoryPreferencesContainer.prototype.fireEvent = function (event) {
         this.events.fireEvent(Object.assign(event, { ref: new collection_impl_1.PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key) }));
-    }
-    newItem(item) {
+    };
+    MemoryPreferencesContainer.prototype.newItem = function (item) {
         if (item) {
             return new item_impl_1.PreferencesItemImpl(this.collection(item.collection), deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value));
         }
         return undefined;
-    }
-    set(collection, key, value, options) {
-        let item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+    };
+    MemoryPreferencesContainer.prototype.set = function (collection, key, value, options) {
+        var item = this.memory.find(function (item) { return item.collection === collection && fast_equals_1.deepEqual(item.key, key); });
         if (item) {
-            const old = item.value;
+            var old = item.value;
             item.value = deep_clone_1.deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
             this.fireEvent({
                 collection: collection,
@@ -44,18 +44,19 @@ class MemoryPreferencesContainer {
             });
             return Promise.resolve(this.newItem(item));
         }
-    }
-    get(collection, key) {
-        const item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+    };
+    MemoryPreferencesContainer.prototype.get = function (collection, key) {
+        var item = this.memory.find(function (item) { return item.collection === collection && fast_equals_1.deepEqual(item.key, key); });
         return Promise.resolve(this.newItem(item || null));
-    }
-    deleteAll(collection) {
-        const deleted = [];
-        for (let i = this.memory.length - 1; i >= 0; i--) {
+    };
+    MemoryPreferencesContainer.prototype.deleteAll = function (collection) {
+        var deleted = [];
+        for (var i = this.memory.length - 1; i >= 0; i--) {
             if (this.memory[i].collection === collection) {
-                for (const item of this.memory.splice(i, 1)) {
+                for (var _i = 0, _a = this.memory.splice(i, 1); _i < _a.length; _i++) {
+                    var item = _a[_i];
                     this.fireEvent({
-                        collection,
+                        collection: collection,
                         type: "delete",
                         key: deep_clone_1.deepClone(item.key),
                         oldValue: deep_clone_1.deepClone(item.value)
@@ -65,15 +66,21 @@ class MemoryPreferencesContainer {
             }
         }
         return Promise.resolve(deleted);
-    }
-    delete(collection, ...keys) {
-        const deleted = [];
-        KEYS: for (const key of keys) {
-            for (let i = 0; i < this.memory.length; i++) {
+    };
+    MemoryPreferencesContainer.prototype.delete = function (collection) {
+        var keys = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            keys[_i - 1] = arguments[_i];
+        }
+        var deleted = [];
+        KEYS: for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
+            var key = keys_1[_a];
+            for (var i = 0; i < this.memory.length; i++) {
                 if (this.memory[i].collection === collection && fast_equals_1.deepEqual(this.memory[i].key, key)) {
-                    for (const item of this.memory.splice(i, 1)) {
+                    for (var _b = 0, _c = this.memory.splice(i, 1); _b < _c.length; _b++) {
+                        var item = _c[_b];
                         this.fireEvent({
-                            collection,
+                            collection: collection,
                             type: "delete",
                             key: deep_clone_1.deepClone(item.key),
                             oldValue: deep_clone_1.deepClone(item.value)
@@ -85,17 +92,19 @@ class MemoryPreferencesContainer {
             }
         }
         return Promise.resolve(deleted);
-    }
-    exists(collection, key) {
-        return Promise.resolve(!!this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key)));
-    }
-    items(collection, keysToFilter) {
-        const items = [];
-        const args = arguments;
-        const keys = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+    };
+    MemoryPreferencesContainer.prototype.exists = function (collection, key) {
+        return Promise.resolve(!!this.memory.find(function (item) { return item.collection === collection && fast_equals_1.deepEqual(item.key, key); }));
+    };
+    MemoryPreferencesContainer.prototype.items = function (collection, keysToFilter) {
+        var items = [];
+        var args = arguments;
+        var keys = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map(function (value, index) { return args[index + 1]; });
         if (keys) {
-            KEYS: for (const key of keys) {
-                for (const item of this.memory) {
+            KEYS: for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
+                var key = keys_2[_i];
+                for (var _a = 0, _b = this.memory; _a < _b.length; _a++) {
+                    var item = _b[_a];
                     if (item.collection === collection && fast_equals_1.deepEqual(item.key, key)) {
                         items.push(this.newItem(item));
                         continue KEYS;
@@ -104,19 +113,20 @@ class MemoryPreferencesContainer {
             }
         }
         else if (arguments.length === 1) {
-            for (const item of this.memory) {
+            for (var _c = 0, _d = this.memory; _c < _d.length; _c++) {
+                var item = _d[_c];
                 if (item.collection === collection) {
                     items.push(this.newItem(item));
                 }
             }
         }
         return Promise.resolve(items);
-    }
-    update(collection, key, changes) {
-        const item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+    };
+    MemoryPreferencesContainer.prototype.update = function (collection, key, changes) {
+        var item = this.memory.find(function (item) { return item.collection === collection && fast_equals_1.deepEqual(item.key, key); });
         if (item) {
             if (changes) {
-                const old = item.value;
+                var old = item.value;
                 item.value = Object.assign({}, item.value, changes);
                 this.fireEvent({
                     collection: collection,
@@ -131,13 +141,14 @@ class MemoryPreferencesContainer {
         else {
             return Promise.reject(new Error("Key not exists"));
         }
-    }
-    collection(name) {
+    };
+    MemoryPreferencesContainer.prototype.collection = function (name) {
         return new collection_impl_1.PreferencesCollectionRefImpl(this, name);
-    }
-    listen(listener, collection) {
+    };
+    MemoryPreferencesContainer.prototype.listen = function (listener, collection) {
         return this.events.addListener(listener, collection);
-    }
-}
+    };
+    return MemoryPreferencesContainer;
+}());
 exports.MemoryPreferencesContainer = MemoryPreferencesContainer;
 //# sourceMappingURL=memory-container.js.map

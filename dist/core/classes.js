@@ -8,7 +8,7 @@ exports.Enumerable = exports.Final = void 0;
 * @link http://stackoverflow.com/a/37778842
 */
 function Final(target, propertyKey) {
-    const value = target[propertyKey];
+    var value = target[propertyKey];
     // if it currently has no value, then wait for the first setter-call
     // usually the case with non-static fields
     if (!value) {
@@ -37,10 +37,9 @@ function Final(target, propertyKey) {
 }
 exports.Final = Final;
 function Enumerable(isEnumerable) {
-    return (target, propertyKey, descriptor) => {
+    return function (target, propertyKey, descriptor) {
         descriptor.enumerable = isEnumerable;
         return descriptor;
     };
 }
 exports.Enumerable = Enumerable;
-//# sourceMappingURL=classes.js.map

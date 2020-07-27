@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enum = void 0;
-class Enum {
-    constructor(name) {
+var Enum = /** @class */ (function () {
+    function Enum(name) {
         this.name = name;
         addValue(this.constructor, this);
     }
-    static values() {
+    Enum.values = function () {
         return valuesRef(this).slice();
-    }
-    static fromJSON(value) {
-        let name;
+    };
+    Enum.fromJSON = function (value) {
+        var name;
         if (typeof value === "string") {
             name = value;
         }
@@ -18,15 +18,16 @@ class Enum {
             name = value.name;
         }
         if (name) {
-            for (const v of valuesRef(this)) {
+            for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
+                var v = _a[_i];
                 if (v.name === name) {
                     return v;
                 }
             }
         }
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
-    }
-    static valueOf(name) {
+    };
+    Enum.valueOf = function (name) {
         CHECK_NAME: if (name) {
             if (typeof name === "object" && name) {
                 if (name["@type"] === jsonTypeName(this)) {
@@ -36,15 +37,16 @@ class Enum {
                     break CHECK_NAME;
                 }
             }
-            for (const v of valuesRef(this)) {
+            for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
+                var v = _a[_i];
                 if (v.name === name) {
                     return v;
                 }
             }
         }
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
-    }
-    equals(value) {
+    };
+    Enum.prototype.equals = function (value) {
         if (typeof value === "string") {
             return value === this.name;
         }
@@ -55,11 +57,12 @@ class Enum {
             return value.name === this.name;
         }
         return false;
-    }
-    toJSON() {
+    };
+    Enum.prototype.toJSON = function () {
         return { "@type": jsonTypeName(this), name: this.name };
-    }
-}
+    };
+    return Enum;
+}());
 exports.Enum = Enum;
 function addValue(enumClass, value) {
     valuesRef(enumClass).push(value);
@@ -71,7 +74,7 @@ function valuesRef(enumClass) {
     return enumClass["__enumValues"];
 }
 function jsonTypeName(instanceOrClass) {
-    let type;
+    var type;
     if (instanceOrClass instanceof Enum) {
         type = instanceOrClass.constructor;
     }
@@ -80,4 +83,3 @@ function jsonTypeName(instanceOrClass) {
     }
     return type["jsonTypeName"] || type.name;
 }
-//# sourceMappingURL=Enum.js.map

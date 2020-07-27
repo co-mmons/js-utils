@@ -6,11 +6,13 @@
   "license": "MIT",
   "scripts": {
     "install": "node-utils-npm-install-dist",
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:es5 && npm run build:esm5 && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\"",
-    "build:es5": "tsc && tsc -p tsconfig.json -m commonjs -t es5 --outDir dist",
-    "build:esm5": "tsc && tsc -p tsconfig.json -d false -m es2015 -t es5 --outDir dist/esm5",
-    "build:esm2015": "tsc && tsc -p tsconfig.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
-    "build:es2015": "tsc && tsc -p tsconfig.json -d false -m commonjs -t es2015 --outDir dist/es2015"
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:es5 && npm run build:esm5 && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\" && npm run build:TsTransformer",
+    "build:es5": "tsc && tsc -p tsconfig.build.json -m commonjs -t es5 --outDir dist",
+    "build:esm5": "tsc && tsc -p tsconfig.build.json -d false -m es2015 -t es5 --outDir dist/esm5",
+    "build:esm2015": "tsc && tsc -p tsconfig.build.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
+    "build:es2015": "tsc && tsc -p tsconfig.build.json -d false -m commonjs -t es2015 --outDir dist/es2015",
+    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json -m commonjs -t es5 --outDir dist",
+    "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
   },
   "dependencies": {
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
@@ -24,7 +26,9 @@
     "bignumber.js": "^9.0.0",
     "fast-equals": "^2.0.0",
     "rxjs": "^6.5.4",
+    "tsconfig-paths": "^3.9.0",
     "tslib": "^1.10.0",
+    "ttypescript": "^1.5.10",
     "typescript": "~3.9.6"
   },
   "sideEffects": false

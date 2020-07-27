@@ -1,24 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Serializer = void 0;
-class Serializer {
-    serialize(object, options) {
+var Serializer = /** @class */ (function () {
+    function Serializer() {
+    }
+    Serializer.prototype.serialize = function (object, options) {
         return object;
-    }
-    isUndefinedOrNull(value) {
+    };
+    Serializer.prototype.isUndefinedOrNull = function (value) {
         return value === undefined || value === null;
-    }
-    serializeUndefinedOrNull(value, options) {
+    };
+    Serializer.prototype.serializeUndefinedOrNull = function (value, options) {
         return value;
-    }
-    unserializeUndefinedOrNull(value, options) {
+    };
+    Serializer.prototype.unserializeUndefinedOrNull = function (value, options) {
         if (options && options.disallowUndefinedOrNull) {
             throw "Undefined/null value is not allowed";
         }
         else {
             return value;
         }
-    }
-}
+    };
+    return Serializer;
+}());
 exports.Serializer = Serializer;
-//# sourceMappingURL=Serializer.js.map

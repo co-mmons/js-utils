@@ -1,24 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContainerEventsManager = void 0;
-const deep_clone_1 = require("./deep-clone");
-const item_ref_impl_1 = require("./item-ref-impl");
-class ContainerEventsManager {
-    constructor() {
+var deep_clone_1 = require("./deep-clone");
+var item_ref_impl_1 = require("./item-ref-impl");
+var ContainerEventsManager = /** @class */ (function () {
+    function ContainerEventsManager() {
         this.listeners = [];
     }
-    addListener(listener, collection) {
-        this.listeners.push({ listener, collection });
-        return () => {
-            for (let i = this.listeners.length - 1; i >= 0; i--) {
-                if (this.listeners[i].listener === listener && ((!this.listeners[i].collection && !collection) || (this.listeners[i].collection === collection))) {
-                    this.listeners.splice(i, 1);
+    ContainerEventsManager.prototype.addListener = function (listener, collection) {
+        var _this = this;
+        this.listeners.push({ listener: listener, collection: collection });
+        return function () {
+            for (var i = _this.listeners.length - 1; i >= 0; i--) {
+                if (_this.listeners[i].listener === listener && ((!_this.listeners[i].collection && !collection) || (_this.listeners[i].collection === collection))) {
+                    _this.listeners.splice(i, 1);
                 }
             }
         };
-    }
-    fireEvent(event) {
-        for (const listener of this.listeners) {
+    };
+    ContainerEventsManager.prototype.fireEvent = function (event) {
+        for (var _i = 0, _a = this.listeners; _i < _a.length; _i++) {
+            var listener = _a[_i];
             if (!listener.collection || event.collection === listener.collection) {
                 try {
                     listener.listener({
@@ -35,7 +37,8 @@ class ContainerEventsManager {
                 }
             }
         }
-    }
-}
+    };
+    return ContainerEventsManager;
+}());
 exports.ContainerEventsManager = ContainerEventsManager;
 //# sourceMappingURL=container-events-manager.js.map

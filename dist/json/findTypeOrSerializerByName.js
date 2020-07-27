@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findTypeOrSerializerByName = void 0;
-const globalProviders_1 = require("./globalProviders");
+var globalProviders_1 = require("./globalProviders");
 function findTypeOrSerializerByName(name, typeProviders) {
     if (typeof name === "object") {
         if (typeof (name === null || name === void 0 ? void 0 : name["@type"]) !== "string") {
@@ -11,9 +11,10 @@ function findTypeOrSerializerByName(name, typeProviders) {
     }
     if (name) {
         if (typeProviders) {
-            for (const provider of typeProviders) {
+            for (var _i = 0, typeProviders_1 = typeProviders; _i < typeProviders_1.length; _i++) {
+                var provider = typeProviders_1[_i];
                 if (Array.isArray(provider)) {
-                    const result = findTypeOrSerializerByName(name, provider);
+                    var result = findTypeOrSerializerByName(name, provider);
                     if (result) {
                         return result;
                     }
@@ -23,7 +24,8 @@ function findTypeOrSerializerByName(name, typeProviders) {
                 }
             }
         }
-        for (const provider of globalProviders_1.globalProviders) {
+        for (var _a = 0, globalProviders_2 = globalProviders_1.globalProviders; _a < globalProviders_2.length; _a++) {
+            var provider = globalProviders_2[_a];
             if (provider.name === name) {
                 return provider.serializer || provider.type;
             }
@@ -31,4 +33,3 @@ function findTypeOrSerializerByName(name, typeProviders) {
     }
 }
 exports.findTypeOrSerializerByName = findTypeOrSerializerByName;
-//# sourceMappingURL=findTypeOrSerializerByName.js.map

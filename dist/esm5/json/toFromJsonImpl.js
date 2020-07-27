@@ -22,6 +22,9 @@ export function toJsonImpl() {
     for (var propertyName in properties) {
         var config = properties[propertyName];
         var value = this[propertyName];
+        if (value === undefined) {
+            continue;
+        }
         var type = config.propertyType ? config.propertyType : identifyType(value);
         var serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
         var name_1 = config.propertyJsonName ? config.propertyJsonName : propertyName;
@@ -100,13 +103,7 @@ function getTypesTree(prototypes) {
     return prototypes.map(function (type) { return type.constructor; });
 }
 function getDeclaredProperties(thiz, types) {
-    var names = Object.getOwnPropertyNames(thiz);
     var properties = {};
-    for (var propertyName in thiz) {
-        if (typeof thiz[propertyName] !== "function") {
-            properties[propertyName] = {};
-        }
-    }
     for (var t = types.length - 1; t >= 0; t--) {
         var internalType = types[t];
         if (internalType.__jsonSerialization) {

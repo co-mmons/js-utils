@@ -1,28 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BitFlags = void 0;
-class BitFlags {
-    constructor(value) {
+var BitFlags = /** @class */ (function () {
+    function BitFlags(value) {
         this._value = value !== undefined && value !== null ? value : 0;
     }
-    get value() {
-        return this._value;
-    }
-    has(flag) {
+    Object.defineProperty(BitFlags.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    BitFlags.prototype.has = function (flag) {
         return (this._value & flag) === flag;
-    }
-    not(flag) {
+    };
+    BitFlags.prototype.not = function (flag) {
         return this.has(flag) === false;
-    }
-    add(flag) {
+    };
+    BitFlags.prototype.add = function (flag) {
         return new BitFlags(this._value | flag);
-    }
-    remove(flag) {
+    };
+    BitFlags.prototype.remove = function (flag) {
         return new BitFlags(this._value & ~flag);
-    }
-    toggle(flag) {
+    };
+    BitFlags.prototype.toggle = function (flag) {
         return new BitFlags(this._value ^ flag);
-    }
-}
+    };
+    return BitFlags;
+}());
 exports.BitFlags = BitFlags;
-//# sourceMappingURL=BitFlags.js.map

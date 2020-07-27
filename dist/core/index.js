@@ -34,4 +34,3 @@ var wait_1 = require("./wait");
 Object.defineProperty(exports, "waitTill", { enumerable: true, get: function () { return wait_1.waitTill; } });
 var sleep_1 = require("./sleep");
 Object.defineProperty(exports, "sleep", { enumerable: true, get: function () { return sleep_1.sleep; } });
-//# sourceMappingURL=index.js.map

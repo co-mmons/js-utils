@@ -1,0 +1,5 @@
+{
+    "name": "@co.mmons/js-utils/json/TsTransformer",
+    "main": "index.js",
+    "sideEffects": false
+}

@@ -5,11 +5,12 @@ exports.waitTill = void 0;
  * Check condition async and re-check every 100ms (or other interval) till it explicitly returns true.
  * If condition throws error, the promise will be rejected.
  */
-function waitTill(condition, interval = 100, timeout) {
-    return new Promise((resolve, reject) => {
-        let intervalId;
-        let finished = false;
-        let test = () => {
+function waitTill(condition, interval, timeout) {
+    if (interval === void 0) { interval = 100; }
+    return new Promise(function (resolve, reject) {
+        var intervalId;
+        var finished = false;
+        var test = function () {
             try {
                 if (condition() === true) {
                     if (intervalId) {
@@ -32,7 +33,7 @@ function waitTill(condition, interval = 100, timeout) {
         if (!test()) {
             intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
             if (timeout > 0) {
-                setTimeout(() => {
+                setTimeout(function () {
                     if (!finished) {
                         if (intervalId) {
                             clearInterval(intervalId);
@@ -45,4 +46,3 @@ function waitTill(condition, interval = 100, timeout) {
     });
 }
 exports.waitTill = waitTill;
-//# sourceMappingURL=wait.js.map

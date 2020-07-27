@@ -15,3 +15,5 @@ export interface InternalType<T = any> extends Type<T> {
     jsonTypeName?: string;
     fromJSON?: (json: any, options?: SerializationOptions) => T;
 }
+
+export type InternalTypeProps = keyof InternalType;

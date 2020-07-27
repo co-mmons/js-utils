@@ -17,4 +17,3 @@ function resolveForwardRef(type) {
     }
 }
 exports.resolveForwardRef = resolveForwardRef;
-//# sourceMappingURL=resolveForwardRef.js.map

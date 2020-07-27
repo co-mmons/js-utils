@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unserialize = exports.serialize = void 0;
-const findTypeSerializer_1 = require("./findTypeSerializer");
-const serializers_1 = require("./serializers");
+var findTypeSerializer_1 = require("./findTypeSerializer");
+var serializers_1 = require("./serializers");
 function serialize(object, options) {
     return serializers_1.ObjectSerializer.instance.serialize(object, options);
 }
@@ -12,13 +12,13 @@ function unserialize(json, targetClass, options) {
         return json;
     }
     if (targetClass) {
-        const internalType = targetClass;
-        const serializer = findTypeSerializer_1.findTypeSerializer(targetClass);
+        var internalType = targetClass;
+        var serializer = findTypeSerializer_1.findTypeSerializer(targetClass);
         if (serializer) {
             return serializer.unserialize(json, options);
         }
         if (targetClass.prototype["fromJSON"]) {
-            const instance = Object.create(targetClass.prototype);
+            var instance = Object.create(targetClass.prototype);
             instance.fromJSON(json, options);
             return instance;
         }
@@ -32,4 +32,3 @@ function unserialize(json, targetClass, options) {
     return serializers_1.ObjectSerializer.instance.unserialize(json, options);
 }
 exports.unserialize = unserialize;
-//# sourceMappingURL=serialization.js.map

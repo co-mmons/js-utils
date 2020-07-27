@@ -1,43 +1,60 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArraySerializer = void 0;
-const core_1 = require("../../core");
-const Serializer_1 = require("../Serializer");
-const ObjectSerializer_1 = require("./ObjectSerializer");
-class ArraySerializer extends Serializer_1.Serializer {
-    constructor(valueTypeOrSerializer) {
-        super();
+var core_1 = require("../../core");
+var Serializer_1 = require("../Serializer");
+var ObjectSerializer_1 = require("./ObjectSerializer");
+var ArraySerializer = /** @class */ (function (_super) {
+    __extends(ArraySerializer, _super);
+    function ArraySerializer(valueTypeOrSerializer) {
+        var _this = _super.call(this) || this;
         if (arguments.length == 1 && !valueTypeOrSerializer) {
             throw new Error("Value type passed to Json Array Serializer is undefined - check, whether class reference cycle");
         }
         if (valueTypeOrSerializer) {
-            this.typeOrSerializer = core_1.resolveForwardRef(valueTypeOrSerializer);
+            _this.typeOrSerializer = core_1.resolveForwardRef(valueTypeOrSerializer);
         }
+        return _this;
     }
-    serialize(value, options) {
+    ArraySerializer.prototype.serialize = function (value, options) {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (Array.isArray(value)) {
-            const array = [];
-            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
-            for (const i of value) {
+            var array = [];
+            var serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
+            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                var i = value_1[_i];
                 array.push(serializer.serialize(i, options));
             }
             return array;
         }
         else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot serialize "${value}" as array`);
+            throw new Error("Cannot serialize \"" + value + "\" as array");
         }
         else {
             return undefined;
         }
-    }
-    unserialize(json, options) {
+    };
+    ArraySerializer.prototype.unserialize = function (json, options) {
         if (Array.isArray(json)) {
-            const array = [];
-            const serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
-            for (const i of json) {
+            var array = [];
+            var serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
+            for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
+                var i = json_1[_i];
                 array.push(serializer.unserialize(i, options));
             }
             return array;
@@ -46,13 +63,14 @@ class ArraySerializer extends Serializer_1.Serializer {
             return this.unserializeUndefinedOrNull(json, options);
         }
         else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot unserialize "${json}" to array`);
+            throw new Error("Cannot unserialize \"" + json + "\" to array");
         }
         else {
             return undefined;
         }
-    }
-}
+    };
+    return ArraySerializer;
+}(Serializer_1.Serializer));
 exports.ArraySerializer = ArraySerializer;
 (function (ArraySerializer) {
     ArraySerializer.ofAny = new ArraySerializer();
@@ -60,4 +78,4 @@ exports.ArraySerializer = ArraySerializer;
     ArraySerializer.ofNumber = new ArraySerializer(Number);
     ArraySerializer.ofBoolean = new ArraySerializer(Boolean);
 })(ArraySerializer = exports.ArraySerializer || (exports.ArraySerializer = {}));
-//# sourceMappingURL=ArraySerializer.js.map
+exports.ArraySerializer = ArraySerializer;

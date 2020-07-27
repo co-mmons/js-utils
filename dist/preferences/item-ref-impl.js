@@ -1,28 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PreferencesItemRefImpl = void 0;
-const tslib_1 = require("tslib");
-class PreferencesItemRefImpl {
-    constructor(collection, key) {
+var tslib_1 = require("tslib");
+var PreferencesItemRefImpl = /** @class */ (function () {
+    function PreferencesItemRefImpl(collection, key) {
         this.collection = collection;
         this.key = key;
     }
-    delete() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return (yield this.collection.delete(this.key)).length === 1;
+    PreferencesItemRefImpl.prototype.delete = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.collection.delete(this.key)];
+                    case 1: return [2 /*return*/, (_a.sent()).length === 1];
+                }
+            });
         });
-    }
-    value() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.collection.value(this.key);
+    };
+    PreferencesItemRefImpl.prototype.value = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.collection.value(this.key)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
         });
-    }
-    set(value, options) {
+    };
+    PreferencesItemRefImpl.prototype.set = function (value, options) {
         return this.collection.set(this.key, value, options);
-    }
-    update(value) {
+    };
+    PreferencesItemRefImpl.prototype.update = function (value) {
         return this.collection.update(this.key, value);
-    }
-}
+    };
+    return PreferencesItemRefImpl;
+}());
 exports.PreferencesItemRefImpl = PreferencesItemRefImpl;
 //# sourceMappingURL=item-ref-impl.js.map
