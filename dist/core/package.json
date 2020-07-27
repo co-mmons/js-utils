@@ -1,0 +1,10 @@
+{
+    "name": "@co.mmons/js-utils/core",
+    "main": "index.js",
+    "module": "../esm5/core/index.js",
+    "es5": "index.js",
+    "esm5": "../esm5/core/index.js",
+    "es2015": "../es2015/core/index.js",
+    "esm2015": "../esm2015/core/index.js",
+    "sideEffects": false
+}

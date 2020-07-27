@@ -22,8 +22,8 @@ function visitNode(node, program) {
                     if (childNode.type) {
                         if (ts.isTypeReferenceNode(childNode.type)) {
                             var type = typeChecker.getTypeFromTypeNode(childNode.type);
-                            var symbol = type.getSymbol().name;
-                            if (type.isClass() || (!type.isClassOrInterface() && symbol !== "__type")) {
+                            var symbol = type.getSymbol();
+                            if (symbol && (type.isClass() || (!type.isClassOrInterface() && symbol.name !== "__type"))) {
                                 typeName = childNode.type.typeName.getText();
                             }
                         }
