@@ -17,7 +17,8 @@ sss: string;
 export class A extends X {
     aProp: string;
     aPropDate: Date;
-    aPropPartial: Interface & {};
+    aPropPartial: Partial<Date>;
+    aPropInterface: Interface & {};
 }
 
 export function test() {

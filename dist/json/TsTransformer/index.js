@@ -23,8 +23,8 @@ function visitNode(node, program) {
                         if (ts.isTypeReferenceNode(childNode.type)) {
                             var type = typeChecker.getTypeFromTypeNode(childNode.type);
                             var symbol = type.getSymbol();
-                            if (symbol && (type.isClass() || (!type.isClassOrInterface() && symbol.name !== "__type"))) {
-                                typeName = childNode.type.typeName.getText();
+                            if (symbol && (type.isClass() || type.isClassOrInterface())) {
+                                typeName = symbol.name;
                             }
                         }
                     }

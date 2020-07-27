@@ -31,8 +31,8 @@ function visitNode(node: ts.Node, program: ts.Program): ts.Node | undefined {
                         if (ts.isTypeReferenceNode(childNode.type)) {
                             const type = typeChecker.getTypeFromTypeNode(childNode.type);
                             const symbol = type.getSymbol();
-                            if (symbol && (type.isClass() || (!type.isClassOrInterface() && symbol.name !== "__type"))) {
-                                typeName = childNode.type.typeName.getText();
+                            if (symbol && (type.isClass() || type.isClassOrInterface())) {
+                                typeName = symbol.name;
                             }
                         }
                     }
