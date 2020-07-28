@@ -6,5 +6,6 @@
     "esm5": "../esm5/json/index.js",
     "es2015": "../es2015/json/index.js",
     "esm2015": "../esm2015/json/index.js",
+    "types": "index.d.ts",
     "sideEffects": false
 }
