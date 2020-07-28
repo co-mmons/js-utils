@@ -1,26 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ObjectAsMapSerializer = void 0;
+var tslib_1 = require("tslib");
 var Serializer_1 = require("../Serializer");
 var ObjectSerializer_1 = require("./ObjectSerializer");
 /**
  * Serializer of objects, that should be treated as Maps, where key is always a string and value of given type.
  */
 var ObjectAsMapSerializer = /** @class */ (function (_super) {
-    __extends(ObjectAsMapSerializer, _super);
+    tslib_1.__extends(ObjectAsMapSerializer, _super);
     function ObjectAsMapSerializer(valueTypeOrSerializer) {
         var _this = _super.call(this) || this;
         _this.typeOrSerializer = valueTypeOrSerializer;
@@ -67,3 +55,4 @@ var ObjectAsMapSerializer = /** @class */ (function (_super) {
     return ObjectAsMapSerializer;
 }(Serializer_1.Serializer));
 exports.ObjectAsMapSerializer = ObjectAsMapSerializer;
+//# sourceMappingURL=ObjectAsMapSerializer.js.map

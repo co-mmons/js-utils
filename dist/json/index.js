@@ -19,3 +19,4 @@ var Serializer_1 = require("./Serializer");
 Object.defineProperty(exports, "Serializer", { enumerable: true, get: function () { return Serializer_1.Serializer; } });
 var subtype_1 = require("./decorators/subtype");
 Object.defineProperty(exports, "subtype", { enumerable: true, get: function () { return subtype_1.subtype; } });
+//# sourceMappingURL=index.js.map

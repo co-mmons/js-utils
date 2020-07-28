@@ -31,3 +31,4 @@ function property() {
     };
 }
 exports.property = property;
+//# sourceMappingURL=property.js.map

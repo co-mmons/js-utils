@@ -31,3 +31,4 @@ function identifyType(object) {
     }
 }
 exports.identifyType = identifyType;
+//# sourceMappingURL=identifyType.js.map

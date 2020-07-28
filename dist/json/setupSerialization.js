@@ -19,3 +19,4 @@ function setupSerialization(type) {
     }
 }
 exports.setupSerialization = setupSerialization;
+//# sourceMappingURL=setupSerialization.js.map

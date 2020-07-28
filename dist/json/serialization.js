@@ -32,3 +32,4 @@ function unserialize(json, targetClass, options) {
     return serializers_1.ObjectSerializer.instance.unserialize(json, options);
 }
 exports.unserialize = unserialize;
+//# sourceMappingURL=serialization.js.map

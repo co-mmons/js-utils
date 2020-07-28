@@ -24,3 +24,4 @@ var Serializer = /** @class */ (function () {
     return Serializer;
 }());
 exports.Serializer = Serializer;
+//# sourceMappingURL=Serializer.js.map

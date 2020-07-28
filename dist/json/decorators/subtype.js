@@ -16,3 +16,4 @@ function subtype(supertype, propertyOrMatcher, value) {
     };
 }
 exports.subtype = subtype;
+//# sourceMappingURL=subtype.js.map

@@ -83,3 +83,4 @@ function jsonTypeName(instanceOrClass) {
     }
     return type["jsonTypeName"] || type.name;
 }
+//# sourceMappingURL=Enum.js.map

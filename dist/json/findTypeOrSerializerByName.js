@@ -33,3 +33,4 @@ function findTypeOrSerializerByName(name, typeProviders) {
     }
 }
 exports.findTypeOrSerializerByName = findTypeOrSerializerByName;
+//# sourceMappingURL=findTypeOrSerializerByName.js.map

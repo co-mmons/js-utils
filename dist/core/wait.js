@@ -46,3 +46,4 @@ function waitTill(condition, interval, timeout) {
     });
 }
 exports.waitTill = waitTill;
+//# sourceMappingURL=wait.js.map

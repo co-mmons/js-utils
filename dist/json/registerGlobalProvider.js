@@ -12,3 +12,4 @@ function registerGlobalProvider() {
     globalProviders_1.globalProviders.push({ name: typeName, type: typeClass });
 }
 exports.registerGlobalProvider = registerGlobalProvider;
+//# sourceMappingURL=registerGlobalProvider.js.map

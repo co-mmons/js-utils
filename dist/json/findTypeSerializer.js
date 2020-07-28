@@ -28,3 +28,4 @@ function findTypeSerializer(type, typeProviders) {
     }
 }
 exports.findTypeSerializer = findTypeSerializer;
+//# sourceMappingURL=findTypeSerializer.js.map

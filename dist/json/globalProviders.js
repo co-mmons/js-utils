@@ -9,3 +9,4 @@ exports.globalProviders = [
     { type: Array, serializer: serializers_1.ArraySerializer.ofAny },
     { type: String, serializer: serializers_1.StringSerializer.instance }
 ];
+//# sourceMappingURL=globalProviders.js.map

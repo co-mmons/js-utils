@@ -13,7 +13,12 @@ export function serializable(options) {
         setupSerialization(classType);
         const classInternalType = classType;
         if (options === null || options === void 0 ? void 0 : options.properties) {
-            classInternalType.__jsonProperties = Object.assign((classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {}, typeof options.properties === "string" ? { "*": null } : options.properties);
+            const properties = classInternalType.__jsonProperties = (classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {};
+            for (const propertyName of Object.keys(options.properties)) {
+                if (!(propertyName in properties)) {
+                    properties[propertyName] = options.properties[propertyName];
+                }
+            }
         }
         if (options === null || options === void 0 ? void 0 : options.types) {
             classInternalType.__jsonTypes = (classInternalType.hasOwnProperty("__jsonTypes") && classInternalType.__jsonTypes) || [];

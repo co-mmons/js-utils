@@ -23,7 +23,12 @@ export function serializable(options?: JsonSerializableOptions) {
         const classInternalType = classType as InternalType;
 
         if (options?.properties) {
-            classInternalType.__jsonProperties = Object.assign((classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {}, typeof options.properties === "string" ? {"*": null} : options.properties);
+            const properties = classInternalType.__jsonProperties = (classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {};
+            for (const propertyName of Object.keys(options.properties)) {
+                if (!(propertyName in properties)) {
+                    properties[propertyName] = options.properties[propertyName];
+                }
+            }
         }
 
         if (options?.types) {

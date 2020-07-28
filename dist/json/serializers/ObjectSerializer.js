@@ -1,25 +1,13 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ObjectSerializer = void 0;
+var tslib_1 = require("tslib");
 var findTypeOrSerializerByName_1 = require("../findTypeOrSerializerByName");
 var findTypeSerializer_1 = require("../findTypeSerializer");
 var identifyType_1 = require("../identifyType");
 var Serializer_1 = require("../Serializer");
 var ObjectSerializer = /** @class */ (function (_super) {
-    __extends(ObjectSerializer, _super);
+    tslib_1.__extends(ObjectSerializer, _super);
     function ObjectSerializer(type) {
         var _this = _super.call(this) || this;
         if (type && type !== Object) {
@@ -116,3 +104,4 @@ exports.ObjectSerializer = ObjectSerializer;
     ObjectSerializer.getTypeSerializer = getTypeSerializer;
 })(ObjectSerializer = exports.ObjectSerializer || (exports.ObjectSerializer = {}));
 exports.ObjectSerializer = ObjectSerializer;
+//# sourceMappingURL=ObjectSerializer.js.map

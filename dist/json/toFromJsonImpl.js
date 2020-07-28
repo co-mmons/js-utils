@@ -125,3 +125,4 @@ function getDeclaredProperties(thiz, types) {
     }
     return properties;
 }
+//# sourceMappingURL=toFromJsonImpl.js.map

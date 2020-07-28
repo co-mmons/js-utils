@@ -11,3 +11,4 @@ function getPrototypesTree(thiz) {
     return types;
 }
 exports.getPrototypesTree = getPrototypesTree;
+//# sourceMappingURL=getPrototypesTree.js.map

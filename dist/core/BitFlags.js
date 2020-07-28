@@ -30,3 +30,4 @@ var BitFlags = /** @class */ (function () {
     return BitFlags;
 }());
 exports.BitFlags = BitFlags;
+//# sourceMappingURL=BitFlags.js.map

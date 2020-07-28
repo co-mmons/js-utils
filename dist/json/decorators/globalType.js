@@ -8,3 +8,4 @@ function globalType(options) {
     };
 }
 exports.globalType = globalType;
+//# sourceMappingURL=globalType.js.map
