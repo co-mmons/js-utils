@@ -1,5 +1,4 @@
 import * as ts from "typescript";
-import {PropertyConfig} from "../decorators/PropertyConfig";
 
 export default function transformer(program: ts.Program): ts.TransformerFactory<ts.SourceFile> {
     return (context: ts.TransformationContext) => (file: ts.SourceFile) => visitNodeAndChildren(file, program, context);
@@ -26,13 +25,17 @@ function visitNode(node: ts.Node, program: ts.Program): ts.Node | undefined {
             for (const childNode of clazz.members) {
                 if (ts.isPropertyDeclaration(childNode)) {
 
-                    let typeName: string = undefined;
+                    let typeName: ts.Identifier = undefined;
+                    const type = typeChecker.getTypeAtLocation(childNode);
+
                     if (childNode.type) {
                         if (ts.isTypeReferenceNode(childNode.type)) {
-                            const type = typeChecker.getTypeFromTypeNode(childNode.type);
-                            const symbol = type.getSymbol();
-                            if (symbol && (type.isClass() || type.isClassOrInterface())) {
-                                typeName = symbol.name;
+                            if (type && type.isClassOrInterface()) {
+                                const symbol = typeChecker.getSymbolAtLocation(childNode.type.typeName);
+                                // console.log(symbol?.name, type.isClass(), type.isClassOrInterface(), symbol.valueDeclaration?.kind);
+                                if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
+                                    typeName = childNode.type.typeName as ts.Identifier;
+                                }
                             }
                         }
                     }
@@ -40,7 +43,7 @@ function visitNode(node: ts.Node, program: ts.Program): ts.Node | undefined {
                     clazzProps.push(ts.createPropertyAssignment(
                         ts.createIdentifier(childNode.name.getText()),
                         typeName ? ts.createObjectLiteral([
-                            ts.createPropertyAssignment(ts.createIdentifier("propertyType"), ts.createIdentifier(typeName))
+                            ts.createPropertyAssignment(ts.createIdentifier("propertyType"), typeName)
                         ]) : ts.createObjectLiteral()
                     ));
                 }

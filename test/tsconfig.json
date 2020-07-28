@@ -1,7 +1,7 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist-test",
+        "outDir": "../dist-test",
         "paths": {
             "@co.mmons/js-utils": ["src"],
             "@co.mmons/js-utils/*": ["src/*"]
@@ -9,7 +9,7 @@
         "sourceMap": true,
         "importHelpers": true,
         "plugins": [
-            {"transform": "./dist/json/TsTransformer/index.js"}
+            {"transform": "../dist/json/TsTransformer/index.js"}
         ]
     },
     "exclude": [

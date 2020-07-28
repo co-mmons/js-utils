@@ -19,17 +19,20 @@ function visitNode(node, program) {
                 var childNode = _a[_i];
                 if (ts.isPropertyDeclaration(childNode)) {
                     var typeName = undefined;
+                    var type = typeChecker.getTypeAtLocation(childNode);
                     if (childNode.type) {
                         if (ts.isTypeReferenceNode(childNode.type)) {
-                            var type = typeChecker.getTypeFromTypeNode(childNode.type);
-                            var symbol = type.getSymbol();
-                            if (symbol && (type.isClass() || type.isClassOrInterface())) {
-                                typeName = symbol.name;
+                            if (type && type.isClassOrInterface()) {
+                                var symbol = typeChecker.getSymbolAtLocation(childNode.type.typeName);
+                                // console.log(symbol?.name, type.isClass(), type.isClassOrInterface(), symbol.valueDeclaration?.kind);
+                                if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
+                                    typeName = childNode.type.typeName;
+                                }
                             }
                         }
                     }
                     clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(childNode.name.getText()), typeName ? ts.createObjectLiteral([
-                        ts.createPropertyAssignment(ts.createIdentifier("propertyType"), ts.createIdentifier(typeName))
+                        ts.createPropertyAssignment(ts.createIdentifier("propertyType"), typeName)
                     ]) : ts.createObjectLiteral()));
                 }
             }
