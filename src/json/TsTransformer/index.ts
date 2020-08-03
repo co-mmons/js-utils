@@ -1,7 +1,9 @@
 import * as ts from "typescript";
 
 export default function transformer(program: ts.Program): ts.TransformerFactory<ts.SourceFile> {
-    return (context: ts.TransformationContext) => (file: ts.SourceFile) => visitNodeAndChildren(file, program, context);
+    return (context: ts.TransformationContext) => (file: ts.SourceFile) => {
+        return visitNodeAndChildren(file, program, context);
+    }
 }
 
 function visitNodeAndChildren(node: ts.SourceFile, program: ts.Program, context: ts.TransformationContext): ts.SourceFile;
@@ -19,35 +21,36 @@ function visitNode(node: ts.Node, program: ts.Program): ts.Node | undefined {
         const call = node.expression;
 
         if (ts.isIdentifier(call.expression) && call.expression.getText() === "serializable") {
-            const clazz = node.parent;
-
             const clazzProps = [];
-            for (const childNode of clazz.members) {
-                if (ts.isPropertyDeclaration(childNode)) {
 
-                    let typeName: ts.Identifier = undefined;
-                    const type = typeChecker.getTypeAtLocation(childNode);
-
-                    if (childNode.type) {
-                        if (ts.isTypeReferenceNode(childNode.type)) {
-                            if (type && type.isClassOrInterface()) {
-                                const symbol = typeChecker.getSymbolAtLocation(childNode.type.typeName);
-                                // console.log(symbol?.name, type.isClass(), type.isClassOrInterface(), symbol.valueDeclaration?.kind);
-                                if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
-                                    typeName = childNode.type.typeName as ts.Identifier;
-                                }
-                            }
-                        }
-                    }
-
-                    clazzProps.push(ts.createPropertyAssignment(
-                        ts.createIdentifier(childNode.name.getText()),
-                        typeName ? ts.createObjectLiteral([
-                            ts.createPropertyAssignment(ts.createIdentifier("propertyType"), typeName)
-                        ]) : ts.createObjectLiteral()
-                    ));
-                }
+            for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
+                clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
             }
+            // //
+            // // const clazzProps = [];
+            // for (const childNode of clazz.members) {
+            //     if (ts.isPropertyDeclaration(childNode)) {
+            //
+            //         let typeName: any = undefined;
+            //         const type = typeChecker.getTypeAtLocation(childNode);
+            //
+            //         if (type) {
+            //             if (type && type.isClassOrInterface()) {
+            //                 const symbol = type.getSymbol();
+            //                 if (symbol?.name === "BigNumber") {
+            //                 } else if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
+            //                 }
+            //             }
+            //         }
+            //
+            //         clazzProps.push(ts.createPropertyAssignment(
+            //             ts.createIdentifier(childNode.name.getText()),
+            //             typeName ? ts.createObjectLiteral([
+            //                 ts.createPropertyAssignment(ts.createIdentifier("propertyType"), typeName)
+            //             ]) : ts.createObjectLiteral()
+            //         ));
+            //     }
+            // }
 
             return ts.updateDecorator(node,
                 ts.updateCall(call, call.expression, null,

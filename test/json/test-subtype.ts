@@ -1,5 +1,6 @@
-import {subtype, serialize, unserialize} from "@co.mmons/js-utils/json";
+import {subtype, serialize, unserialize, serializable} from "@co.mmons/js-utils/json";
 
+@serializable()
 class A {
     type: string;
 }

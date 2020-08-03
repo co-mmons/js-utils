@@ -64,10 +64,11 @@ import {ModelAutoRegister, ModelB, ModelD} from "./model";
     if (true) {
 
         for (const file of [
-            // "test-subtype",
-            // "test-type",
-            // "test-array",
+            "test-subtype",
+            "test-type",
+            "test-array",
             "test-basic"
+            // "test-transformer"
         ]) {
             console.log("---", file, "---");
             const test = await import(`./${file}`);

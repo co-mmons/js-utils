@@ -9,7 +9,7 @@
         "sourceMap": true,
         "importHelpers": true,
         "plugins": [
-            {"transform": "../dist/json/TsTransformer/index.js"}
+            {"transform": "./dist/json/TsTransformer/index.js"}
         ]
     },
     "exclude": [

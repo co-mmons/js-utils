@@ -12,6 +12,7 @@
     "build:esm2015": "tsc -p tsconfig.build.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
     "build:es2015": "tsc -p tsconfig.build.json -d false -m commonjs -t es2015 --outDir dist/es2015",
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json -m commonjs -t es5 --outDir dist",
+    "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es5 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
     "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
   },

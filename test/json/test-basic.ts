@@ -1,6 +1,7 @@
 import {serializable, serialize, unserialize} from "@co.mmons/js-utils/json";
 import BigNumber from "bignumber.js";
 
+@serializable()
 export class X {
     static readonly jsonTypeName: string = "X";
 
@@ -11,7 +12,7 @@ interface Interface0 {
 
 }
 interface Interface extends Interface0 {
-sss: string;
+    sss: string;
 }
 
 @serializable()
@@ -36,7 +37,7 @@ export function test() {
     const aSerialized = serialize(a);
     console.log("a serialized", aSerialized);
 
-    const aUnserialized = unserialize(aSerialized);
+    const aUnserialized = unserialize(aSerialized, A);
     console.log("a unserialized", aUnserialized);
 
     const xUnserialized = unserialize(aSerialized, X);
