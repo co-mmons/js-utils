@@ -81,7 +81,7 @@ export abstract class Enum {
         return false;
     }
 
-    toJSON() {
+    toJSON(): any {
         return {"@type": jsonTypeName(this), name: this.name};
     }
 }
