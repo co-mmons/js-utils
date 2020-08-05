@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mapEntries = exports.isArrayContainsInstanceOf = exports.toString = exports.toInteger = exports.toFloat = void 0;
+var tslib_1 = require("tslib");
 function toFloat(value) {
     if (typeof value === "number") {
         return value;
@@ -44,12 +45,22 @@ function toString(value) {
 }
 exports.toString = toString;
 function isArrayContainsInstanceOf(value, type) {
+    var e_1, _a;
     if (Array.isArray(value)) {
-        for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-            var a = value_1[_i];
-            if (a instanceof type) {
-                return true;
+        try {
+            for (var value_1 = tslib_1.__values(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
+                var a = value_1_1.value;
+                if (a instanceof type) {
+                    return true;
+                }
             }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
     }
     return false;

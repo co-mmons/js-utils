@@ -1,3 +1,4 @@
+import { __values } from "tslib";
 import { deepClone } from "./deep-clone";
 import { PreferencesItemRefImpl } from "./item-ref-impl";
 var ContainerEventsManager = /** @class */ (function () {
@@ -16,23 +17,33 @@ var ContainerEventsManager = /** @class */ (function () {
         };
     };
     ContainerEventsManager.prototype.fireEvent = function (event) {
-        for (var _i = 0, _a = this.listeners; _i < _a.length; _i++) {
-            var listener = _a[_i];
-            if (!listener.collection || event.collection === listener.collection) {
-                try {
-                    listener.listener({
-                        ref: new PreferencesItemRefImpl(event.ref.collection, deepClone(event.ref.key)),
-                        type: event.type,
-                        collection: event.collection,
-                        key: deepClone(event.key),
-                        oldValue: deepClone(event.oldValue),
-                        newValue: deepClone(event.newValue)
-                    });
-                }
-                catch (error) {
-                    console.log(error);
+        var e_1, _a;
+        try {
+            for (var _b = __values(this.listeners), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var listener = _c.value;
+                if (!listener.collection || event.collection === listener.collection) {
+                    try {
+                        listener.listener({
+                            ref: new PreferencesItemRefImpl(event.ref.collection, deepClone(event.ref.key)),
+                            type: event.type,
+                            collection: event.collection,
+                            key: deepClone(event.key),
+                            oldValue: deepClone(event.oldValue),
+                            newValue: deepClone(event.newValue)
+                        });
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
                 }
             }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
     };
     return ContainerEventsManager;

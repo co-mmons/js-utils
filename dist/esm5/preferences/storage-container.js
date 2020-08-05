@@ -1,3 +1,4 @@
+import { __values } from "tslib";
 import { PreferencesCollectionRefImpl } from "./collection-impl";
 import { ContainerEventsManager } from "./container-events-manager";
 import { deepClone } from "./deep-clone";
@@ -72,29 +73,39 @@ var StoragePreferencesContainer = /** @class */ (function () {
         return Promise.resolve(this.newItem(item && { collection: collection, key: key, value: item.value }));
     };
     StoragePreferencesContainer.prototype.delete = function (collection) {
+        var e_1, _a;
         var keys = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             keys[_i - 1] = arguments[_i];
         }
         var deleted = [];
-        KEYS: for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
-            var key = keys_1[_a];
-            var itemKey = this.storageKey(collection, key);
-            for (var i = 0; i < this.storage.length; i++) {
-                var storageKey = this.storage.key(i);
-                if (itemKey === storageKey) {
-                    var item = this.getStorageItem(storageKey);
-                    this.storage.removeItem(storageKey);
-                    this.fireEvent({
-                        collection: collection,
-                        type: "delete",
-                        key: deepClone(key),
-                        oldValue: deepClone(item.value)
-                    });
-                    deleted.push(this.newItem({ collection: collection, key: key, value: item.value }));
-                    continue KEYS;
+        try {
+            KEYS: for (var keys_1 = __values(keys), keys_1_1 = keys_1.next(); !keys_1_1.done; keys_1_1 = keys_1.next()) {
+                var key = keys_1_1.value;
+                var itemKey = this.storageKey(collection, key);
+                for (var i = 0; i < this.storage.length; i++) {
+                    var storageKey = this.storage.key(i);
+                    if (itemKey === storageKey) {
+                        var item = this.getStorageItem(storageKey);
+                        this.storage.removeItem(storageKey);
+                        this.fireEvent({
+                            collection: collection,
+                            type: "delete",
+                            key: deepClone(key),
+                            oldValue: deepClone(item.value)
+                        });
+                        deleted.push(this.newItem({ collection: collection, key: key, value: item.value }));
+                        continue KEYS;
+                    }
                 }
             }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (keys_1_1 && !keys_1_1.done && (_a = keys_1.return)) _a.call(keys_1);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
         return Promise.resolve(deleted);
     };
@@ -122,21 +133,31 @@ var StoragePreferencesContainer = /** @class */ (function () {
         return Promise.resolve(!!item);
     };
     StoragePreferencesContainer.prototype.items = function (collection, keysToFilter) {
+        var e_2, _a;
         var items = [];
         var args = arguments;
         var keys = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map(function (value, index) { return args[index + 1]; });
         if (keys) {
-            KEYS: for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
-                var key = keys_2[_i];
-                var itemKey = this.storageKey(collection, key);
-                for (var i = 0; i < this.storage.length; i++) {
-                    var storageKey = this.storage.key(i);
-                    if (itemKey === storageKey) {
-                        var item = this.getStorageItem(storageKey);
-                        items.push(this.newItem({ collection: collection, key: key, value: item.value }));
-                        continue KEYS;
+            try {
+                KEYS: for (var keys_2 = __values(keys), keys_2_1 = keys_2.next(); !keys_2_1.done; keys_2_1 = keys_2.next()) {
+                    var key = keys_2_1.value;
+                    var itemKey = this.storageKey(collection, key);
+                    for (var i = 0; i < this.storage.length; i++) {
+                        var storageKey = this.storage.key(i);
+                        if (itemKey === storageKey) {
+                            var item = this.getStorageItem(storageKey);
+                            items.push(this.newItem({ collection: collection, key: key, value: item.value }));
+                            continue KEYS;
+                        }
                     }
                 }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (keys_2_1 && !keys_2_1.done && (_a = keys_2.return)) _a.call(keys_2);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
         }
         else if (arguments.length === 1) {

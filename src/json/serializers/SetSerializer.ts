@@ -1,15 +1,16 @@
 import {resolveForwardRef, Type} from "../../core";
+import {findTypeSerializer} from "../findTypeSerializer";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
 import {ObjectSerializer} from "./ObjectSerializer";
 
-export class ArraySerializer<T> extends Serializer<T[]> {
+export class SetSerializer<T> extends Serializer<T[]> {
 
     constructor(valueTypeOrSerializer?: Type<T> | Serializer<T>) {
         super();
 
         if (arguments.length == 1 && !valueTypeOrSerializer) {
-            throw new Error("Value type passed to Json Array Serializer is undefined - check, whether class reference cycle");
+            throw new Error("Value type passed to SetSerializer is undefined - check for class reference cycle");
         }
 
         if (valueTypeOrSerializer) {
@@ -24,19 +25,19 @@ export class ArraySerializer<T> extends Serializer<T[]> {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
 
-        } else if (Array.isArray(value)) {
+        } else if (value instanceof Set) {
 
             const array: any[] = [];
             const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
 
-            for (const i of value) {
+            for (const i of value.values()) {
                 array.push(serializer.serialize(i, options));
             }
 
             return array;
 
         } else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot serialize "${value}" as array`);
+            throw new Error(`Cannot serialize "${value}" as Set`);
 
         } else {
             return undefined;
@@ -47,20 +48,20 @@ export class ArraySerializer<T> extends Serializer<T[]> {
 
         if (Array.isArray(json)) {
 
-            const array: any[] = [];
+            const zet = new Set();
             const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
 
             for (const i of json) {
-                array.push(serializer.unserialize(i, options));
+                zet.add(serializer.unserialize(i, options));
             }
 
-            return array;
+            return zet;
 
         } else if (this.isUndefinedOrNull(json)) {
             return this.unserializeUndefinedOrNull(json, options);
 
         } else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot unserialize "${json}" to array`);
+            throw new Error(`Cannot unserialize "${json}" to Set`);
 
         } else {
             return undefined;
@@ -68,13 +69,14 @@ export class ArraySerializer<T> extends Serializer<T[]> {
     }
 }
 
-export namespace ArraySerializer {
+export namespace SetSerializer {
 
-    export const ofAny = new ArraySerializer<any>();
+    export const ofAny = new SetSerializer<any>();
 
-    export const ofString = new ArraySerializer(String);
+    export const ofString = new SetSerializer(String);
 
-    export const ofNumber = new ArraySerializer(Number);
+    export const ofNumber = new SetSerializer(Number);
 
-    export const ofBoolean = new ArraySerializer(Boolean);
+    export const ofBoolean = new SetSerializer(Boolean);
+
 }

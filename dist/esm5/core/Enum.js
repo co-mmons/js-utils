@@ -1,3 +1,4 @@
+import { __values } from "tslib";
 var Enum = /** @class */ (function () {
     function Enum(name) {
         this.name = name;
@@ -7,6 +8,7 @@ var Enum = /** @class */ (function () {
         return valuesRef(this).slice();
     };
     Enum.fromJSON = function (value) {
+        var e_1, _a;
         var name;
         if (typeof value === "string") {
             name = value;
@@ -15,16 +17,26 @@ var Enum = /** @class */ (function () {
             name = value.name;
         }
         if (name) {
-            for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
-                var v = _a[_i];
-                if (v.name === name) {
-                    return v;
+            try {
+                for (var _b = __values(valuesRef(this)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var v = _c.value;
+                    if (v.name === name) {
+                        return v;
+                    }
                 }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
         }
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     };
     Enum.valueOf = function (name) {
+        var e_2, _a;
         CHECK_NAME: if (name) {
             if (typeof name === "object" && name) {
                 if (name["@type"] === jsonTypeName(this)) {
@@ -34,11 +46,20 @@ var Enum = /** @class */ (function () {
                     break CHECK_NAME;
                 }
             }
-            for (var _i = 0, _a = valuesRef(this); _i < _a.length; _i++) {
-                var v = _a[_i];
-                if (v.name === name) {
-                    return v;
+            try {
+                for (var _b = __values(valuesRef(this)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var v = _c.value;
+                    if (v.name === name) {
+                        return v;
+                    }
                 }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
         }
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);

@@ -1,4 +1,4 @@
-import { __extends } from "tslib";
+import { __extends, __values } from "tslib";
 import { findTypeOrSerializerByName } from "../findTypeOrSerializerByName";
 import { findTypeSerializer } from "../findTypeSerializer";
 import { identifyType } from "../identifyType";
@@ -28,6 +28,7 @@ var ObjectSerializer = /** @class */ (function (_super) {
         return object;
     };
     ObjectSerializer.prototype.unserialize = function (json, options) {
+        var e_1, _a;
         if (this.isUndefinedOrNull(json)) {
             return json;
         }
@@ -64,9 +65,18 @@ var ObjectSerializer = /** @class */ (function (_super) {
                 return this.unserializeToType(typeOrSerializer, json);
             }
             var niu = {};
-            for (var _i = 0, _a = Object.keys(json); _i < _a.length; _i++) {
-                var property = _a[_i];
-                niu[property] = this.unserialize(json[property], options);
+            try {
+                for (var _b = __values(Object.keys(json)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var property = _c.value;
+                    niu[property] = this.unserialize(json[property], options);
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
             return niu;
         }

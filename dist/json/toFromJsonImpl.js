@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fromJsonImpl = exports.toJsonImpl = void 0;
+var tslib_1 = require("tslib");
 var core_1 = require("../core");
 var findTypeSerializer_1 = require("./findTypeSerializer");
 var getPrototypesTree_1 = require("./getPrototypesTree");
@@ -45,28 +46,38 @@ function toJsonImpl() {
 }
 exports.toJsonImpl = toJsonImpl;
 function fromJsonImpl(json) {
+    var e_1, _a;
     var internalType = this;
     var instance;
     if (!instance && internalType.__jsonSubtypes) {
-        for (var _i = 0, _a = internalType.__jsonSubtypes; _i < _a.length; _i++) {
-            var subtype = _a[_i];
-            var matchedType = void 0;
-            if (subtype.matcher) {
-                var match = subtype.matcher(json);
-                if (match) {
-                    matchedType = core_1.resolveForwardRef(match);
+        try {
+            for (var _b = tslib_1.__values(internalType.__jsonSubtypes), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var subtype = _c.value;
+                var matchedType = void 0;
+                if (subtype.matcher) {
+                    var match = subtype.matcher(json);
+                    if (match) {
+                        matchedType = core_1.resolveForwardRef(match);
+                    }
+                }
+                else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] === subtype.value))) {
+                    matchedType = core_1.resolveForwardRef(subtype.type);
+                }
+                if (matchedType && matchedType !== this) {
+                    if (matchedType.hasOwnProperty("fromJSON")) {
+                        return matchedType.fromJSON(json);
+                    }
+                    instance = new matchedType;
+                    break;
                 }
             }
-            else if (subtype.property && ((typeof subtype.value === "function" && subtype.value(json[subtype.property])) || (typeof subtype.value !== "function" && json[subtype.property] === subtype.value))) {
-                matchedType = core_1.resolveForwardRef(subtype.type);
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
-            if (matchedType && matchedType !== this) {
-                if (matchedType.hasOwnProperty("fromJSON")) {
-                    return matchedType.fromJSON(json);
-                }
-                instance = new matchedType;
-                break;
-            }
+            finally { if (e_1) throw e_1.error; }
         }
     }
     if (!instance) {
@@ -108,6 +119,7 @@ function getTypesTree(prototypes) {
     return prototypes.map(function (type) { return type.constructor; });
 }
 function getDeclaredProperties(thiz, types) {
+    var e_2, _a;
     var properties = {};
     for (var t = types.length - 1; t >= 0; t--) {
         var internalType = types[t];
@@ -116,9 +128,18 @@ function getDeclaredProperties(thiz, types) {
                 properties = Object.assign(properties, internalType.__jsonProperties);
             }
             if (internalType.__jsonIgnoredProperties) {
-                for (var _i = 0, _a = internalType.__jsonIgnoredProperties; _i < _a.length; _i++) {
-                    var propertyName = _a[_i];
-                    delete properties[propertyName];
+                try {
+                    for (var _b = (e_2 = void 0, tslib_1.__values(internalType.__jsonIgnoredProperties)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var propertyName = _c.value;
+                        delete properties[propertyName];
+                    }
+                }
+                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                finally {
+                    try {
+                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                    }
+                    finally { if (e_2) throw e_2.error; }
                 }
             }
         }

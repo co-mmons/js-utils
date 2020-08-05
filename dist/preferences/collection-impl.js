@@ -16,7 +16,7 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var args = arguments;
         var keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
         if (keys) {
-            return (_a = this.container).items.apply(_a, tslib_1.__spreadArrays([this.name], keys));
+            return (_a = this.container).items.apply(_a, tslib_1.__spread([this.name], keys));
         }
         else if (arguments.length === 0) {
             return this.container.items(this.name);
@@ -56,41 +56,54 @@ var PreferencesCollectionRefImpl = /** @class */ (function () {
         var args = arguments;
         var keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map(function (value, index) { return args[index]; });
         return new Promise(function (resolve, reject) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var values, items, _i, _a, item, error_1;
-            var _b;
-            return tslib_1.__generator(this, function (_c) {
-                switch (_c.label) {
+            var values, items, _a, _b, item, e_1_1, error_1;
+            var _c, e_1, _d;
+            return tslib_1.__generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
                         values = [];
-                        _c.label = 1;
+                        _e.label = 1;
                     case 1:
-                        _c.trys.push([1, 6, , 7]);
+                        _e.trys.push([1, 10, , 11]);
                         items = void 0;
                         if (keys) {
-                            items = (_b = this.container).items.apply(_b, tslib_1.__spreadArrays([this.name], keys));
+                            items = (_c = this.container).items.apply(_c, tslib_1.__spread([this.name], keys));
                         }
                         else if (args.length === 0) {
                             items = this.container.items(this.name);
                         }
-                        if (!items) return [3 /*break*/, 5];
-                        _i = 0;
-                        return [4 /*yield*/, items];
+                        if (!items) return [3 /*break*/, 9];
+                        _e.label = 2;
                     case 2:
-                        _a = _c.sent();
-                        _c.label = 3;
+                        _e.trys.push([2, 7, 8, 9]);
+                        return [4 /*yield*/, items];
                     case 3:
-                        if (!(_i < _a.length)) return [3 /*break*/, 5];
-                        item = _a[_i];
-                        values.push(item.value);
-                        _c.label = 4;
+                        _a = tslib_1.__values.apply(void 0, [_e.sent()]), _b = _a.next();
+                        _e.label = 4;
                     case 4:
-                        _i++;
-                        return [3 /*break*/, 3];
-                    case 5: return [3 /*break*/, 7];
-                    case 6:
-                        error_1 = _c.sent();
+                        if (!!_b.done) return [3 /*break*/, 6];
+                        item = _b.value;
+                        values.push(item.value);
+                        _e.label = 5;
+                    case 5:
+                        _b = _a.next();
+                        return [3 /*break*/, 4];
+                    case 6: return [3 /*break*/, 9];
+                    case 7:
+                        e_1_1 = _e.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3 /*break*/, 9];
+                    case 8:
+                        try {
+                            if (_b && !_b.done && (_d = _a.return)) _d.call(_a);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                        return [7 /*endfinally*/];
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        error_1 = _e.sent();
                         return [2 /*return*/, reject(error_1)];
-                    case 7: return [2 /*return*/, resolve(values)];
+                    case 11: return [2 /*return*/, resolve(values)];
                 }
             });
         }); });
