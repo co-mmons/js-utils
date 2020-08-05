@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.serializable = void 0;
+var tslib_1 = require("tslib");
 var getSupertypes_1 = require("../getSupertypes");
 var setupSerialization_1 = require("../setupSerialization");
 function serializable(options) {
@@ -13,44 +14,81 @@ function serializable(options) {
         }
     }
     return function (classType) {
+        var e_1, _a, e_2, _b, e_3, _c, e_4, _d;
         setupSerialization_1.setupSerialization(classType);
         var classInternalType = classType;
         if (options === null || options === void 0 ? void 0 : options.properties) {
             var properties = classInternalType.__jsonProperties = (classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {};
-            for (var _i = 0, _a = Object.keys(options.properties); _i < _a.length; _i++) {
-                var propertyName = _a[_i];
-                if (!(propertyName in properties)) {
-                    properties[propertyName] = options.properties[propertyName];
+            try {
+                for (var _e = tslib_1.__values(Object.keys(options.properties)), _f = _e.next(); !_f.done; _f = _e.next()) {
+                    var propertyName = _f.value;
+                    if (!(propertyName in properties)) {
+                        properties[propertyName] = options.properties[propertyName];
+                    }
                 }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_f && !_f.done && (_a = _e.return)) _a.call(_e);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
         }
         if (options === null || options === void 0 ? void 0 : options.types) {
             classInternalType.__jsonTypes = (classInternalType.hasOwnProperty("__jsonTypes") && classInternalType.__jsonTypes) || [];
-            for (var _b = 0, _c = options.types; _b < _c.length; _b++) {
-                var types = _c[_b];
-                for (var _d = 0, _e = Array.isArray(types) ? types : [types]; _d < _e.length; _d++) {
-                    var type = _e[_d];
-                    if (type.jsonTypeName) {
-                        classInternalType.__jsonTypes.push({ name: type.jsonTypeName, type: type });
+            try {
+                for (var _g = tslib_1.__values(options.types), _h = _g.next(); !_h.done; _h = _g.next()) {
+                    var types = _h.value;
+                    try {
+                        for (var _j = (e_3 = void 0, tslib_1.__values(Array.isArray(types) ? types : [types])), _k = _j.next(); !_k.done; _k = _j.next()) {
+                            var type = _k.value;
+                            if (type.jsonTypeName) {
+                                classInternalType.__jsonTypes.push({ name: type.jsonTypeName, type: type });
+                            }
+                            else {
+                                classInternalType.__jsonTypes.push(type);
+                            }
+                        }
                     }
-                    else {
-                        classInternalType.__jsonTypes.push(type);
+                    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+                    finally {
+                        try {
+                            if (_k && !_k.done && (_c = _j.return)) _c.call(_j);
+                        }
+                        finally { if (e_3) throw e_3.error; }
                     }
                 }
             }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (_h && !_h.done && (_b = _g.return)) _b.call(_g);
+                }
+                finally { if (e_2) throw e_2.error; }
+            }
         }
         if (classInternalType.hasOwnProperty("jsonTypeName") && classInternalType.jsonTypeName) {
-            for (var _f = 0, _g = getSupertypes_1.getSupertypes(classInternalType); _f < _g.length; _f++) {
-                var supertype = _g[_f];
-                if (supertype.hasOwnProperty("__jsonSerialization") && supertype.__jsonSerialization) {
-                    var types = supertype.__jsonSubtypes = (supertype.hasOwnProperty("__jsonSubtypes") && supertype.__jsonSubtypes) || [];
-                    types.push({
-                        type: classType,
-                        property: "@type",
-                        value: classInternalType.jsonTypeName
-                    });
-                    break;
+            try {
+                for (var _l = tslib_1.__values(getSupertypes_1.getSupertypes(classInternalType)), _m = _l.next(); !_m.done; _m = _l.next()) {
+                    var supertype = _m.value;
+                    if (supertype.hasOwnProperty("__jsonSerialization") && supertype.__jsonSerialization) {
+                        var types = supertype.__jsonSubtypes = (supertype.hasOwnProperty("__jsonSubtypes") && supertype.__jsonSubtypes) || [];
+                        types.push({
+                            type: classType,
+                            property: "@type",
+                            value: classInternalType.jsonTypeName
+                        });
+                        break;
+                    }
                 }
+            }
+            catch (e_4_1) { e_4 = { error: e_4_1 }; }
+            finally {
+                try {
+                    if (_m && !_m.done && (_d = _l.return)) _d.call(_l);
+                }
+                finally { if (e_4) throw e_4.error; }
             }
         }
     };

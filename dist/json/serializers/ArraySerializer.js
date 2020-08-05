@@ -18,15 +18,25 @@ var ArraySerializer = /** @class */ (function (_super) {
         return _this;
     }
     ArraySerializer.prototype.serialize = function (value, options) {
+        var e_1, _a;
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (Array.isArray(value)) {
             var array = [];
             var serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
-            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-                var i = value_1[_i];
-                array.push(serializer.serialize(i, options));
+            try {
+                for (var value_1 = tslib_1.__values(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
+                    var i = value_1_1.value;
+                    array.push(serializer.serialize(i, options));
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
             return array;
         }
@@ -38,12 +48,22 @@ var ArraySerializer = /** @class */ (function (_super) {
         }
     };
     ArraySerializer.prototype.unserialize = function (json, options) {
+        var e_2, _a;
         if (Array.isArray(json)) {
             var array = [];
             var serializer = this.typeOrSerializer instanceof Serializer_1.Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer_1.ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options === null || options === void 0 ? void 0 : options.typeProviders)) || ObjectSerializer_1.ObjectSerializer.instance;
-            for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
-                var i = json_1[_i];
-                array.push(serializer.unserialize(i, options));
+            try {
+                for (var json_1 = tslib_1.__values(json), json_1_1 = json_1.next(); !json_1_1.done; json_1_1 = json_1.next()) {
+                    var i = json_1_1.value;
+                    array.push(serializer.unserialize(i, options));
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (json_1_1 && !json_1_1.done && (_a = json_1.return)) _a.call(json_1);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
             return array;
         }

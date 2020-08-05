@@ -36,16 +36,26 @@ var CollectionItemsObserver = /** @class */ (function (_super) {
     };
     CollectionItemsObserver.prototype.listener = function (event) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var items, _i, _a, subscriber;
-            return tslib_1.__generator(this, function (_b) {
-                switch (_b.label) {
+            var items, _a, _b, subscriber;
+            var e_1, _c;
+            return tslib_1.__generator(this, function (_d) {
+                switch (_d.label) {
                     case 0: return [4 /*yield*/, this.collection.items()];
                     case 1:
-                        items = _b.sent();
-                        for (_i = 0, _a = this.subscribers; _i < _a.length; _i++) {
-                            subscriber = _a[_i];
-                            subscriber.next(items.slice()
-                                .map(function (item) { return (item && new item_impl_1.PreferencesItemImpl(item.ref.collection, deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value))) || item; }));
+                        items = _d.sent();
+                        try {
+                            for (_a = tslib_1.__values(this.subscribers), _b = _a.next(); !_b.done; _b = _a.next()) {
+                                subscriber = _b.value;
+                                subscriber.next(items.slice()
+                                    .map(function (item) { return (item && new item_impl_1.PreferencesItemImpl(item.ref.collection, deep_clone_1.deepClone(item.key), deep_clone_1.deepClone(item.value))) || item; }));
+                            }
+                        }
+                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                        finally {
+                            try {
+                                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                            }
+                            finally { if (e_1) throw e_1.error; }
                         }
                         return [2 /*return*/];
                 }
