@@ -2,7 +2,7 @@ export { BitFlags } from "./BitFlags";
 export { BitFlagsMutable } from "./BitFlagsMutable";
 export { Enumerable, Final } from "./classes";
 export { Comparable, compareDate } from "./compare";
-export { DateTimezone } from "./date-timezone";
+export { DateTimezone } from "./DateTimezone";
 export { enumValues } from "./enums";
 export { EnumValueName, Enum, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson } from "./Enum";
 export { Equals, equals } from "./equals";

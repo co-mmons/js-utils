@@ -9,8 +9,8 @@ Object.defineProperty(exports, "Enumerable", { enumerable: true, get: function (
 Object.defineProperty(exports, "Final", { enumerable: true, get: function () { return classes_1.Final; } });
 var compare_1 = require("./compare");
 Object.defineProperty(exports, "compareDate", { enumerable: true, get: function () { return compare_1.compareDate; } });
-var date_timezone_1 = require("./date-timezone");
-Object.defineProperty(exports, "DateTimezone", { enumerable: true, get: function () { return date_timezone_1.DateTimezone; } });
+var DateTimezone_1 = require("./DateTimezone");
+Object.defineProperty(exports, "DateTimezone", { enumerable: true, get: function () { return DateTimezone_1.DateTimezone; } });
 var enums_1 = require("./enums");
 Object.defineProperty(exports, "enumValues", { enumerable: true, get: function () { return enums_1.enumValues; } });
 var Enum_1 = require("./Enum");

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DateTimezone = void 0;
 var offsetDateRegex = /(\d+).(\d+).(\d+),?\s+(\d+).(\d+)(.(\d+))?/;
 var offsetFormatOptions = { timeZone: "UTC", hour12: false, year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
 var offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
@@ -48,5 +45,5 @@ var DateTimezone = /** @class */ (function () {
     };
     return DateTimezone;
 }());
-exports.DateTimezone = DateTimezone;
-//# sourceMappingURL=date-timezone.js.map
+export { DateTimezone };
+//# sourceMappingURL=DateTimezone.js.map
