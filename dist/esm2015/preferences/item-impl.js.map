@@ -1,1 +1,0 @@
-{"version":3,"file":"item-impl.js","sourceRoot":"","sources":["../../../src/preferences/item-impl.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,mBAAmB;IAE5B,YAAY,UAAoC,EAAE,GAAQ,EAAE,KAAY;QACpE,IAAI,CAAC,GAAG,GAAG,UAAU,CAAC,OAAO,CAAC,GAAG,CAAC,CAAC;QACnC,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;IACvB,CAAC;IAED,IAAI,GAAG;QACH,OAAO,IAAI,CAAC,GAAG,CAAC,GAAG,CAAC;IACxB,CAAC;CAKJ"}

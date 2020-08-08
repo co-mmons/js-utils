@@ -1,5 +1,5 @@
-import "./collection";
-import { injectCollectionRxjs } from "./collection";
+import "./injectCollectionRxjs";
+import { injectCollectionRxjs } from "./injectCollectionRxjs";
 export function injectPreferencesRxjs() {
     injectCollectionRxjs();
 }

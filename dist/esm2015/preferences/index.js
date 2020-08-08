@@ -1,6 +1,6 @@
-export { PreferencesCollectionRefImpl } from "./collection-impl";
+export { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl";
 export * from "./interfaces";
-export { PreferencesItemRefImpl } from "./item-ref-impl";
-export { MemoryPreferencesContainer } from "./memory-container";
-export { StoragePreferencesContainer } from "./storage-container";
+export { PreferencesItemRefImpl } from "./PreferencesItemRefImpl";
+export { MemoryPreferencesContainer } from "./MemoryPreferencesContainer";
+export { StoragePreferencesContainer } from "./StoragePreferencesContainer";
 //# sourceMappingURL=index.js.map
