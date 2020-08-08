@@ -1,5 +1,4 @@
 import {resolveForwardRef, Type} from "../../core";
-import {findTypeSerializer} from "../findTypeSerializer";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
 import {ObjectSerializer} from "./ObjectSerializer";
