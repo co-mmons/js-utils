@@ -4,6 +4,6 @@ import {registerGlobalProvider, RegisterGlobalProviderOptions} from "../register
 
 export function globalType(options?: RegisterGlobalProviderOptions) {
     return function(classType: Type & JsonTypeName) {
-        registerGlobalProvider(classType, options);
+        registerGlobalProvider({name: classType.jsonTypeName, type: classType}, options);
     }
 }

@@ -1,22 +1,31 @@
-import {Type} from "../core";
-import {JsonTypeName} from "./JsonTypeName";
 import {globalProviders} from "./globalProviders";
+import {InternalTypeProvider, TypeProvider, TypeProviders} from "./TypeProvider";
 
-export function registerGlobalProvider(typeClass: Type & JsonTypeName, options?: {replace?: boolean});
+export function registerGlobalProvider(provider: TypeProvider, options?: RegisterGlobalProviderOptions) {
 
-export function registerGlobalProvider(typeClass: Type, typeName: string, options?: {replace?: boolean});
+    const internal = provider as InternalTypeProvider;
 
-export function registerGlobalProvider() {
+    const existing = globalProviders.findIndex(glob => (internal.name && glob.name === internal.name) || (internal.type && glob.type === internal.type));
 
-    const typeClass = arguments[0];
-    const typeName = arguments.length > 0 && typeof arguments[1] === "string" ? arguments[1] : typeClass.jsonTypeName;
-    const options = arguments.length === 2 && typeof arguments[1] === "object" && arguments[1] ? arguments[1] : (arguments.length === 3 && typeof arguments[2] === "object" && arguments[2] ? arguments[2] : undefined);
-
-    if (globalProviders[typeName] && globalProviders[typeName] !== typeClass && (!options || !options.replace)) {
-        throw new Error(`Type ${typeName} already registered wither other class`);
+    if (existing > -1 && !options?.replace) {
+        throw new Error("Global provider already exists: " + JSON.stringify(internal));
     }
 
-    globalProviders.push({name: typeName, type: typeClass});
+    if (existing > -1) {
+        globalProviders[existing] = internal;
+    } else {
+        globalProviders.push(internal);
+    }
+}
+
+export function registerGlobalProviders(providers: TypeProviders, options?: RegisterGlobalProviderOptions) {
+    for (const provider of providers) {
+        if (Array.isArray(provider)) {
+            registerGlobalProviders(provider);
+        } else {
+            registerGlobalProvider(provider, options);
+        }
+    }
 }
 
 export interface RegisterGlobalProviderOptions {

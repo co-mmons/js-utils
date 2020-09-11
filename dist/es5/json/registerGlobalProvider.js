@@ -1,15 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerGlobalProvider = void 0;
+exports.registerGlobalProviders = exports.registerGlobalProvider = void 0;
+var tslib_1 = require("tslib");
 var globalProviders_1 = require("./globalProviders");
-function registerGlobalProvider() {
-    var typeClass = arguments[0];
-    var typeName = arguments.length > 0 && typeof arguments[1] === "string" ? arguments[1] : typeClass.jsonTypeName;
-    var options = arguments.length === 2 && typeof arguments[1] === "object" && arguments[1] ? arguments[1] : (arguments.length === 3 && typeof arguments[2] === "object" && arguments[2] ? arguments[2] : undefined);
-    if (globalProviders_1.globalProviders[typeName] && globalProviders_1.globalProviders[typeName] !== typeClass && (!options || !options.replace)) {
-        throw new Error("Type " + typeName + " already registered wither other class");
+function registerGlobalProvider(provider, options) {
+    var internal = provider;
+    var existing = globalProviders_1.globalProviders.findIndex(function (glob) { return (internal.name && glob.name === internal.name) || (internal.type && glob.type === internal.type); });
+    if (existing > -1 && !(options === null || options === void 0 ? void 0 : options.replace)) {
+        throw new Error("Global provider already exists: " + JSON.stringify(internal));
     }
-    globalProviders_1.globalProviders.push({ name: typeName, type: typeClass });
+    if (existing > -1) {
+        globalProviders_1.globalProviders[existing] = internal;
+    }
+    else {
+        globalProviders_1.globalProviders.push(internal);
+    }
 }
 exports.registerGlobalProvider = registerGlobalProvider;
+function registerGlobalProviders(providers, options) {
+    var e_1, _a;
+    try {
+        for (var providers_1 = tslib_1.__values(providers), providers_1_1 = providers_1.next(); !providers_1_1.done; providers_1_1 = providers_1.next()) {
+            var provider = providers_1_1.value;
+            if (Array.isArray(provider)) {
+                registerGlobalProviders(provider);
+            }
+            else {
+                registerGlobalProvider(provider, options);
+            }
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (providers_1_1 && !providers_1_1.done && (_a = providers_1.return)) _a.call(providers_1);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+}
+exports.registerGlobalProviders = registerGlobalProviders;
 //# sourceMappingURL=registerGlobalProvider.js.map

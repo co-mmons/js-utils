@@ -1,11 +1,6 @@
-import { Type } from "../core";
-import { JsonTypeName } from "./JsonTypeName";
-export declare function registerGlobalProvider(typeClass: Type & JsonTypeName, options?: {
-    replace?: boolean;
-}): any;
-export declare function registerGlobalProvider(typeClass: Type, typeName: string, options?: {
-    replace?: boolean;
-}): any;
+import { TypeProvider, TypeProviders } from "./TypeProvider";
+export declare function registerGlobalProvider(provider: TypeProvider, options?: RegisterGlobalProviderOptions): void;
+export declare function registerGlobalProviders(providers: TypeProviders, options?: RegisterGlobalProviderOptions): void;
 export interface RegisterGlobalProviderOptions {
     replace?: boolean;
 }
