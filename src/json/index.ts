@@ -3,7 +3,7 @@ export {globalType} from "./decorators/globalType";
 export {ignore} from "./decorators/ignore";
 export {JsonTypeName} from "./JsonTypeName";
 export {property} from "./decorators/property";
-export {registerGlobalProvider} from "./registerGlobalProvider";
+export {registerGlobalProvider, registerGlobalProviders} from "./registerGlobalProvider";
 export {serializable} from "./decorators/serializable";
 export {SerializationOptions} from "./SerializationOptions";
 export {serialize} from "./serialize";

@@ -2,7 +2,7 @@ export { findTypeOrSerializerByName } from "./findTypeOrSerializerByName";
 export { globalType } from "./decorators/globalType";
 export { ignore } from "./decorators/ignore";
 export { property } from "./decorators/property";
-export { registerGlobalProvider } from "./registerGlobalProvider";
+export { registerGlobalProvider, registerGlobalProviders } from "./registerGlobalProvider";
 export { serializable } from "./decorators/serializable";
 export { serialize } from "./serialize";
 export { unserialize } from "./unserialize";

@@ -10,6 +10,7 @@ var property_1 = require("./decorators/property");
 Object.defineProperty(exports, "property", { enumerable: true, get: function () { return property_1.property; } });
 var registerGlobalProvider_1 = require("./registerGlobalProvider");
 Object.defineProperty(exports, "registerGlobalProvider", { enumerable: true, get: function () { return registerGlobalProvider_1.registerGlobalProvider; } });
+Object.defineProperty(exports, "registerGlobalProviders", { enumerable: true, get: function () { return registerGlobalProvider_1.registerGlobalProviders; } });
 var serializable_1 = require("./decorators/serializable");
 Object.defineProperty(exports, "serializable", { enumerable: true, get: function () { return serializable_1.serializable; } });
 var serialize_1 = require("./serialize");
