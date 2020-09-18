@@ -76,9 +76,9 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     listen(listener: PreferencesItemEventListener): () => void;
 
-    itemRef(key: Key): PreferencesItemRef<Key, Value>;
+    itemRef<V = Value>(key: Key): PreferencesItemRef<Key, V>;
 
-    item(key: Key): Promise<PreferencesItem<Key, Value>>;
+    item<V = Value>(key: Key): Promise<PreferencesItem<Key, V>>;
 
     items(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
@@ -92,7 +92,7 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     exists(key: Key): Promise<boolean>;
 
-    value(key: Key): Promise<Value>;
+    value<V = Value>(key: Key): Promise<V>;
 
     values(...keys: Key[]): Promise<Value[]>;
 

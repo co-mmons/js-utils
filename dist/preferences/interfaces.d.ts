@@ -46,15 +46,15 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
     readonly name: string;
     readonly container: PreferencesContainer;
     listen(listener: PreferencesItemEventListener): () => void;
-    itemRef(key: Key): PreferencesItemRef<Key, Value>;
-    item(key: Key): Promise<PreferencesItem<Key, Value>>;
+    itemRef<V = Value>(key: Key): PreferencesItemRef<Key, V>;
+    item<V = Value>(key: Key): Promise<PreferencesItem<Key, V>>;
     items(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
     items(): Promise<PreferencesItem<Key, Value>[]>;
     set(key: Key, value: Value): Promise<PreferencesItem<Key, Value>>;
     set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
     update(key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     exists(key: Key): Promise<boolean>;
-    value(key: Key): Promise<Value>;
+    value<V = Value>(key: Key): Promise<V>;
     values(...keys: Key[]): Promise<Value[]>;
     values(): Promise<Value[]>;
     delete(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
