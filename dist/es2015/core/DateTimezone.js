@@ -39,6 +39,9 @@ class DateTimezone {
         if (typeof json === "object" && json && json["timezone"] && json["date"]) {
             return new DateTimezone(json["date"], json["timezone"]);
         }
+        else if (json instanceof Date) {
+            return new DateTimezone(json);
+        }
         else if (typeof json === "number") {
             return new DateTimezone(json);
         }
