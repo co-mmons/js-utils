@@ -56,7 +56,7 @@ export class TimeZoneDate extends Date {
         this.timeZone = timeZone;
     }
 
-    readonly timeZone: string;
+    timeZone: string;
 
     toJSON(): any {
         return {"@type": "TimeZoneDate", date: super.toJSON(), timeZone: this.timeZone};

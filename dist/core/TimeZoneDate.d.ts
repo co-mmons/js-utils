@@ -4,6 +4,6 @@ export declare class TimeZoneDate extends Date {
     constructor(epoch: number, timeZone?: string);
     constructor(date: Date, timeZone?: string);
     constructor(isoDateString: string, timeZone?: string);
-    readonly timeZone: string;
+    timeZone: string;
     toJSON(): any;
 }
