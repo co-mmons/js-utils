@@ -40,6 +40,9 @@ var DateTimezone = /** @class */ (function () {
             return new DateTimezone(json);
         }
     };
+    DateTimezone.prototype.epoch = function () {
+        return this.date.valueOf();
+    };
     DateTimezone.prototype.toJSON = function () {
         return { "@type": "intl/DateTimezone", date: this.date.getTime(), timezone: this.timezone };
     };

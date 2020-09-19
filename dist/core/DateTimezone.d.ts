@@ -5,6 +5,7 @@ export declare class DateTimezone {
     constructor(date: Date, timezone?: string);
     readonly date: Date;
     readonly timezone: string;
+    epoch(): number;
     toJSON(): {
         "@type": string;
         date: number;

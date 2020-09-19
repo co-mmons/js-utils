@@ -43,6 +43,9 @@ class DateTimezone {
             return new DateTimezone(json);
         }
     }
+    epoch() {
+        return this.date.valueOf();
+    }
     toJSON() {
         return { "@type": "intl/DateTimezone", date: this.date.getTime(), timezone: this.timezone };
     }
