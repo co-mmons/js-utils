@@ -1,3 +1,4 @@
+import {TimeZoneDate} from "../../core/TimeZoneDate";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
 
@@ -11,6 +12,8 @@ export class DateSerializer extends Serializer {
     serialize(value: any, options?: SerializationOptions): any {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
+        } else if (value instanceof TimeZoneDate) {
+            return value.toJSON();
         } else if (value instanceof Date) {
             return {"@type": "Date", value: value.toJSON()};
         } else if (options && options.notStrict && typeof value == "number") {
@@ -36,11 +39,14 @@ export class DateSerializer extends Serializer {
         } else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);
 
-        } else if (typeof value === "object" && typeof value.value === "string") {
+        } else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && typeof value.date === "string") {
+            return new TimeZoneDate(new Date(value.date), value.timeZone);
+
+        } else if (typeof value === "object" && value["@type"] === "Date" && typeof value.value === "string") {
             return new Date(value.value);
 
         } else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot unserialize "${value}" to Date`);
+            throw new Error(`Cannot unserialize "${value}" to Date or TimeZoneDate`);
 
         } else {
             return undefined;

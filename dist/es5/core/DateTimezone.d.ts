@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export declare class DateTimezone {
     static timezoneOffset(timezone: string, date?: Date): number;
     static fromJSON(json: any): DateTimezone;
