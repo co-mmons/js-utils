@@ -1,11 +1,6 @@
 {
     "name": "@co.mmons/js-utils/preferences/rxjs",
-    "main": "../../es2015/preferences/rxjs/index.js",
-    "module": "../../esm2015/preferences/rxjs/index.js",
-    "es5": "../../es5/preferences/rxjs/index.js",
-    "esm5": "../../esm5/preferences/rxjs/index.js",
-    "es2015": "../../es2015/preferences/rxjs/index.js",
-    "esm2015": "../../esm2015/preferences/rxjs/index.js",
-    "types": "index.d.ts",
+    "module": "../../_esm2015/preferences/rxjs/index.js",
+    "esm2015": "../../_esm2015/preferences/rxjs/index.js",
     "sideEffects": false
 }

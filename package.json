@@ -6,12 +6,10 @@
   "license": "MIT",
   "scripts": {
     "install": "node-utils-npm-install-dist",
-    "build": "rm -rf dist && tsc --emitDeclarationOnly -p tsconfig.build.json && npm run build:es5 && npm run build:esm5 && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\" && npm run build:TsTransformer",
-    "build:es5": "tsc -p tsconfig.build.json -m commonjs -t es5 --downlevelIteration --outDir dist/es5",
-    "build:esm5": "tsc -p tsconfig.build.json -d false -m es2015 -t es5 --downlevelIteration --outDir dist/esm5",
-    "build:esm2015": "tsc -p tsconfig.build.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
-    "build:es2015": "tsc -p tsconfig.build.json -d false -m commonjs -t es2015 --outDir dist/es2015",
-    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json -d false -m commonjs -t es2015 --outDir dist/es2015 && tsc -p src/json/TsTransformer/tsconfig.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
+    "build": "rm -rf dist && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\" && npm run build:TsTransformer",
+    "build:es2015": "tsc -p tsconfig.build.json -m commonjs -t es2015 --outDir dist",
+    "build:esm2015": "tsc -p tsconfig.build.json -d false -m es2015 -t es2015 --outDir dist/_esm2015",
+    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist/ && tsc -p src/json/TsTransformer/tsconfig.json -d false -m es2015 -t es2015 --outDir dist/_esm2015",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
     "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"

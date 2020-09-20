@@ -1,7 +1,5 @@
 {
     "name": "@co.mmons/js-utils/json/TsTransformer",
-    "main": "../../es2015/json/TsTransformer/index.js",
-    "module": "../../esm2015/json/TsTransformer/index.js",
-    "types": "index.d.ts",
+    "module": "../../_esm2015/json/TsTransformer/index.js",
     "sideEffects": false
 }
