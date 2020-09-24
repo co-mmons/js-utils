@@ -5,6 +5,8 @@ const offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
 
 export class TimeZoneDate extends Date {
 
+    static readonly jsonTypeName = "TimeZoneDate";
+
     static timezoneOffset(timezone: string, date?: Date): number {
 
         if (!date) {

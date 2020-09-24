@@ -42,4 +42,5 @@ export class TimeZoneDate extends Date {
         return { "@type": "TimeZoneDate", date: super.toJSON(), timeZone: this.timeZone };
     }
 }
+TimeZoneDate.jsonTypeName = "TimeZoneDate";
 //# sourceMappingURL=TimeZoneDate.js.map

@@ -15,6 +15,16 @@ class B extends A {
     timestamp: Date;
 }
 
+@subtype(A, "type", "C")
+class C extends A {
+    constructor() {
+        super();
+        this.type = "C";
+    }
+
+    timestamp: Date;
+}
+
 export function test() {
 
     const b = new B();
@@ -24,10 +34,10 @@ export function test() {
     const bSerialized = serialize(b);
     console.log("b serialized", b);
 
-    const aUnserialized = unserialize(bSerialized, A);
-    console.log("a unserialized", aUnserialized);
+    const bUnserialized = unserialize(bSerialized, A);
+    console.log("b unserialized", bUnserialized);
 
-    const c = new A();
+    const c = new C();
     c.type = "C";
     console.log("c", c);
 
@@ -37,5 +47,5 @@ export function test() {
     const cUnserialized = unserialize(cSerialized, A);
     console.log("c unserialized", cUnserialized);
 
-    return aUnserialized instanceof B;
+    return bUnserialized instanceof B;
 }

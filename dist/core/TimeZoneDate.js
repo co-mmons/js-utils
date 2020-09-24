@@ -46,4 +46,5 @@ class TimeZoneDate extends Date {
     }
 }
 exports.TimeZoneDate = TimeZoneDate;
+TimeZoneDate.jsonTypeName = "TimeZoneDate";
 //# sourceMappingURL=TimeZoneDate.js.map
