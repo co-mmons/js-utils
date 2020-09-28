@@ -9,6 +9,7 @@ export function unserialize(json: any, targetClass?: Type, options?: Serializati
     if (json === undefined || json === null) {
         return json;
     }
+
     const internalType = targetClass as InternalType;
     const serializer = targetClass && findTypeSerializer(targetClass);
 
