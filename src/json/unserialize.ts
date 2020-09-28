@@ -10,8 +10,5 @@ export function unserialize(json: any, targetClass?: Type, options?: Serializati
         return json;
     }
 
-    const internalType = targetClass as InternalType;
-    const serializer = targetClass && findTypeSerializer(targetClass);
-
-    return unserializeImpl(json, serializer || internalType || null, options);
+    return unserializeImpl(json, targetClass, options);
 }

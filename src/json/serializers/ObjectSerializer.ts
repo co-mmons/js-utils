@@ -28,7 +28,7 @@ export class ObjectSerializer extends Serializer {
     }
 
     unserialize(json: any, options?: SerializationOptions): any {
-        return unserializeImpl(json, (this.type && findTypeSerializer(this.type, options?.typeProviders)) || this.type, options);
+        return unserializeImpl(json, this.type, options);
     }
 }
 

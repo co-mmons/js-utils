@@ -19,7 +19,7 @@ class ObjectSerializer extends Serializer_1.Serializer {
         return serializeImpl_1.serializeImpl(object, this.type, options);
     }
     unserialize(json, options) {
-        return unserializeImpl_1.unserializeImpl(json, (this.type && findTypeSerializer_1.findTypeSerializer(this.type, options === null || options === void 0 ? void 0 : options.typeProviders)) || this.type, options);
+        return unserializeImpl_1.unserializeImpl(json, this.type, options);
     }
 }
 exports.ObjectSerializer = ObjectSerializer;

@@ -5,17 +5,17 @@ import {SerializationOptions} from "./SerializationOptions";
 import {Serializer} from "./Serializer";
 
 export function serializeImpl(value: any, type: InternalType, options: SerializationOptions) {
-    return serializeImplWithSerializer(value, type, options);
+    return serializeImplWithSerializer(value, type, null, options);
 }
 
-function serializeImplWithSerializer(value: any, typeOrSerializer: InternalType | Serializer, options: SerializationOptions) {
+function serializeImplWithSerializer(value: any, type: InternalType, typeSerializer: Serializer | false, options: SerializationOptions) {
 
     if (value === null || value === undefined) {
         return value;
     } else {
 
         const array = Array.isArray(value) ? [] : undefined;
-        const serializer = typeOrSerializer instanceof Serializer ? typeOrSerializer : findTypeSerializer(typeOrSerializer ? typeOrSerializer : (!array ? identifyType(value) : undefined), options?.typeProviders);
+        const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type ? type : (!array ? identifyType(value) : undefined), options?.typeProviders));
 
         for (const i of array ? value : [value]) {
 
@@ -27,7 +27,7 @@ function serializeImplWithSerializer(value: any, typeOrSerializer: InternalType 
             let serialized = i;
 
             if (Array.isArray(i)) {
-                serialized = serializeImplWithSerializer(i, serializer, options);
+                serialized = serializeImplWithSerializer(i, type, serializer || false, options);
             } else if (serializer) {
                 serialized = serializer.serialize(i, options);
             } else if (i.toJSON) {

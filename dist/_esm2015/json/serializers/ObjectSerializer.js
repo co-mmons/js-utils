@@ -16,7 +16,7 @@ export class ObjectSerializer extends Serializer {
         return serializeImpl(object, this.type, options);
     }
     unserialize(json, options) {
-        return unserializeImpl(json, (this.type && findTypeSerializer(this.type, options === null || options === void 0 ? void 0 : options.typeProviders)) || this.type, options);
+        return unserializeImpl(json, this.type, options);
     }
 }
 (function (ObjectSerializer) {
