@@ -3,10 +3,10 @@
     if (true) {
 
         for (const file of [
-            "test-subtype",
-            "test-type",
+            // "test-subtype",
+            // "test-type",
             "test-array",
-            "test-basic"
+            // "test-basic"
             // "test-transformer"
         ]) {
             console.log("---", file, "---");
