@@ -1,6 +1,9 @@
 import {resolveForwardRef, Type} from "../../core";
 import {SerializationOptions} from "../SerializationOptions";
+import {serializeImpl} from "../serializeImpl";
 import {Serializer} from "../Serializer";
+import {unserialize} from "../unserialize";
+import {unserializeImpl} from "../unserializeImpl";
 import {ObjectSerializer} from "./ObjectSerializer";
 
 export class ArraySerializer<T> extends Serializer<T[]> {
@@ -17,9 +20,10 @@ export class ArraySerializer<T> extends Serializer<T[]> {
         }
     }
 
-    private readonly typeOrSerializer: Type | Serializer;
+    readonly typeOrSerializer: Type | Serializer;
 
     serialize(value: any, options?: SerializationOptions): any {
+        const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : undefined;
 
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
@@ -27,43 +31,41 @@ export class ArraySerializer<T> extends Serializer<T[]> {
         } else if (Array.isArray(value)) {
 
             const array: any[] = [];
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
 
             for (const i of value) {
-                array.push(serializer.serialize(i, options));
+                array.push(serializer ? serializer.serialize(i, options) : serializeImpl(i, this.typeOrSerializer as any, options));
             }
 
             return array;
 
-        } else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot serialize "${value}" as array`);
+        } else if (serializer) {
+            return serializer.serialize(value, options);
 
         } else {
-            return undefined;
+            return serializeImpl(value, this.typeOrSerializer as any, options);
         }
     }
 
     unserialize(json: any, options?: SerializationOptions): any {
+        const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : undefined;
 
-        if (Array.isArray(json)) {
+        if (this.isUndefinedOrNull(json)) {
+            return this.serializeUndefinedOrNull(json, options);
 
+        } else if (Array.isArray(json)) {
             const array: any[] = [];
-            const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
 
             for (const i of json) {
-                array.push(serializer.unserialize(i, options));
+                array.push(serializer ? serializer.unserialize(i, options) : unserializeImpl(i, this.typeOrSerializer as any, options));
             }
 
             return array;
 
-        } else if (this.isUndefinedOrNull(json)) {
-            return this.unserializeUndefinedOrNull(json, options);
-
-        } else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot unserialize "${json}" to array`);
+        } else if (serializer) {
+            return serializer.unserialize(json, options);
 
         } else {
-            return undefined;
+            return unserialize(json, this.typeOrSerializer as any, options);
         }
     }
 }
