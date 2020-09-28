@@ -1,6 +1,6 @@
 import { globalProviders } from "./globalProviders";
 export function findTypeSerializer(type, typeProviders) {
-    if (!type) {
+    if (!type || type === Object || type === Array) {
         return;
     }
     if (typeProviders) {

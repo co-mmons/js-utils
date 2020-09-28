@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.unserialize = void 0;
 const findTypeSerializer_1 = require("./findTypeSerializer");
 const serializers_1 = require("./serializers");
+const unserializeImpl_1 = require("./unserializeImpl");
 function unserialize(json, targetClass, options) {
     if (json === undefined || json === null) {
         return json;
@@ -10,19 +11,18 @@ function unserialize(json, targetClass, options) {
     if (targetClass) {
         const internalType = targetClass;
         const serializer = findTypeSerializer_1.findTypeSerializer(targetClass);
-        if (serializer) {
-            return serializer.unserialize(json, options);
+        const array = Array.isArray(json) ? [] : undefined;
+        for (const i of array ? json : [json]) {
+            const unserialized = unserializeImpl_1.unserializeImpl(i, serializer || internalType, options);
+            if (array) {
+                array.push(unserialized);
+            }
+            else {
+                return unserialized;
+            }
         }
-        if (targetClass.prototype["fromJSON"]) {
-            const instance = Object.create(targetClass.prototype);
-            instance.fromJSON(json, options);
-            return instance;
-        }
-        else if (internalType.fromJSON) {
-            return internalType.fromJSON(json, options);
-        }
-        else if (targetClass !== Object) {
-            return new targetClass(json);
+        if (array) {
+            return array;
         }
     }
     return serializers_1.ObjectSerializer.instance.unserialize(json, options);

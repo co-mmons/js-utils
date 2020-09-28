@@ -1,5 +1,5 @@
-import { ObjectSerializer } from "./serializers";
+import { serializeImpl } from "./serializeImpl";
 export function serialize(object, options) {
-    return ObjectSerializer.instance.serialize(object, options);
+    return serializeImpl(object, null, options);
 }
 //# sourceMappingURL=serialize.js.map

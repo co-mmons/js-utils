@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findTypeSerializer = void 0;
 const globalProviders_1 = require("./globalProviders");
 function findTypeSerializer(type, typeProviders) {
-    if (!type) {
+    if (!type || type === Object || type === Array) {
         return;
     }
     if (typeProviders) {

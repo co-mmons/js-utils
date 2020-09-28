@@ -8,7 +8,6 @@ exports.globalProviders = [
     { type: Number, serializer: serializers_1.NumberSerializer.instance },
     { type: Date, name: "Date", serializer: serializers_1.DateSerializer.instance },
     { type: TimeZoneDate_1.TimeZoneDate, name: "TimeZoneDate", serializer: serializers_1.DateSerializer.instance },
-    { type: Array, serializer: serializers_1.ArraySerializer.ofAny },
     { type: String, serializer: serializers_1.StringSerializer.instance }
 ];
 //# sourceMappingURL=globalProviders.js.map

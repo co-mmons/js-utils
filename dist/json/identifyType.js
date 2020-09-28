@@ -18,7 +18,7 @@ function identifyType(object) {
         return Date;
     }
     else if (Array.isArray(object)) {
-        return Array;
+        return Object;
     }
     else if (typeof object === "function" && object.prototype) {
         return object;
