@@ -5,11 +5,13 @@ const core_1 = require("../core");
 const findTypeSerializer_1 = require("./findTypeSerializer");
 const getPrototypesTree_1 = require("./getPrototypesTree");
 const identifyType_1 = require("./identifyType");
+const serializeImpl_1 = require("./serializeImpl");
 const Serializer_1 = require("./Serializer");
-const serializers_1 = require("./serializers");
+const unserializeImpl_1 = require("./unserializeImpl");
 function toJsonImpl() {
     const prototypesTree = getPrototypesTree_1.getPrototypesTree(this);
     const typesTree = getTypesTree(prototypesTree);
+    const serializationOptions = { typeProviders: typesTree[0].__jsonTypes };
     let json = {};
     // call toJSON for super types, only if hard coded in a class
     for (let t = 1; t < typesTree.length; t++) {
@@ -31,11 +33,17 @@ function toJsonImpl() {
         const type = config.propertyType ? config.propertyType : identifyType_1.identifyType(value);
         const serializer = type instanceof Serializer_1.Serializer ? type : findTypeSerializer_1.findTypeSerializer(type, typesTree[0].__jsonTypes);
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
-        if (serializer) {
-            json[name] = serializer.serialize(value);
+        if (Array.isArray(value)) {
+            json[name] = [];
+            for (const i of value) {
+                json[name].push(serializer ? serializer.serialize(i, serializationOptions) : serializeImpl_1.serializeImpl(i, type, serializationOptions));
+            }
+        }
+        else if (serializer) {
+            json[name] = serializer.serialize(value, serializationOptions);
         }
         else {
-            json[name] = new serializers_1.ObjectSerializer(type).serialize(value, { typeProviders: typesTree[0].__jsonTypes });
+            json[name] = serializeImpl_1.serializeImpl(value, type, serializationOptions);
         }
     }
     if (typesTree[0].hasOwnProperty("jsonTypeName")) {
@@ -73,6 +81,7 @@ function fromJsonImpl(json) {
     }
     const prototypesTree = getPrototypesTree_1.getPrototypesTree(instance);
     const typesTree = getTypesTree(prototypesTree);
+    const serializationOptions = { typeProviders: typesTree[0].__jsonTypes };
     const properties = getDeclaredProperties(instance, typesTree);
     // property names that already unserialized
     const unserializedProperties = [];
@@ -86,11 +95,16 @@ function fromJsonImpl(json) {
                 continue;
             }
             const type = config.propertyType ? config.propertyType : identifyType_1.identifyType(value);
-            let serializer = type instanceof Serializer_1.Serializer ? type : findTypeSerializer_1.findTypeSerializer(type, typesTree[0].__jsonTypes);
-            if (!serializer) {
-                serializer = new serializers_1.ObjectSerializer(type);
+            const serializer = type instanceof Serializer_1.Serializer ? type : findTypeSerializer_1.findTypeSerializer(type, typesTree[0].__jsonTypes);
+            if (Array.isArray(value)) {
+                instance[propertyName] = [];
+                for (const i of value) {
+                    instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : unserializeImpl_1.unserializeImpl(i, type, serializationOptions));
+                }
             }
-            instance[propertyName] = serializer.unserialize(value, { typeProviders: typesTree[0].__jsonTypes });
+            else {
+                instance[propertyName] = serializer ? serializer.unserialize(value, serializationOptions) : unserializeImpl_1.unserializeImpl(value, type, serializationOptions);
+            }
             unserializedProperties.push(name);
         }
     }
@@ -100,7 +114,7 @@ function fromJsonImpl(json) {
             continue;
         }
         if (unserializedProperties.indexOf(propertyName) < 0) {
-            instance[propertyName] = serializers_1.ObjectSerializer.instance.unserialize(json[propertyName], { typeProviders: typesTree[0].__jsonTypes });
+            instance[propertyName] = unserializeImpl_1.unserializeImpl(json[propertyName], null, serializationOptions);
         }
     }
     return instance;
