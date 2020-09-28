@@ -22,7 +22,7 @@ export function toJsonImpl() {
     for (const propertyName in properties) {
         const config = properties[propertyName];
         const value = this[propertyName];
-        if (value === undefined) {
+        if (value === undefined || typeof value === "function") {
             continue;
         }
         const type = config.propertyType ? config.propertyType : identifyType(value);
@@ -78,6 +78,9 @@ export function fromJsonImpl(json) {
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
         if (name in json) {
             const value = json[name];
+            if (typeof value === "function") {
+                continue;
+            }
             const type = config.propertyType ? config.propertyType : identifyType(value);
             let serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
             if (!serializer) {

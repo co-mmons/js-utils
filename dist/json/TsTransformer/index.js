@@ -16,34 +16,30 @@ function visitNode(node, program) {
         const call = node.expression;
         if (ts.isIdentifier(call.expression) && call.expression.getText() === "serializable") {
             const clazzProps = [];
-            for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
-                clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
-            }
-            // //
-            // // const clazzProps = [];
-            // for (const childNode of clazz.members) {
-            //     if (ts.isPropertyDeclaration(childNode)) {
-            //
-            //         let typeName: any = undefined;
-            //         const type = typeChecker.getTypeAtLocation(childNode);
-            //
-            //         if (type) {
-            //             if (type && type.isClassOrInterface()) {
-            //                 const symbol = type.getSymbol();
-            //                 if (symbol?.name === "BigNumber") {
-            //                 } else if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
-            //                 }
-            //             }
-            //         }
-            //
-            //         clazzProps.push(ts.createPropertyAssignment(
-            //             ts.createIdentifier(childNode.name.getText()),
-            //             typeName ? ts.createObjectLiteral([
-            //                 ts.createPropertyAssignment(ts.createIdentifier("propertyType"), typeName)
-            //             ]) : ts.createObjectLiteral()
-            //         ));
-            //     }
+            const clazz = node.parent;
+            // for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
+            //     clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
             // }
+            for (const childNode of clazz.members) {
+                if (ts.isPropertyDeclaration(childNode)) {
+                    if (!childNode.type) {
+                        continue;
+                    }
+                    //
+                    // let typeName: any = undefined;
+                    // const type = typeChecker.getTypeAtLocation(childNode);
+                    //
+                    // if (type) {
+                    //     if (type && type.isClassOrInterface()) {
+                    //         const symbol = type.getSymbol();
+                    //         if (symbol?.name === "BigNumber") {
+                    //         } else if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
+                    //         }
+                    //     }
+                    // }
+                    clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(childNode.name.getText()), ts.createObjectLiteral()));
+                }
+            }
             return ts.updateDecorator(node, ts.updateCall(call, call.expression, null, call.arguments.concat(ts.createObjectLiteral([
                 ts.createPropertyAssignment(ts.createIdentifier("properties"), ts.createObjectLiteral(clazzProps))
             ]))));

@@ -18,6 +18,10 @@ export class A {
 
     @property(Ha1)
     aProp: Ha1[];
+
+    someFunction() {
+        return true;
+    }
 }
 
 export function test() {
