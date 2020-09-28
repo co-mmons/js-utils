@@ -5,7 +5,7 @@ import {InternalTypeProviders, TypeProviders} from "./TypeProvider";
 
 export function findTypeSerializer(type: Type, typeProviders?: TypeProviders): Serializer {
 
-    if (!type) {
+    if (!type || type === Object || type === Array) {
         return;
     }
 

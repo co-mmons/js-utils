@@ -3,15 +3,20 @@ import {findTypeOrSerializerByName} from "../findTypeOrSerializerByName";
 import {findTypeSerializer} from "../findTypeSerializer";
 import {identifyType} from "../identifyType";
 import {SerializationOptions} from "../SerializationOptions";
+import {serializeImpl} from "../serializeImpl";
 import {Serializer} from "../Serializer";
 import {TypeProvider} from "../TypeProvider";
+import {unserializeImpl} from "../unserializeImpl";
 
+/**
+ * Basic serializer.
+ */
 export class ObjectSerializer extends Serializer {
 
     constructor(type?: Type) {
         super();
 
-        if (type && type !== Object) {
+        if (type && type !== Object && type !== Array) {
             this.type = type;
         }
     }
@@ -19,81 +24,11 @@ export class ObjectSerializer extends Serializer {
     private readonly type?: Type;
 
     serialize(object: any, options?: SerializationOptions): any {
-
-        if (this.isUndefinedOrNull(object)) {
-            return object;
-        } else {
-            const serializer = findTypeSerializer(this.type ? this.type : identifyType(object), options?.typeProviders);
-            if (serializer && serializer !== this) {
-                return serializer.serialize(object, options);
-            }
-
-            if (object.toJSON) {
-                return object.toJSON();
-            }
-        }
-
-        return object;
+        return serializeImpl(object, this.type, options);
     }
 
     unserialize(json: any, options?: SerializationOptions): any {
-
-        if (this.isUndefinedOrNull(json)) {
-            return json;
-        }
-
-        if (this.type) {
-            const serializer = findTypeSerializer(this.type, options?.typeProviders);
-            if (serializer) {
-                return serializer.unserialize(json, options);
-            } else {
-                return this.unserializeToType(this.type, json);
-            }
-        }
-
-        if (!this.type && (typeof json !== "object" || Array.isArray(json))) {
-            const type = identifyType(json);
-            if (type !== Object) {
-                const serializer = findTypeSerializer(type, options?.typeProviders);
-                if (serializer) {
-                    return serializer.unserialize(json, options);
-                } else {
-                    return json;
-                }
-            } else {
-                return json;
-            }
-
-        } else {
-
-            const typeOrSerializer = findTypeOrSerializerByName(json, options?.typeProviders);
-
-            if (typeOrSerializer instanceof Serializer) {
-                return typeOrSerializer.unserialize(json, options);
-            } else if (typeOrSerializer) {
-                return this.unserializeToType(typeOrSerializer, json);
-            }
-
-            const niu = {};
-
-            for (const property of Object.keys(json)) {
-                niu[property] = this.unserialize(json[property], options);
-            }
-
-            return niu;
-        }
-    }
-
-    private unserializeToType(type: Type, json: any) {
-        if (type.prototype["fromJSON"]) {
-            const instance = Object.create(type.prototype);
-            instance.fromJSON(json);
-            return instance;
-        } else if (type["fromJSON"]) {
-            return type["fromJSON"](json);
-        } else if (type !== Object) {
-            return new (type as any)(json);
-        }
+        return unserializeImpl(json, (this.type && findTypeSerializer(this.type, options?.typeProviders)) || this.type, options);
     }
 }
 

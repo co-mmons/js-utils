@@ -7,7 +7,6 @@ export const globalProviders: InternalTypeProvider[] = [
     {type: Number, serializer: NumberSerializer.instance},
     {type: Date, name: "Date", serializer: DateSerializer.instance},
     {type: TimeZoneDate, name: "TimeZoneDate", serializer: DateSerializer.instance},
-    {type: Array, serializer: ArraySerializer.ofAny},
     {type: String, serializer: StringSerializer.instance}
 ];
 

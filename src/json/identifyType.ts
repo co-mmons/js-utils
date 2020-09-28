@@ -10,7 +10,7 @@ export function identifyType(object: any) {
     } else if (object instanceof Date) {
         return Date;
     } else if (Array.isArray(object)) {
-        return Array;
+        return Object;
     } else if (typeof object === "function" && object.prototype) {
         return object;
     } else if (object && object.constructor) {

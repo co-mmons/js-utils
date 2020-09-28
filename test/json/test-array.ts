@@ -1,5 +1,4 @@
 import {serializable, serialize, unserialize, property} from "@co.mmons/js-utils/json";
-import {ArraySerializer} from "@co.mmons/js-utils/json/serializers";
 
 @serializable()
 class Ha1 {
@@ -14,7 +13,7 @@ class Ha extends Ha1 {
 @serializable()
 export class A {
 
-    @property(new ArraySerializer(Ha1))
+    @property(Ha1)
     aProp: Ha1[];
 }
 

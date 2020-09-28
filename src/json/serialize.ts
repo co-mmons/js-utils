@@ -1,6 +1,6 @@
 import {SerializationOptions} from "./SerializationOptions";
-import {ObjectSerializer} from "./serializers";
+import {serializeImpl} from "./serializeImpl";
 
 export function serialize(object: any, options?: SerializationOptions): any {
-    return ObjectSerializer.instance.serialize(object, options);
+    return serializeImpl(object, null, options);
 }
