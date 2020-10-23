@@ -1,7 +1,9 @@
 import { globalProviders } from "./globalProviders";
 export function registerGlobalProvider(provider, options) {
     const internal = provider;
-    const existing = globalProviders.findIndex(glob => (internal.name && glob.name === internal.name) || (internal.type && glob.type === internal.type));
+    const existing = globalProviders.findIndex(glob => (internal.name && glob.name === internal.name &&
+        ((!!glob.serializer && !!internal.serializer) ||
+            (!glob.serializer && !internal.serializer && !!glob.type && !!internal.type))) || (!internal.name && !glob.name && internal.type && glob.type && glob.type === internal.type));
     if (existing > -1 && !(options === null || options === void 0 ? void 0 : options.replace)) {
         throw new Error("Global provider already exists: " + JSON.stringify(internal));
     }
