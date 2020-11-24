@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoragePreferencesContainer = void 0;
+const merge_1 = require("./merge");
 const PreferencesCollectionRefImpl_1 = require("./PreferencesCollectionRefImpl");
 const ContainerEventsManager_1 = require("./ContainerEventsManager");
 const deepClone_1 = require("./deepClone");
@@ -48,7 +49,7 @@ class StoragePreferencesContainer {
         }
         if (item) {
             const old = item.value;
-            item.value = deepClone_1.deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
+            item.value = deepClone_1.deepClone(options && options.merge ? merge_1.merge(options.merge === "deep", item.value, value) : value);
             this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,

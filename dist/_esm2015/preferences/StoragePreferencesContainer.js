@@ -1,3 +1,4 @@
+import { merge } from "./merge";
 import { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl";
 import { ContainerEventsManager } from "./ContainerEventsManager";
 import { deepClone } from "./deepClone";
@@ -45,7 +46,7 @@ export class StoragePreferencesContainer {
         }
         if (item) {
             const old = item.value;
-            item.value = deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
+            item.value = deepClone(options && options.merge ? merge(options.merge === "deep", item.value, value) : value);
             this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,

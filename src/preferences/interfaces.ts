@@ -41,7 +41,7 @@ export interface PreferencesItem<Key = any, Value = any> {
 }
 
 export interface PreferencesSetOptions {
-    merge?: boolean;
+    merge?: boolean | "deep";
 }
 
 export interface PreferencesItemRef<Key = any, Value = any> {

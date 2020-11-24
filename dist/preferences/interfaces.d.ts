@@ -26,7 +26,7 @@ export interface PreferencesItem<Key = any, Value = any> {
     readonly value: Value;
 }
 export interface PreferencesSetOptions {
-    merge?: boolean;
+    merge?: boolean | "deep";
 }
 export interface PreferencesItemRef<Key = any, Value = any> {
     readonly collection: PreferencesCollectionRef<Key, Value>;

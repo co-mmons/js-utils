@@ -1,4 +1,5 @@
 import { deepEqual } from "fast-equals";
+import { merge } from "./merge";
 import { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl";
 import { ContainerEventsManager } from "./ContainerEventsManager";
 import { deepClone } from "./deepClone";
@@ -21,7 +22,7 @@ export class MemoryPreferencesContainer {
         let item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
         if (item) {
             const old = item.value;
-            item.value = deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
+            item.value = deepClone(options && options.merge ? merge(options.merge === "deep", item.value, value) : value);
             this.fireEvent({
                 collection: collection,
                 type: "update",

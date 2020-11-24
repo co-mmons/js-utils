@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemoryPreferencesContainer = void 0;
 const fast_equals_1 = require("fast-equals");
+const merge_1 = require("./merge");
 const PreferencesCollectionRefImpl_1 = require("./PreferencesCollectionRefImpl");
 const ContainerEventsManager_1 = require("./ContainerEventsManager");
 const deepClone_1 = require("./deepClone");
@@ -24,7 +25,7 @@ class MemoryPreferencesContainer {
         let item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
         if (item) {
             const old = item.value;
-            item.value = deepClone_1.deepClone(options && options.merge ? Object.assign({}, item.value, value) : value);
+            item.value = deepClone_1.deepClone(options && options.merge ? merge_1.merge(options.merge === "deep", item.value, value) : value);
             this.fireEvent({
                 collection: collection,
                 type: "update",
