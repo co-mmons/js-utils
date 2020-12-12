@@ -1,6 +1,7 @@
+import { Enum } from "../../core";
 import { Serializer } from "../Serializer";
 /**
- * Serializes enum as a String. By default enums are serialized as numbers.
+ * Serializes enum as a string. By default native enums are serialized as numbers, @{link Enum} is serialized to types json.
  */
 export class EnumAsStringSerializer extends Serializer {
     constructor(enumClass) {
@@ -9,18 +10,24 @@ export class EnumAsStringSerializer extends Serializer {
     }
     serialize(value, options) {
         if (!this.isUndefinedOrNull(value)) {
+            if (value instanceof Enum) {
+                return value.name;
+            }
             return this.enumClass[value];
         }
         else {
-            return undefined;
+            return value;
         }
     }
     unserialize(value, options) {
-        if (value && typeof value === "string") {
+        if (value && this.enumClass.fromJSON) {
+            return this.enumClass.fromJSON(value);
+        }
+        else if (value && typeof value === "string") {
             return this.enumClass[value];
         }
         else {
-            return undefined;
+            return value;
         }
     }
 }
