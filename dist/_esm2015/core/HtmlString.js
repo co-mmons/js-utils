@@ -3,7 +3,7 @@ export class HtmlString extends String {
         if (typeof json === "string") {
             return new HtmlString(json);
         }
-        else if (typeof json === "object" && json["@type"] === HtmlString.jsonTypeName && typeof json === "string") {
+        else if (typeof json === "object" && json["@type"] === HtmlString.jsonTypeName && typeof json["value"] === "string") {
             return new HtmlString(json["value"]);
         }
         else {

@@ -6,7 +6,7 @@ export function waitTill(condition: () => boolean, interval: number = 100, timeo
 
     return new Promise((resolve, reject) => {
 
-        let intervalId: number;
+        let intervalId: any;
         let finished = false;
 
         let test = () => {

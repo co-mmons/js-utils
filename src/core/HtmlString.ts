@@ -5,7 +5,7 @@ export class HtmlString extends String {
     static fromJSON(json: string | {"@type": "HtmlString", value: string}) {
         if (typeof json === "string") {
             return new HtmlString(json);
-        } else if (typeof json === "object" && json["@type"] === HtmlString.jsonTypeName && typeof json === "string") {
+        } else if (typeof json === "object" && json["@type"] === HtmlString.jsonTypeName && typeof json["value"] === "string") {
             return new HtmlString(json["value"]);
         } else {
             throw new Error(`Cannot unserialize ${json} to HtmlString`);
