@@ -45,6 +45,9 @@ class Enum {
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     }
     equals(value) {
+        if (value === null || value === undefined || typeof value === "function" || typeof value === "number" || typeof value === "boolean") {
+            return false;
+        }
         if (typeof value === "string") {
             return value === this.name;
         }

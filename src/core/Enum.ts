@@ -70,7 +70,9 @@ export abstract class Enum {
 
     equals(value: string | Enum | EnumValueJson): boolean {
 
-        if (typeof value === "string") {
+        if (value === null || value === undefined || typeof value === "function" || typeof value === "number" || typeof value === "boolean") {
+            return false;
+        } if (typeof value === "string") {
             return value === this.name;
         } else if ("@type" in value) {
             return value["@type"] === jsonTypeName(this) && value.name === this.name;
