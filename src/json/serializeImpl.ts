@@ -32,6 +32,11 @@ function serializeImplWithSerializer(value: any, type: InternalType, typeSeriali
                 serialized = serializer.serialize(i, options);
             } else if (i.toJSON) {
                 serialized = i.toJSON();
+            } else if (typeof i === "object") {
+                serialized = {};
+                for (const p of Object.keys(i)) {
+                    serialized[p] = serializeImpl(i[p], undefined, options);
+                }
             }
 
             if (array) {

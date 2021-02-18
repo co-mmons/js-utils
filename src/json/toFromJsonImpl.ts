@@ -51,7 +51,7 @@ export function toJsonImpl(this: any) {
         } else if (serializer) {
             json[name] = serializer.serialize(value, serializationOptions);
         } else {
-            json[name] = serializeImpl(value, type,serializationOptions);
+            json[name] = serializeImpl(value, type, serializationOptions);
         }
     }
 
