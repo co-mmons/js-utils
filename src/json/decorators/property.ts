@@ -37,12 +37,12 @@ export function property(): Function {
 
     return function (classPrototype: any, propertyName: string, propertyDescriptor?: PropertyDescriptor) {
 
-        if (!jsonType) {
-            jsonType = Reflect.getMetadata("design:type", classPrototype, propertyName);
-        }
-
         const type = classPrototype.constructor as InternalType;
-        const config = Object.assign({propertyType: jsonType, propertyJsonName: jsonName}, options) as PropertyConfig;
+        const config = Object.assign({
+            propertyType: jsonType,
+            propertyDesignType: !jsonType && Reflect.getMetadata("design:type", classPrototype, propertyName),
+            propertyJsonName: jsonName
+        }, options) as PropertyConfig;
 
         setupSerialization(type);
 

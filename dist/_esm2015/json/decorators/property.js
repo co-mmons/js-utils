@@ -17,11 +17,12 @@ export function property() {
         }
     }
     return function (classPrototype, propertyName, propertyDescriptor) {
-        if (!jsonType) {
-            jsonType = Reflect.getMetadata("design:type", classPrototype, propertyName);
-        }
         const type = classPrototype.constructor;
-        const config = Object.assign({ propertyType: jsonType, propertyJsonName: jsonName }, options);
+        const config = Object.assign({
+            propertyType: jsonType,
+            propertyDesignType: !jsonType && Reflect.getMetadata("design:type", classPrototype, propertyName),
+            propertyJsonName: jsonName
+        }, options);
         setupSerialization(type);
         const properties = type.__jsonProperties = (type.hasOwnProperty("__jsonProperties") && type.__jsonProperties) || {};
         properties[propertyName] = config;

@@ -13,11 +13,11 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
         return value;
     }
     else {
-        const array = Array.isArray(value) ? [] : undefined;
-        const serializer = typeSerializer instanceof Serializer_1.Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer_1.findTypeSerializer(type ? type : (!array ? identifyType_1.identifyType(value) : undefined), options === null || options === void 0 ? void 0 : options.typeProviders));
-        for (const i of array ? value : [value]) {
-            if (array && (i === undefined || i === null)) {
-                array.push(i);
+        const newArray = Array.isArray(value) ? [] : undefined;
+        const serializer = typeSerializer instanceof Serializer_1.Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer_1.findTypeSerializer(type ? type : (!newArray ? identifyType_1.identifyType(value) : undefined), options === null || options === void 0 ? void 0 : options.typeProviders));
+        for (const i of newArray ? value : [value]) {
+            if (newArray && (i === undefined || i === null)) {
+                newArray.push(i);
                 continue;
             }
             let serialized = i;
@@ -26,6 +26,9 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
             }
             else if (serializer) {
                 serialized = serializer.serialize(i, options);
+            }
+            else if (newArray) {
+                serialized = serializeImpl(i, undefined, options);
             }
             else if (i.toJSON) {
                 serialized = i.toJSON();
@@ -36,15 +39,15 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
                     serialized[p] = serializeImpl(i[p], undefined, options);
                 }
             }
-            if (array) {
-                array.push(serialized);
+            if (newArray) {
+                newArray.push(serialized);
             }
             else {
                 return serialized;
             }
         }
-        if (array) {
-            return array;
+        if (newArray) {
+            return newArray;
         }
     }
 }

@@ -4,5 +4,6 @@ import {Serializer} from "../Serializer";
 
 export interface PropertyConfig extends SerializationOptions {
     propertyType?: Type<any> | Serializer;
+    propertyDesignType?: Type<any>;
     propertyJsonName?: string;
 }

@@ -14,22 +14,23 @@ function serializeImplWithSerializer(value: any, type: InternalType, typeSeriali
         return value;
     } else {
 
-        const array = Array.isArray(value) ? [] : undefined;
-        const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type ? type : (!array ? identifyType(value) : undefined), options?.typeProviders));
+        const newArray = Array.isArray(value) ? [] : undefined;
+        const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type ? type : (!newArray ? identifyType(value) : undefined), options?.typeProviders));
 
-        for (const i of array ? value : [value]) {
+        for (const i of newArray ? value : [value]) {
 
-            if (array && (i === undefined || i === null)) {
-                array.push(i);
+            if (newArray && (i === undefined || i === null)) {
+                newArray.push(i);
                 continue;
             }
-
             let serialized = i;
 
             if (Array.isArray(i)) {
                 serialized = serializeImplWithSerializer(i, type, serializer || false, options);
             } else if (serializer) {
                 serialized = serializer.serialize(i, options);
+            } else if (newArray) {
+                serialized = serializeImpl(i, undefined, options);
             } else if (i.toJSON) {
                 serialized = i.toJSON();
             } else if (typeof i === "object") {
@@ -39,15 +40,15 @@ function serializeImplWithSerializer(value: any, type: InternalType, typeSeriali
                 }
             }
 
-            if (array) {
-                array.push(serialized);
+            if (newArray) {
+                newArray.push(serialized);
             } else {
                 return serialized;
             }
         }
 
-        if (array) {
-            return array;
+        if (newArray) {
+            return newArray;
         }
     }
 

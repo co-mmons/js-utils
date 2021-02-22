@@ -39,19 +39,22 @@ export function toJsonImpl(this: any) {
             continue;
         }
 
-        const type = config.propertyType ? config.propertyType : identifyType(value);
-        const serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
 
         if (Array.isArray(value)) {
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, typesTree[0].__jsonTypes));
             json[name] = [];
             for (const i of value) {
-                json[name].push(serializer ? serializer.serialize(i, serializationOptions) : serializeImpl(i, type, serializationOptions));
+                json[name].push(serializer ? serializer.serialize(i, serializationOptions) : serializeImpl(i, config.propertyType as Type<any>, serializationOptions));
             }
-        } else if (serializer) {
-            json[name] = serializer.serialize(value, serializationOptions);
         } else {
-            json[name] = serializeImpl(value, type, serializationOptions);
+            const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, typesTree[0].__jsonTypes);
+            if (serializer) {
+                json[name] = serializer.serialize(value, serializationOptions);
+            } else {
+                json[name] = serializeImpl(value, type, serializationOptions);
+            }
         }
     }
 
@@ -121,16 +124,15 @@ export function fromJsonImpl(this: AssignableType, json: any) {
                 continue;
             }
 
-            const type = config.propertyType ? config.propertyType : identifyType(value);
-
-            const serializer = type instanceof Serializer ? type : findTypeSerializer(type, typesTree[0].__jsonTypes);
-
             if (Array.isArray(value)) {
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, typesTree[0].__jsonTypes));
                 instance[propertyName] = [];
                 for (const i of value) {
-                    instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : unserializeImpl(i, type, serializationOptions));
+                    instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : unserializeImpl(i, config.propertyType as Type<any>, serializationOptions));
                 }
             } else {
+                const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, typesTree[0].__jsonTypes);
                 instance[propertyName] = serializer ? serializer.unserialize(value, serializationOptions) : unserializeImpl(value, type, serializationOptions);
             }
 
