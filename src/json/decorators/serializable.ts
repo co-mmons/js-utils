@@ -55,8 +55,6 @@ export function serializable(options?: JsonSerializableOptions) {
                         property: "@type",
                         value: classInternalType.jsonTypeName
                     });
-
-                    break;
                 }
             }
         }

@@ -45,7 +45,6 @@ function serializable(options) {
                         property: "@type",
                         value: classInternalType.jsonTypeName
                     });
-                    break;
                 }
             }
         }
