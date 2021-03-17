@@ -25,12 +25,14 @@ function visitNode(node: ts.Node, program: ts.Program): ts.Node | undefined {
             const clazz = node.parent;
 
             // for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
-            //     clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
+            //     console.log(property.name);
+            //     // clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
             // }
 
             for (const childNode of clazz.members) {
                 if (ts.isPropertyDeclaration(childNode)) {
-                    if (!childNode.type) {
+
+                    if (!childNode.type || childNode.modifiers?.find(m => m.kind === ts.SyntaxKind.StaticKeyword)) {
                         continue;
                     }
 

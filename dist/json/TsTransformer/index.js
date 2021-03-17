@@ -11,6 +11,7 @@ function visitNodeAndChildren(node, program, context) {
     return ts.visitEachChild(visitNode(node, program), childNode => visitNodeAndChildren(childNode, program, context), context);
 }
 function visitNode(node, program) {
+    var _a;
     const typeChecker = program.getTypeChecker();
     if (ts.isDecorator(node) && ts.isClassDeclaration(node.parent) && ts.isCallExpression(node.expression)) {
         const call = node.expression;
@@ -18,11 +19,12 @@ function visitNode(node, program) {
             const clazzProps = [];
             const clazz = node.parent;
             // for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
-            //     clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
+            //     console.log(property.name);
+            //     // clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
             // }
             for (const childNode of clazz.members) {
                 if (ts.isPropertyDeclaration(childNode)) {
-                    if (!childNode.type) {
+                    if (!childNode.type || ((_a = childNode.modifiers) === null || _a === void 0 ? void 0 : _a.find(m => m.kind === ts.SyntaxKind.StaticKeyword))) {
                         continue;
                     }
                     //
