@@ -22,7 +22,10 @@ class PreferencesCollectionRefImpl {
         }
     }
     delete() {
-        return this.container.delete(this.name, arguments[0]);
+        return this.container.delete(this.name, ...arguments[0]);
+    }
+    deleteAll() {
+        return this.container.deleteAll(this.name);
     }
     exists(key) {
         return this.container.exists(this.name, key);

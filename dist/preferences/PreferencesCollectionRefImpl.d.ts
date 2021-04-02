@@ -6,6 +6,7 @@ export declare class PreferencesCollectionRefImpl<Key, Value> implements Prefere
     itemRef(key: Key): any;
     items(): Promise<PreferencesItem<Key, Value>[]>;
     delete(): Promise<PreferencesItem[]>;
+    deleteAll(): Promise<PreferencesItem[]>;
     exists(key: Key): Promise<boolean>;
     item(key: Key): any;
     set(key: Key, value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;

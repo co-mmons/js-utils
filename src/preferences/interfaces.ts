@@ -100,5 +100,5 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
 
     delete(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
 
-    delete(): Promise<PreferencesItem<Key, Value>[]>;
+    deleteAll(): Promise<PreferencesItem<Key, Value>[]>;
 }

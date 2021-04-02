@@ -23,7 +23,11 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
     }
 
     delete(): Promise<PreferencesItem[]> {
-        return this.container.delete(this.name, arguments[0]);
+        return this.container.delete(this.name, ...arguments[0]);
+    }
+
+    deleteAll(): Promise<PreferencesItem[]> {
+        return this.container.deleteAll(this.name);
     }
 
     exists(key: Key): Promise<boolean> {

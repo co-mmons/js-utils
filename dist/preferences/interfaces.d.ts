@@ -58,5 +58,5 @@ export interface PreferencesCollectionRef<Key = any, Value = any> {
     values(...keys: Key[]): Promise<Value[]>;
     values(): Promise<Value[]>;
     delete(...keys: Key[]): Promise<PreferencesItem<Key, Value>[]>;
-    delete(): Promise<PreferencesItem<Key, Value>[]>;
+    deleteAll(): Promise<PreferencesItem<Key, Value>[]>;
 }
