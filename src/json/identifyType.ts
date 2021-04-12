@@ -1,13 +1,13 @@
 export function identifyType(object: any) {
     if (object === undefined || object === null) {
         return Object;
-    } else if (object instanceof Boolean || typeof object === "boolean") {
+    } else if (object.constructor === Boolean || typeof object === "boolean") {
         return Boolean;
-    } else if (object instanceof String || typeof object === "string") {
+    } else if (object.constructor === String || typeof object === "string") {
         return String;
-    } else if (object instanceof Number || typeof object === "number") {
+    } else if (object.constructor === Number || typeof object === "number") {
         return Number;
-    } else if (object instanceof Date) {
+    } else if (object.constructor === Date) {
         return Date;
     } else if (Array.isArray(object)) {
         return Object;
