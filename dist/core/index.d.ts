@@ -12,7 +12,7 @@ export { forwardRef, ForwardRefFn } from "./forwardRef";
 export { HtmlString } from "./HtmlString";
 export { resolveForwardRef } from "./resolveForwardRef";
 export { sleep } from "./sleep";
-export { Timestamp } from "./Timestamp";
+export { Timestamp, implementTimestampInDate } from "./Timestamp";
 export { TimeZoneDate } from "./TimeZoneDate";
 export { toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString } from "./types";
 export { waitTill } from "./wait";

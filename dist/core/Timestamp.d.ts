@@ -6,3 +6,4 @@ declare global {
     interface Date extends Timestamp {
     }
 }
+export declare function implementTimestampInDate(): void;

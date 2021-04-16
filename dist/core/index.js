@@ -29,6 +29,8 @@ var resolveForwardRef_1 = require("./resolveForwardRef");
 Object.defineProperty(exports, "resolveForwardRef", { enumerable: true, get: function () { return resolveForwardRef_1.resolveForwardRef; } });
 var sleep_1 = require("./sleep");
 Object.defineProperty(exports, "sleep", { enumerable: true, get: function () { return sleep_1.sleep; } });
+var Timestamp_1 = require("./Timestamp");
+Object.defineProperty(exports, "implementTimestampInDate", { enumerable: true, get: function () { return Timestamp_1.implementTimestampInDate; } });
 var TimeZoneDate_1 = require("./TimeZoneDate");
 Object.defineProperty(exports, "TimeZoneDate", { enumerable: true, get: function () { return TimeZoneDate_1.TimeZoneDate; } });
 var types_1 = require("./types");
