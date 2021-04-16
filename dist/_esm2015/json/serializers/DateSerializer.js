@@ -16,8 +16,11 @@ export class DateSerializer extends Serializer {
         else if (value instanceof Date) {
             return { "@type": "Date", value: value.toJSON() };
         }
+        else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
+            return { "@type": "Date", value: value.toDate().toJSON() };
+        }
         else if (options && options.notStrict && typeof value == "number") {
-            return new Date(new Date().setTime(value)).toJSON();
+            return { "@type": "Date", value: new Date(value).toJSON() };
         }
         else if (!options || !options.ignoreErrors) {
             throw new Error(`Cannot serialize "${value}" as Date`);
@@ -35,6 +38,9 @@ export class DateSerializer extends Serializer {
         }
         else if (typeof value === "number" && options && options.notStrict) {
             return new Date(new Date().setTime(value));
+        }
+        else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
+            return value.toDate();
         }
         else if (this.isUndefinedOrNull(value)) {
             return this.unserializeUndefinedOrNull(value, options);
