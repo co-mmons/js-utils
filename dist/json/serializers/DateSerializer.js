@@ -33,7 +33,10 @@ class DateSerializer extends Serializer_1.Serializer {
         }
     }
     unserialize(value, options) {
-        if (value instanceof Date) {
+        if (this.isUndefinedOrNull(value)) {
+            return this.unserializeUndefinedOrNull(value, options);
+        }
+        else if (value instanceof Date) {
             return value;
         }
         else if (typeof value === "string") {
@@ -44,9 +47,6 @@ class DateSerializer extends Serializer_1.Serializer {
         }
         else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
             return value.toDate();
-        }
-        else if (this.isUndefinedOrNull(value)) {
-            return this.unserializeUndefinedOrNull(value, options);
         }
         else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && typeof value.date === "string") {
             return new TimeZoneDate_1.TimeZoneDate(new Date(value.date), value.timeZone);
