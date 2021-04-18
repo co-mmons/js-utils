@@ -57,7 +57,7 @@ export class TimeZoneDate extends Date {
 
     constructor(dateOrEpoch?: Date | number | string, timeZone?: string) {
 
-        if (dateOrEpoch === undefined) {
+        if (dateOrEpoch !== undefined) {
             super(dateOrEpoch);
         }
 
