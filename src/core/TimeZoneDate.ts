@@ -67,6 +67,13 @@ export class TimeZoneDate extends Date {
     timeZone: string;
 
     toJSON(): any {
-        return {"@type": "TimeZoneDate", date: super.toJSON(), timeZone: this.timeZone};
+
+        const json = {"@type": "TimeZoneDate", date: super.toJSON()};
+
+        if (this.timeZone) {
+            json["timeZone"] = this.timeZone;
+        }
+
+        return json;
     }
 }
