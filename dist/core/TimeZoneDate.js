@@ -6,7 +6,9 @@ const offsetFormatOptions = { timeZone: "UTC", hour12: false, year: "numeric", m
 const offsetUsFormatter = new Intl.DateTimeFormat("en-US", offsetFormatOptions);
 class TimeZoneDate extends Date {
     constructor(dateOrEpoch, timeZone) {
-        super(dateOrEpoch);
+        if (dateOrEpoch === undefined) {
+            super(dateOrEpoch);
+        }
         this.timeZone = timeZone;
     }
     static timezoneOffset(timezone, date) {

@@ -47,14 +47,20 @@ export class TimeZoneDate extends Date {
         }
     }
 
+    constructor();
+
     constructor(epoch: number, timeZone?: string);
 
     constructor(date: Date, timeZone?: string);
 
     constructor(isoDateString: string, timeZone?: string);
 
-    constructor(dateOrEpoch: Date | number | string, timeZone?: string) {
-        super(dateOrEpoch);
+    constructor(dateOrEpoch?: Date | number | string, timeZone?: string) {
+
+        if (dateOrEpoch === undefined) {
+            super(dateOrEpoch);
+        }
+
         this.timeZone = timeZone;
     }
 
