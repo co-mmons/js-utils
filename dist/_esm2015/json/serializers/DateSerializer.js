@@ -45,10 +45,10 @@ export class DateSerializer extends Serializer {
         else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
             return value.toDate();
         }
-        else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && typeof value.date === "string") {
-            return new TimeZoneDate(new Date(value.date), value.timeZone);
+        else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && value.date) {
+            return new TimeZoneDate(value.date, value.timeZone);
         }
-        else if (typeof value === "object" && value["@type"] === "Date" && typeof value.value === "string") {
+        else if (typeof value === "object" && value["@type"] === "Date" && value.value) {
             return new Date(value.value);
         }
         else if (!options || !options.ignoreErrors) {

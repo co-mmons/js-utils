@@ -1,5 +1,5 @@
 import {TimeZoneDate} from "../core/TimeZoneDate";
-import {ArraySerializer, BooleanSerializer, DateSerializer, NumberSerializer, StringSerializer} from "./serializers";
+import {BooleanSerializer, DateSerializer, NumberSerializer, StringSerializer} from "./serializers";
 import {InternalTypeProvider} from "./TypeProvider";
 
 export const globalProviders: InternalTypeProvider[] = [
