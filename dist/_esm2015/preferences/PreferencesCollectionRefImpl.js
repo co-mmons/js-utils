@@ -18,8 +18,8 @@ export class PreferencesCollectionRefImpl {
             return this.container.items(this.name);
         }
     }
-    delete() {
-        return this.container.delete(this.name, ...arguments[0]);
+    delete(...keys) {
+        return this.container.delete(this.name, ...keys);
     }
     deleteAll() {
         return this.container.deleteAll(this.name);

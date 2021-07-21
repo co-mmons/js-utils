@@ -22,8 +22,8 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         }
     }
 
-    delete(): Promise<PreferencesItem[]> {
-        return this.container.delete(this.name, ...arguments[0]);
+    delete(...keys: Key[]): Promise<PreferencesItem[]> {
+        return this.container.delete(this.name, ...keys);
     }
 
     deleteAll(): Promise<PreferencesItem[]> {

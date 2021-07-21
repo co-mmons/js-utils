@@ -5,7 +5,7 @@ export declare class PreferencesCollectionRefImpl<Key, Value> implements Prefere
     constructor(container: PreferencesContainer, name: string);
     itemRef(key: Key): any;
     items(): Promise<PreferencesItem<Key, Value>[]>;
-    delete(): Promise<PreferencesItem[]>;
+    delete(...keys: Key[]): Promise<PreferencesItem[]>;
     deleteAll(): Promise<PreferencesItem[]>;
     exists(key: Key): Promise<boolean>;
     item(key: Key): any;
