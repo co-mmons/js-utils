@@ -6,7 +6,7 @@ import {timeZoneOffset} from "./timeZoneOffset";
 export class DateTimezone {
 
     static timezoneOffset(timezone: string, date?: Date) {
-        return timeZoneOffset(timezone, date);
+        return timeZoneOffset(timezone, date) / 1000 / 60;
     }
 
     static fromJSON(json: any) {

@@ -13,7 +13,7 @@ export class DateTimezone {
         }
     }
     static timezoneOffset(timezone, date) {
-        return timeZoneOffset(timezone, date);
+        return timeZoneOffset(timezone, date) / 1000 / 60;
     }
     static fromJSON(json) {
         if (typeof json === "object" && json && json["timezone"] && json["date"]) {
