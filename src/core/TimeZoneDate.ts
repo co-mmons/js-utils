@@ -59,6 +59,8 @@ export class TimeZoneDate extends Date {
 
         if (dateOrEpoch !== undefined) {
             super(dateOrEpoch);
+        } else {
+            super();
         }
 
         this.timeZone = timeZone;
