@@ -33,6 +33,8 @@ var Timestamp_1 = require("./Timestamp");
 Object.defineProperty(exports, "implementTimestampInDate", { enumerable: true, get: function () { return Timestamp_1.implementTimestampInDate; } });
 var TimeZoneDate_1 = require("./TimeZoneDate");
 Object.defineProperty(exports, "TimeZoneDate", { enumerable: true, get: function () { return TimeZoneDate_1.TimeZoneDate; } });
+var timeZoneOffset_1 = require("./timeZoneOffset");
+Object.defineProperty(exports, "timeZoneOffset", { enumerable: true, get: function () { return timeZoneOffset_1.timeZoneOffset; } });
 var types_1 = require("./types");
 Object.defineProperty(exports, "toInteger", { enumerable: true, get: function () { return types_1.toInteger; } });
 Object.defineProperty(exports, "isArrayContainsInstanceOf", { enumerable: true, get: function () { return types_1.isArrayContainsInstanceOf; } });

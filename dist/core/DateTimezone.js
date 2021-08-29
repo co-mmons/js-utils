@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DateTimezone = void 0;
-const TimeZoneDate_1 = require("./TimeZoneDate");
+const timeZoneOffset_1 = require("./timeZoneOffset");
 /**
  * @deprecated
  */
@@ -16,7 +16,7 @@ class DateTimezone {
         }
     }
     static timezoneOffset(timezone, date) {
-        return TimeZoneDate_1.TimeZoneDate.timezoneOffset(timezone, date);
+        return timeZoneOffset_1.timeZoneOffset(timezone, date);
     }
     static fromJSON(json) {
         if (typeof json === "object" && json && json["timezone"] && json["date"]) {

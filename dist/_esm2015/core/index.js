@@ -14,6 +14,7 @@ export { resolveForwardRef } from "./resolveForwardRef";
 export { sleep } from "./sleep";
 export { implementTimestampInDate } from "./Timestamp";
 export { TimeZoneDate } from "./TimeZoneDate";
+export { timeZoneOffset } from "./timeZoneOffset";
 export { toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString } from "./types";
 export { waitTill } from "./wait";
 //# sourceMappingURL=index.js.map

@@ -1,4 +1,4 @@
-import { TimeZoneDate } from "./TimeZoneDate";
+import { timeZoneOffset } from "./timeZoneOffset";
 /**
  * @deprecated
  */
@@ -13,7 +13,7 @@ export class DateTimezone {
         }
     }
     static timezoneOffset(timezone, date) {
-        return TimeZoneDate.timezoneOffset(timezone, date);
+        return timeZoneOffset(timezone, date);
     }
     static fromJSON(json) {
         if (typeof json === "object" && json && json["timezone"] && json["date"]) {
