@@ -22,12 +22,12 @@ class ContainerEventsManager {
             if (!listener.collection || event.collection === listener.collection) {
                 try {
                     listener.listener({
-                        ref: new PreferencesItemRefImpl_1.PreferencesItemRefImpl(event.ref.collection, deepClone_1.deepClone(event.ref.key)),
+                        ref: new PreferencesItemRefImpl_1.PreferencesItemRefImpl(event.ref.collection, (0, deepClone_1.deepClone)(event.ref.key)),
                         type: event.type,
                         collection: event.collection,
-                        key: deepClone_1.deepClone(event.key),
-                        oldValue: deepClone_1.deepClone(event.oldValue),
-                        newValue: deepClone_1.deepClone(event.newValue)
+                        key: (0, deepClone_1.deepClone)(event.key),
+                        oldValue: (0, deepClone_1.deepClone)(event.oldValue),
+                        newValue: (0, deepClone_1.deepClone)(event.newValue)
                     });
                 }
                 catch (error) {

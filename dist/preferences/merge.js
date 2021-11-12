@@ -4,7 +4,7 @@ exports.merge = void 0;
 const deepMerge_1 = require("./deepMerge");
 function merge(deep, ...objects) {
     if (deep) {
-        return deepMerge_1.deepMerge(...objects);
+        return (0, deepMerge_1.deepMerge)(...objects);
     }
     else {
         return Object.assign({}, ...objects);

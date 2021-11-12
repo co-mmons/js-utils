@@ -13,7 +13,7 @@ class ArraySerializer extends Serializer_1.Serializer {
             throw new Error("Value type passed to Json Array Serializer is undefined - check, whether class reference cycle");
         }
         if (valueTypeOrSerializer) {
-            this.typeOrSerializer = core_1.resolveForwardRef(valueTypeOrSerializer);
+            this.typeOrSerializer = (0, core_1.resolveForwardRef)(valueTypeOrSerializer);
         }
     }
     serialize(value, options) {
@@ -24,7 +24,7 @@ class ArraySerializer extends Serializer_1.Serializer {
         else if (Array.isArray(value)) {
             const array = [];
             for (const i of value) {
-                array.push(serializer ? serializer.serialize(i, options) : serializeImpl_1.serializeImpl(i, this.typeOrSerializer, options));
+                array.push(serializer ? serializer.serialize(i, options) : (0, serializeImpl_1.serializeImpl)(i, this.typeOrSerializer, options));
             }
             return array;
         }
@@ -32,7 +32,7 @@ class ArraySerializer extends Serializer_1.Serializer {
             return serializer.serialize(value, options);
         }
         else {
-            return serializeImpl_1.serializeImpl(value, this.typeOrSerializer, options);
+            return (0, serializeImpl_1.serializeImpl)(value, this.typeOrSerializer, options);
         }
     }
     unserialize(json, options) {
@@ -43,7 +43,7 @@ class ArraySerializer extends Serializer_1.Serializer {
         else if (Array.isArray(json)) {
             const array = [];
             for (const i of json) {
-                array.push(serializer ? serializer.unserialize(i, options) : unserializeImpl_1.unserializeImpl(i, this.typeOrSerializer, options));
+                array.push(serializer ? serializer.unserialize(i, options) : (0, unserializeImpl_1.unserializeImpl)(i, this.typeOrSerializer, options));
             }
             return array;
         }
@@ -51,7 +51,7 @@ class ArraySerializer extends Serializer_1.Serializer {
             return serializer.unserialize(json, options);
         }
         else {
-            return unserialize_1.unserialize(json, this.typeOrSerializer, options);
+            return (0, unserialize_1.unserialize)(json, this.typeOrSerializer, options);
         }
     }
 }

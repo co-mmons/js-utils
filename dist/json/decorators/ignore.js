@@ -5,7 +5,7 @@ const setupSerialization_1 = require("../setupSerialization");
 function ignore() {
     return function (classPrototype, propertyName, propertyDescriptor) {
         const internalType = classPrototype.constructor;
-        setupSerialization_1.setupSerialization(internalType);
+        (0, setupSerialization_1.setupSerialization)(internalType);
         const properties = internalType.__jsonIgnoredProperties = (internalType.hasOwnProperty("__jsonIgnoredProperties") && internalType.__jsonIgnoredProperties) || [];
         properties.push(propertyName);
     };

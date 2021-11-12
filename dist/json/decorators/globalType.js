@@ -4,7 +4,7 @@ exports.globalType = void 0;
 const registerGlobalProvider_1 = require("../registerGlobalProvider");
 function globalType(options) {
     return function (classType) {
-        registerGlobalProvider_1.registerGlobalProvider({ name: classType.jsonTypeName, type: classType }, options);
+        (0, registerGlobalProvider_1.registerGlobalProvider)({ name: classType.jsonTypeName, type: classType }, options);
     };
 }
 exports.globalType = globalType;

@@ -6,7 +6,7 @@ function unserialize(json, targetClass, options) {
     if (json === undefined || json === null) {
         return json;
     }
-    return unserializeImpl_1.unserializeImpl(json, targetClass, options);
+    return (0, unserializeImpl_1.unserializeImpl)(json, targetClass, options);
 }
 exports.unserialize = unserialize;
 //# sourceMappingURL=unserialize.js.map

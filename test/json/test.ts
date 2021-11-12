@@ -7,8 +7,8 @@
             // "test-type",
             // "test-array",
             // "test-basic"
-            // "test-transformer"
-            "test-enum"
+            "test-transformer"
+            // "test-enum"
         ]) {
             console.log("---", file, "---");
             const test = await import(`./${file}`);

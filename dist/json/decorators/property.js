@@ -26,7 +26,7 @@ function property() {
             propertyDesignType: !jsonType && Reflect.getMetadata("design:type", classPrototype, propertyName),
             propertyJsonName: jsonName
         }, options);
-        setupSerialization_1.setupSerialization(type);
+        (0, setupSerialization_1.setupSerialization)(type);
         const properties = type.__jsonProperties = (type.hasOwnProperty("__jsonProperties") && type.__jsonProperties) || {};
         properties[propertyName] = config;
     };

@@ -4,7 +4,7 @@ exports.subtype = void 0;
 const setupSerialization_1 = require("../setupSerialization");
 function subtype(supertype, propertyOrMatcher, value) {
     return function (classType) {
-        setupSerialization_1.setupSerialization(supertype);
+        (0, setupSerialization_1.setupSerialization)(supertype);
         const internalType = supertype;
         const types = internalType.__jsonSubtypes = (internalType.hasOwnProperty("__jsonSubtypes") && internalType.__jsonSubtypes) || [];
         types.push({

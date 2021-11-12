@@ -13,7 +13,7 @@ function serializable(options) {
         }
     }
     return function (classType) {
-        setupSerialization_1.setupSerialization(classType);
+        (0, setupSerialization_1.setupSerialization)(classType);
         const classInternalType = classType;
         if (options === null || options === void 0 ? void 0 : options.properties) {
             const properties = classInternalType.__jsonProperties = (classInternalType.hasOwnProperty("__jsonProperties") && classInternalType.__jsonProperties) || {};
@@ -37,7 +37,7 @@ function serializable(options) {
             }
         }
         if (classInternalType.hasOwnProperty("jsonTypeName") && classInternalType.jsonTypeName) {
-            for (const supertype of getSupertypes_1.getSupertypes(classInternalType)) {
+            for (const supertype of (0, getSupertypes_1.getSupertypes)(classInternalType)) {
                 if (supertype.hasOwnProperty("__jsonSerialization") && supertype.__jsonSerialization) {
                     const types = supertype.__jsonSubtypes = (supertype.hasOwnProperty("__jsonSubtypes") && supertype.__jsonSubtypes) || [];
                     types.push({

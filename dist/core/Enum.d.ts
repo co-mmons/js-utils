@@ -13,8 +13,8 @@ export declare type EnumValueName<TypeOfEnumClass extends EnumStatic<any>> = Ext
 export declare abstract class Enum {
     readonly name: string;
     protected static values(): Enum[];
-    protected static fromJSON(value: EnumFromJSONValue): Enum;
-    protected static valueOf(name: EnumValueOfValue): Enum;
+    protected static fromJSON(value: EnumFromJSONValue, unknownFactory?: (value: EnumFromJSONValue) => Enum): Enum;
+    protected static valueOf(name: EnumValueOfValue, unknownFactory: (name: EnumValueOfValue) => Enum): Enum;
     protected constructor(name: string);
     equals(value: string | Enum | EnumValueJson): boolean;
     toJSON(): any;

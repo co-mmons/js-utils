@@ -41,7 +41,7 @@ class PreferencesCollectionRefImpl {
         return this.container.update(this.name, key, value);
     }
     value(key) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const item = yield this.container.get(this.name, key);
             return (item && item.value) || null;
         });
@@ -49,7 +49,7 @@ class PreferencesCollectionRefImpl {
     values() {
         const args = arguments;
         const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
-        return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const values = [];
             try {
                 let items;

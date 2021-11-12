@@ -9,7 +9,7 @@ class Enum {
     static values() {
         return valuesRef(this).slice();
     }
-    static fromJSON(value) {
+    static fromJSON(value, unknownFactory) {
         let name;
         if (typeof value === "string") {
             name = value;
@@ -24,9 +24,12 @@ class Enum {
                 }
             }
         }
+        if (unknownFactory) {
+            return unknownFactory(value);
+        }
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
-    static valueOf(name) {
+    static valueOf(name, unknownFactory) {
         CHECK_NAME: if (name) {
             if (typeof name === "object" && name) {
                 if (name["@type"] === jsonTypeName(this)) {
@@ -41,6 +44,9 @@ class Enum {
                     return v;
                 }
             }
+        }
+        if (unknownFactory) {
+            return unknownFactory(name);
         }
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     }

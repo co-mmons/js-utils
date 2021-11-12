@@ -37,7 +37,7 @@ class StoragePreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new PreferencesItemImpl_1.PreferencesItemImpl(this.collection(item.collection), deepClone_1.deepClone(item.key), deepClone_1.deepClone(item.value));
+            return new PreferencesItemImpl_1.PreferencesItemImpl(this.collection(item.collection), (0, deepClone_1.deepClone)(item.key), (0, deepClone_1.deepClone)(item.value));
         }
         return undefined;
     }
@@ -49,14 +49,14 @@ class StoragePreferencesContainer {
         }
         if (item) {
             const old = item.value;
-            item.value = deepClone_1.deepClone(options && options.merge ? merge_1.merge(options.merge === "deep", item.value, value) : value);
+            item.value = (0, deepClone_1.deepClone)(options && options.merge ? (0, merge_1.merge)(options.merge === "deep", item.value, value) : value);
             this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,
                 type: "update",
-                key: deepClone_1.deepClone(key),
-                newValue: deepClone_1.deepClone(item.value),
-                oldValue: deepClone_1.deepClone(old)
+                key: (0, deepClone_1.deepClone)(key),
+                newValue: (0, deepClone_1.deepClone)(item.value),
+                oldValue: (0, deepClone_1.deepClone)(old)
             });
         }
         else {
@@ -65,8 +65,8 @@ class StoragePreferencesContainer {
             this.fireEvent({
                 collection: collection,
                 type: "create",
-                key: deepClone_1.deepClone(key),
-                newValue: deepClone_1.deepClone(value)
+                key: (0, deepClone_1.deepClone)(key),
+                newValue: (0, deepClone_1.deepClone)(value)
             });
         }
         return Promise.resolve(this.newItem({ key, collection, value: item.value }));
@@ -87,8 +87,8 @@ class StoragePreferencesContainer {
                     this.fireEvent({
                         collection,
                         type: "delete",
-                        key: deepClone_1.deepClone(key),
-                        oldValue: deepClone_1.deepClone(item.value)
+                        key: (0, deepClone_1.deepClone)(key),
+                        oldValue: (0, deepClone_1.deepClone)(item.value)
                     });
                     deleted.push(this.newItem({ collection, key, value: item.value }));
                     continue KEYS;
@@ -108,8 +108,8 @@ class StoragePreferencesContainer {
                 this.fireEvent({
                     collection,
                     type: "delete",
-                    key: deepClone_1.deepClone(collectionAndKey[1]),
-                    oldValue: deepClone_1.deepClone(item.value)
+                    key: (0, deepClone_1.deepClone)(collectionAndKey[1]),
+                    oldValue: (0, deepClone_1.deepClone)(item.value)
                 });
                 deleted.push(this.newItem({ collection, key: collectionAndKey[1], value: item.value }));
             }
@@ -160,9 +160,9 @@ class StoragePreferencesContainer {
                 this.fireEvent({
                     collection: collection,
                     type: "update",
-                    key: deepClone_1.deepClone(key),
-                    newValue: deepClone_1.deepClone(newValue),
-                    oldValue: (oldItem && deepClone_1.deepClone(oldItem.value)) || null
+                    key: (0, deepClone_1.deepClone)(key),
+                    newValue: (0, deepClone_1.deepClone)(newValue),
+                    oldValue: (oldItem && (0, deepClone_1.deepClone)(oldItem.value)) || null
                 });
                 this.setStorageItem(storageKey, { value: newValue });
             }

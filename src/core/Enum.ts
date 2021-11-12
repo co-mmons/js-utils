@@ -21,7 +21,7 @@ export abstract class Enum {
         return valuesRef(this).slice();
     }
 
-    protected static fromJSON(value: EnumFromJSONValue): Enum {
+    protected static fromJSON(value: EnumFromJSONValue, unknownFactory?: (value: EnumFromJSONValue) => Enum): Enum {
 
         let name: string;
 
@@ -39,10 +39,14 @@ export abstract class Enum {
             }
         }
 
+        if (unknownFactory) {
+            return unknownFactory(value);
+        }
+
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
 
-    protected static valueOf(name: EnumValueOfValue): Enum {
+    protected static valueOf(name: EnumValueOfValue, unknownFactory: (name: EnumValueOfValue) => Enum): Enum {
 
         CHECK_NAME: if (name) {
 
@@ -59,6 +63,10 @@ export abstract class Enum {
                     return v;
                 }
             }
+        }
+
+        if (unknownFactory) {
+            return unknownFactory(name);
         }
 
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);

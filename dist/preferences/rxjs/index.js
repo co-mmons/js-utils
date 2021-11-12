@@ -4,7 +4,7 @@ exports.injectPreferencesRxjs = void 0;
 require("./injectCollectionRxjs");
 const injectCollectionRxjs_1 = require("./injectCollectionRxjs");
 function injectPreferencesRxjs() {
-    injectCollectionRxjs_1.injectCollectionRxjs();
+    (0, injectCollectionRxjs_1.injectCollectionRxjs)();
 }
 exports.injectPreferencesRxjs = injectPreferencesRxjs;
 //# sourceMappingURL=index.js.map

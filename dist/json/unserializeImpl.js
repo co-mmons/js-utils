@@ -13,7 +13,7 @@ function unserializeImplWithSerializer(value, type, typeSerializer, options) {
     if (value === undefined || value === null) {
         return value;
     }
-    const serializer = typeSerializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer_1.findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders));
+    const serializer = typeSerializer ? typeSerializer : (typeSerializer !== false && (0, findTypeSerializer_1.findTypeSerializer)(type, options === null || options === void 0 ? void 0 : options.typeProviders));
     if (Array.isArray(value)) {
         const array = [];
         for (const i of value) {
@@ -36,14 +36,14 @@ function unserializeImplWithSerializer(value, type, typeSerializer, options) {
         return new type(value);
     }
     else {
-        type = identifyType_1.identifyType(value);
+        type = (0, identifyType_1.identifyType)(value);
         if (type !== Object) {
-            const serializer = findTypeSerializer_1.findTypeSerializer(type, options === null || options === void 0 ? void 0 : options.typeProviders);
+            const serializer = (0, findTypeSerializer_1.findTypeSerializer)(type, options === null || options === void 0 ? void 0 : options.typeProviders);
             if (serializer) {
                 return serializer.unserialize(value, options);
             }
         }
-        const namedTypeOrSerializer = findTypeOrSerializerByName_1.findTypeOrSerializerByName(value, options === null || options === void 0 ? void 0 : options.typeProviders);
+        const namedTypeOrSerializer = (0, findTypeOrSerializerByName_1.findTypeOrSerializerByName)(value, options === null || options === void 0 ? void 0 : options.typeProviders);
         if (namedTypeOrSerializer) {
             return unserializeImplWithSerializer(value, (namedTypeOrSerializer instanceof Serializer_1.Serializer) ? null : namedTypeOrSerializer, namedTypeOrSerializer instanceof Serializer_1.Serializer ? namedTypeOrSerializer : null, options);
         }

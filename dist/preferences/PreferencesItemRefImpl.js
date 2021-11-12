@@ -8,12 +8,12 @@ class PreferencesItemRefImpl {
         this.key = key;
     }
     delete() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return (yield this.collection.delete(this.key)).length === 1;
         });
     }
     value() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.value(this.key);
         });
     }

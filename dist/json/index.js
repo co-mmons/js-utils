@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.subtype = exports.Serializer = exports.unserialize = exports.serialize = exports.serializable = exports.registerGlobalProviders = exports.registerGlobalProvider = exports.property = exports.ignore = exports.globalType = exports.findTypeOrSerializerByName = void 0;
 var findTypeOrSerializerByName_1 = require("./findTypeOrSerializerByName");
 Object.defineProperty(exports, "findTypeOrSerializerByName", { enumerable: true, get: function () { return findTypeOrSerializerByName_1.findTypeOrSerializerByName; } });
 var globalType_1 = require("./decorators/globalType");

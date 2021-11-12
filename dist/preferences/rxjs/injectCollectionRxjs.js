@@ -32,11 +32,11 @@ class CollectionItemsObserver extends rxjs_1.Observable {
         };
     }
     listener(event) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const items = yield this.collection.items();
             for (const subscriber of this.subscribers) {
                 subscriber.next(items.slice()
-                    .map(item => (item && new PreferencesItemImpl_1.PreferencesItemImpl(item.ref.collection, deepClone_1.deepClone(item.key), deepClone_1.deepClone(item.value))) || item));
+                    .map(item => (item && new PreferencesItemImpl_1.PreferencesItemImpl(item.ref.collection, (0, deepClone_1.deepClone)(item.key), (0, deepClone_1.deepClone)(item.value))) || item));
             }
         });
     }
@@ -46,7 +46,7 @@ function injectCollectionRxjs() {
         return new CollectionItemsObserver(this);
     };
     PreferencesCollectionRefImpl_1.PreferencesCollectionRefImpl.prototype.observeValues = function () {
-        return new CollectionItemsObserver(this).pipe(operators_1.map(items => items.map(item => item.value)));
+        return new CollectionItemsObserver(this).pipe((0, operators_1.map)(items => items.map(item => item.value)));
     };
 }
 exports.injectCollectionRxjs = injectCollectionRxjs;

@@ -16,17 +16,17 @@ class ObjectSerializer extends Serializer_1.Serializer {
         }
     }
     serialize(object, options) {
-        return serializeImpl_1.serializeImpl(object, this.type, options);
+        return (0, serializeImpl_1.serializeImpl)(object, this.type, options);
     }
     unserialize(json, options) {
-        return unserializeImpl_1.unserializeImpl(json, this.type, options);
+        return (0, unserializeImpl_1.unserializeImpl)(json, this.type, options);
     }
 }
 exports.ObjectSerializer = ObjectSerializer;
 (function (ObjectSerializer) {
     ObjectSerializer.instance = new ObjectSerializer();
     function getTypeSerializer(type, typeProviders) {
-        const serializer = findTypeSerializer_1.findTypeSerializer(type, typeProviders);
+        const serializer = (0, findTypeSerializer_1.findTypeSerializer)(type, typeProviders);
         if (serializer) {
             return serializer;
         }

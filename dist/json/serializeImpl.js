@@ -14,7 +14,7 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
     }
     else {
         const newArray = Array.isArray(value) ? [] : undefined;
-        const serializer = typeSerializer instanceof Serializer_1.Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer_1.findTypeSerializer(type ? type : (!newArray ? identifyType_1.identifyType(value) : undefined), options === null || options === void 0 ? void 0 : options.typeProviders));
+        const serializer = typeSerializer instanceof Serializer_1.Serializer ? typeSerializer : (typeSerializer !== false && (0, findTypeSerializer_1.findTypeSerializer)(type ? type : (!newArray ? (0, identifyType_1.identifyType)(value) : undefined), options === null || options === void 0 ? void 0 : options.typeProviders));
         for (const i of newArray ? value : [value]) {
             if (newArray && (i === undefined || i === null)) {
                 newArray.push(i);

@@ -17,30 +17,18 @@ function visitNode(node, program) {
             const clazz = node.parent;
             // for (const property of typeChecker.getPropertiesOfType(typeChecker.getTypeAtLocation(node.parent))) {
             //     console.log(property.name);
-            //     // clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(property.name), ts.createObjectLiteral()));
+            //     clazzProps.push(ts.factory.createPropertyAssignment(ts.factory.createIdentifier(property.name), ts.factory.createObjectLiteralExpression()));
             // }
             for (const childNode of clazz.members) {
                 if (ts.isPropertyDeclaration(childNode)) {
                     if (!childNode.type || ((_a = childNode.modifiers) === null || _a === void 0 ? void 0 : _a.find(m => m.kind === ts.SyntaxKind.StaticKeyword))) {
                         continue;
                     }
-                    //
-                    // let typeName: any = undefined;
-                    // const type = typeChecker.getTypeAtLocation(childNode);
-                    //
-                    // if (type) {
-                    //     if (type && type.isClassOrInterface()) {
-                    //         const symbol = type.getSymbol();
-                    //         if (symbol?.name === "BigNumber") {
-                    //         } else if (symbol && symbol.valueDeclaration && type.isClassOrInterface()) {
-                    //         }
-                    //     }
-                    // }
-                    clazzProps.push(ts.createPropertyAssignment(ts.createIdentifier(childNode.name.getText()), ts.createObjectLiteral()));
+                    clazzProps.push(ts.factory.createPropertyAssignment(ts.factory.createIdentifier(childNode.name.getText()), ts.factory.createObjectLiteralExpression()));
                 }
             }
-            return ts.updateDecorator(node, ts.updateCall(call, call.expression, null, call.arguments.concat(ts.createObjectLiteral([
-                ts.createPropertyAssignment(ts.createIdentifier("properties"), ts.createObjectLiteral(clazzProps))
+            return ts.factory.updateDecorator(node, ts.factory.updateCallExpression(call, call.expression, null, call.arguments.concat(ts.factory.createObjectLiteralExpression([
+                ts.factory.createPropertyAssignment(ts.factory.createIdentifier("properties"), ts.factory.createObjectLiteralExpression(clazzProps))
             ]))));
         }
     }

@@ -1,1 +1,1 @@
-{"version":3,"file":"serialize.js","sourceRoot":"","sources":["../../src/json/serialize.ts"],"names":[],"mappings":";;;AACA,mDAA8C;AAE9C,SAAgB,SAAS,CAAC,MAAW,EAAE,OAA8B;IACjE,OAAO,6BAAa,CAAC,MAAM,EAAE,IAAI,EAAE,OAAO,CAAC,CAAC;AAChD,CAAC;AAFD,8BAEC"}
+{"version":3,"file":"serialize.js","sourceRoot":"","sources":["../../src/json/serialize.ts"],"names":[],"mappings":";;;AACA,mDAA8C;AAE9C,SAAgB,SAAS,CAAC,MAAW,EAAE,OAA8B;IACjE,OAAO,IAAA,6BAAa,EAAC,MAAM,EAAE,IAAI,EAAE,OAAO,CAAC,CAAC;AAChD,CAAC;AAFD,8BAEC"}

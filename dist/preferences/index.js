@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StoragePreferencesContainer = exports.MemoryPreferencesContainer = exports.PreferencesItemRefImpl = exports.PreferencesCollectionRefImpl = void 0;
 const tslib_1 = require("tslib");
 var PreferencesCollectionRefImpl_1 = require("./PreferencesCollectionRefImpl");
 Object.defineProperty(exports, "PreferencesCollectionRefImpl", { enumerable: true, get: function () { return PreferencesCollectionRefImpl_1.PreferencesCollectionRefImpl; } });
-tslib_1.__exportStar(require("./interfaces"), exports);
+(0, tslib_1.__exportStar)(require("./interfaces"), exports);
 var PreferencesItemRefImpl_1 = require("./PreferencesItemRefImpl");
 Object.defineProperty(exports, "PreferencesItemRefImpl", { enumerable: true, get: function () { return PreferencesItemRefImpl_1.PreferencesItemRefImpl; } });
 var MemoryPreferencesContainer_1 = require("./MemoryPreferencesContainer");

@@ -11,7 +11,7 @@ class SetSerializer extends Serializer_1.Serializer {
             throw new Error("Value type passed to SetSerializer is undefined - check for class reference cycle");
         }
         if (valueTypeOrSerializer) {
-            this.typeOrSerializer = core_1.resolveForwardRef(valueTypeOrSerializer);
+            this.typeOrSerializer = (0, core_1.resolveForwardRef)(valueTypeOrSerializer);
         }
     }
     serialize(value, options) {

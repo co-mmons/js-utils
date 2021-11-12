@@ -17,37 +17,37 @@ class MemoryPreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new PreferencesItemImpl_1.PreferencesItemImpl(this.collection(item.collection), deepClone_1.deepClone(item.key), deepClone_1.deepClone(item.value));
+            return new PreferencesItemImpl_1.PreferencesItemImpl(this.collection(item.collection), (0, deepClone_1.deepClone)(item.key), (0, deepClone_1.deepClone)(item.value));
         }
         return undefined;
     }
     set(collection, key, value, options) {
-        let item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+        let item = this.memory.find(item => item.collection === collection && (0, fast_equals_1.deepEqual)(item.key, key));
         if (item) {
             const old = item.value;
-            item.value = deepClone_1.deepClone(options && options.merge ? merge_1.merge(options.merge === "deep", item.value, value) : value);
+            item.value = (0, deepClone_1.deepClone)(options && options.merge ? (0, merge_1.merge)(options.merge === "deep", item.value, value) : value);
             this.fireEvent({
                 collection: collection,
                 type: "update",
-                key: deepClone_1.deepClone(key),
-                newValue: deepClone_1.deepClone(item.value),
-                oldValue: deepClone_1.deepClone(old)
+                key: (0, deepClone_1.deepClone)(key),
+                newValue: (0, deepClone_1.deepClone)(item.value),
+                oldValue: (0, deepClone_1.deepClone)(old)
             });
             return Promise.resolve(this.newItem(item));
         }
         else {
-            this.memory.push(item = { collection: collection, key: deepClone_1.deepClone(key), value: deepClone_1.deepClone(value) });
+            this.memory.push(item = { collection: collection, key: (0, deepClone_1.deepClone)(key), value: (0, deepClone_1.deepClone)(value) });
             this.fireEvent({
                 collection: collection,
                 type: "create",
-                key: deepClone_1.deepClone(key),
-                newValue: deepClone_1.deepClone(value)
+                key: (0, deepClone_1.deepClone)(key),
+                newValue: (0, deepClone_1.deepClone)(value)
             });
             return Promise.resolve(this.newItem(item));
         }
     }
     get(collection, key) {
-        const item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+        const item = this.memory.find(item => item.collection === collection && (0, fast_equals_1.deepEqual)(item.key, key));
         return Promise.resolve(this.newItem(item || null));
     }
     deleteAll(collection) {
@@ -58,8 +58,8 @@ class MemoryPreferencesContainer {
                     this.fireEvent({
                         collection,
                         type: "delete",
-                        key: deepClone_1.deepClone(item.key),
-                        oldValue: deepClone_1.deepClone(item.value)
+                        key: (0, deepClone_1.deepClone)(item.key),
+                        oldValue: (0, deepClone_1.deepClone)(item.value)
                     });
                     deleted.push(this.newItem(item));
                 }
@@ -71,13 +71,13 @@ class MemoryPreferencesContainer {
         const deleted = [];
         KEYS: for (const key of keys) {
             for (let i = 0; i < this.memory.length; i++) {
-                if (this.memory[i].collection === collection && fast_equals_1.deepEqual(this.memory[i].key, key)) {
+                if (this.memory[i].collection === collection && (0, fast_equals_1.deepEqual)(this.memory[i].key, key)) {
                     for (const item of this.memory.splice(i, 1)) {
                         this.fireEvent({
                             collection,
                             type: "delete",
-                            key: deepClone_1.deepClone(item.key),
-                            oldValue: deepClone_1.deepClone(item.value)
+                            key: (0, deepClone_1.deepClone)(item.key),
+                            oldValue: (0, deepClone_1.deepClone)(item.value)
                         });
                         deleted.push(this.newItem(item));
                     }
@@ -88,7 +88,7 @@ class MemoryPreferencesContainer {
         return Promise.resolve(deleted);
     }
     exists(collection, key) {
-        return Promise.resolve(!!this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key)));
+        return Promise.resolve(!!this.memory.find(item => item.collection === collection && (0, fast_equals_1.deepEqual)(item.key, key)));
     }
     items(collection, keysToFilter) {
         const items = [];
@@ -97,7 +97,7 @@ class MemoryPreferencesContainer {
         if (keys) {
             KEYS: for (const key of keys) {
                 for (const item of this.memory) {
-                    if (item.collection === collection && fast_equals_1.deepEqual(item.key, key)) {
+                    if (item.collection === collection && (0, fast_equals_1.deepEqual)(item.key, key)) {
                         items.push(this.newItem(item));
                         continue KEYS;
                     }
@@ -114,7 +114,7 @@ class MemoryPreferencesContainer {
         return Promise.resolve(items);
     }
     update(collection, key, changes) {
-        const item = this.memory.find(item => item.collection === collection && fast_equals_1.deepEqual(item.key, key));
+        const item = this.memory.find(item => item.collection === collection && (0, fast_equals_1.deepEqual)(item.key, key));
         if (item) {
             if (changes) {
                 const old = item.value;
@@ -122,9 +122,9 @@ class MemoryPreferencesContainer {
                 this.fireEvent({
                     collection: collection,
                     type: "update",
-                    key: deepClone_1.deepClone(key),
-                    newValue: deepClone_1.deepClone(item.value),
-                    oldValue: deepClone_1.deepClone(old)
+                    key: (0, deepClone_1.deepClone)(key),
+                    newValue: (0, deepClone_1.deepClone)(item.value),
+                    oldValue: (0, deepClone_1.deepClone)(old)
                 });
             }
             return Promise.resolve(this.newItem(item));
