@@ -2,9 +2,9 @@ import {TypedJson} from "../json";
 import {Type} from "./Type";
 
 export interface EnumStatic<T> {
-    fromJSON(value: EnumFromJSONValue): T;
+    fromJSON(value: EnumFromJSONValue, unknownFactory?: (value: EnumFromJSONValue) => T): T;
     values(): T[];
-    valueOf(name: EnumValueOfValue): T;
+    valueOf(name: EnumValueOfValue, unknownFactory?: (name: EnumValueOfValue) => T): T;
 }
 
 export interface EnumValueJson<TypeOfEnumClass = any> extends TypedJson {
@@ -46,7 +46,7 @@ export abstract class Enum {
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
 
-    protected static valueOf(name: EnumValueOfValue, unknownFactory: (name: EnumValueOfValue) => Enum): Enum {
+    protected static valueOf(name: EnumValueOfValue, unknownFactory?: (name: EnumValueOfValue) => Enum): Enum {
 
         CHECK_NAME: if (name) {
 
