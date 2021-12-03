@@ -8,4 +8,5 @@ export declare class HtmlString extends String {
         "@type": string;
         value: string;
     };
+    toString(): string;
 }

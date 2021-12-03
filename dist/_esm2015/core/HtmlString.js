@@ -13,6 +13,9 @@ export class HtmlString extends String {
     toJSON() {
         return { "@type": "HtmlString", value: super.toString() };
     }
+    toString() {
+        return super.toString();
+    }
 }
 HtmlString.jsonTypeName = "HtmlString";
 //# sourceMappingURL=HtmlString.js.map

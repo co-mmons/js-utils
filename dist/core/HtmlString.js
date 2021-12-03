@@ -16,6 +16,9 @@ class HtmlString extends String {
     toJSON() {
         return { "@type": "HtmlString", value: super.toString() };
     }
+    toString() {
+        return super.toString();
+    }
 }
 exports.HtmlString = HtmlString;
 HtmlString.jsonTypeName = "HtmlString";

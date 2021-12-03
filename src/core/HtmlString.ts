@@ -15,4 +15,8 @@ export class HtmlString extends String {
     toJSON() {
         return {"@type": "HtmlString", value: super.toString()}
     }
+
+    toString(): string {
+        return super.toString();
+    }
 }
