@@ -2,9 +2,10 @@ import {PreferencesCollectionRef, PreferencesItem, PreferencesItemRef} from "./i
 
 export class PreferencesItemImpl<Key, Value> implements PreferencesItem<Key, Value> {
 
-    constructor(collection: PreferencesCollectionRef, key: Key, value: Value) {
+    constructor(collection: PreferencesCollectionRef, key: Key, value: Value, lastUpdate: number) {
         this.ref = collection.itemRef(key);
         this.value = value;
+        this.lastUpdate = lastUpdate;
     }
 
     get key() {
@@ -14,4 +15,6 @@ export class PreferencesItemImpl<Key, Value> implements PreferencesItem<Key, Val
     readonly ref: PreferencesItemRef;
 
     readonly value: Value;
+
+    readonly lastUpdate: number;
 }

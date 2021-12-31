@@ -5,6 +5,7 @@ export declare class PreferencesItemRefImpl<Key, Value> implements PreferencesIt
     constructor(collection: PreferencesCollectionRef<Key, Value>, key: Key);
     delete(): Promise<boolean>;
     value(): Promise<Value>;
+    lastUpdate(): Promise<number>;
     set(value: Value, options?: PreferencesSetOptions): Promise<import("./interfaces").PreferencesItem<Key, Value>>;
     update(value: Value): Promise<import("./interfaces").PreferencesItem<Key, Value>>;
 }

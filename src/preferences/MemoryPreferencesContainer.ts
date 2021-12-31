@@ -10,6 +10,7 @@ export interface MemoryPreferencesContainerItem {
     key: any;
     value: any;
     collection: string;
+    lastUpdate: number;
 }
 
 export class MemoryPreferencesContainer implements PreferencesContainer {
@@ -24,7 +25,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
     private newItem(item: MemoryPreferencesContainerItem) {
         if (item) {
-            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value), item.lastUpdate);
         }
 
         return undefined;
@@ -48,11 +49,11 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 oldValue: deepClone(old)
             });
 
-            return Promise.resolve(this.newItem(item));
+            return Promise.resolve(this.newItem({...item, ...{lastUpdate: Date.now()}}));
 
         } else {
 
-            this.memory.push(item = {collection: collection, key: deepClone(key), value: deepClone(value)});
+            this.memory.push(item = {collection: collection, key: deepClone(key), value: deepClone(value), lastUpdate: Date.now()});
 
             this.fireEvent({
                 collection: collection,
@@ -181,7 +182,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 });
             }
 
-            return Promise.resolve(this.newItem(item));
+            return Promise.resolve(this.newItem({...item, ...{lastUpdate: Date.now()}}));
 
         } else {
             return Promise.reject(new Error("Key not exists"));

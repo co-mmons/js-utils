@@ -34,7 +34,7 @@ export class StoragePreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value), item.lastUpdate);
         }
         return undefined;
     }
@@ -45,6 +45,7 @@ export class StoragePreferencesContainer {
             value = null;
         }
         if (item) {
+            item.lastUpdate = Date.now();
             const old = item.value;
             item.value = deepClone(options && options.merge ? merge(options.merge === "deep", item.value, value) : value);
             this.setStorageItem(itemKey, item);
@@ -57,7 +58,7 @@ export class StoragePreferencesContainer {
             });
         }
         else {
-            item = { value: value };
+            item = { value: value, lastUpdate: Date.now() };
             this.setStorageItem(itemKey, item);
             this.fireEvent({
                 collection: collection,
@@ -66,11 +67,11 @@ export class StoragePreferencesContainer {
                 newValue: deepClone(value)
             });
         }
-        return Promise.resolve(this.newItem({ key, collection, value: item.value }));
+        return Promise.resolve(this.newItem({ key, collection, value: item.value, lastUpdate: item.lastUpdate }));
     }
     get(collection, key) {
         const item = this.getStorageItem(this.storageKey(collection, key));
-        return Promise.resolve(this.newItem(item && { collection, key, value: item.value }));
+        return Promise.resolve(this.newItem(item && { collection, key, value: item.value, lastUpdate: item.lastUpdate }));
     }
     delete(collection, ...keys) {
         const deleted = [];
@@ -87,7 +88,7 @@ export class StoragePreferencesContainer {
                         key: deepClone(key),
                         oldValue: deepClone(item.value)
                     });
-                    deleted.push(this.newItem({ collection, key, value: item.value }));
+                    deleted.push(this.newItem({ collection, key, value: item.value, lastUpdate: item.lastUpdate }));
                     continue KEYS;
                 }
             }
@@ -108,7 +109,7 @@ export class StoragePreferencesContainer {
                     key: deepClone(collectionAndKey[1]),
                     oldValue: deepClone(item.value)
                 });
-                deleted.push(this.newItem({ collection, key: collectionAndKey[1], value: item.value }));
+                deleted.push(this.newItem({ collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate }));
             }
         }
         return Promise.resolve(deleted);
@@ -128,7 +129,7 @@ export class StoragePreferencesContainer {
                     const storageKey = this.storage.key(i);
                     if (itemKey === storageKey) {
                         const item = this.getStorageItem(storageKey);
-                        items.push(this.newItem({ collection, key, value: item.value }));
+                        items.push(this.newItem({ collection, key, value: item.value, lastUpdate: item.lastUpdate }));
                         continue KEYS;
                     }
                 }
@@ -140,7 +141,7 @@ export class StoragePreferencesContainer {
                 const collectionAndKey = this.collectionAndKey(storageKey);
                 if (collectionAndKey && collectionAndKey[0] === collection) {
                     const item = this.getStorageItem(storageKey);
-                    items.push(this.newItem({ collection, key: collectionAndKey[1], value: item.value }));
+                    items.push(this.newItem({ collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate }));
                 }
             }
         }
@@ -149,6 +150,7 @@ export class StoragePreferencesContainer {
     update(collection, key, changes) {
         const storageKey = this.storageKey(collection, key);
         const rawItem = this.storage.getItem(storageKey);
+        const lastUpdate = Date.now();
         if (rawItem) {
             const oldItem = JSON.parse(rawItem);
             let newValue = oldItem.value;
@@ -161,9 +163,9 @@ export class StoragePreferencesContainer {
                     newValue: deepClone(newValue),
                     oldValue: (oldItem && deepClone(oldItem.value)) || null
                 });
-                this.setStorageItem(storageKey, { value: newValue });
+                this.setStorageItem(storageKey, { value: newValue, lastUpdate });
             }
-            return Promise.resolve(this.newItem({ collection, key, value: newValue }));
+            return Promise.resolve(this.newItem({ collection, key, value: newValue, lastUpdate }));
         }
         else {
             return Promise.reject(new Error("Key not exists"));

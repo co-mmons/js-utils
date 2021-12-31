@@ -44,7 +44,7 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
 
         for (const subscriber of this.subscribers) {
             subscriber.next(items.slice()
-                .map(item => (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value))) || item)
+                .map(item => (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value), item.lastUpdate)) || item)
             );
         }
     }

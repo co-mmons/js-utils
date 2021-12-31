@@ -5,6 +5,7 @@ export interface MemoryPreferencesContainerItem {
     key: any;
     value: any;
     collection: string;
+    lastUpdate: number;
 }
 export declare class MemoryPreferencesContainer implements PreferencesContainer {
     protected readonly memory: MemoryPreferencesContainerItem[];

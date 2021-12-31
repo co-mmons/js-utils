@@ -17,6 +17,11 @@ class PreferencesItemRefImpl {
             return yield this.collection.value(this.key);
         });
     }
+    lastUpdate() {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            return (yield this.collection.item(this.key)).lastUpdate;
+        });
+    }
     set(value, options) {
         return this.collection.set(this.key, value, options);
     }

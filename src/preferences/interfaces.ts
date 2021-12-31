@@ -38,6 +38,7 @@ export interface PreferencesItem<Key = any, Value = any> {
     readonly ref: PreferencesItemRef;
     readonly key: Key;
     readonly value: Value;
+    readonly lastUpdate: number;
 }
 
 export interface PreferencesSetOptions {
@@ -49,6 +50,8 @@ export interface PreferencesItemRef<Key = any, Value = any> {
     readonly collection: PreferencesCollectionRef<Key, Value>;
 
     readonly key: Key;
+
+    lastUpdate(): Promise<number>;
 
     value(): Promise<Value>;
 

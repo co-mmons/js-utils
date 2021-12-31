@@ -14,7 +14,7 @@ export class MemoryPreferencesContainer {
     }
     newItem(item) {
         if (item) {
-            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value), item.lastUpdate);
         }
         return undefined;
     }
@@ -30,10 +30,10 @@ export class MemoryPreferencesContainer {
                 newValue: deepClone(item.value),
                 oldValue: deepClone(old)
             });
-            return Promise.resolve(this.newItem(item));
+            return Promise.resolve(this.newItem(Object.assign(Object.assign({}, item), { lastUpdate: Date.now() })));
         }
         else {
-            this.memory.push(item = { collection: collection, key: deepClone(key), value: deepClone(value) });
+            this.memory.push(item = { collection: collection, key: deepClone(key), value: deepClone(value), lastUpdate: Date.now() });
             this.fireEvent({
                 collection: collection,
                 type: "create",
@@ -124,7 +124,7 @@ export class MemoryPreferencesContainer {
                     oldValue: deepClone(old)
                 });
             }
-            return Promise.resolve(this.newItem(item));
+            return Promise.resolve(this.newItem(Object.assign(Object.assign({}, item), { lastUpdate: Date.now() })));
         }
         else {
             return Promise.reject(new Error("Key not exists"));

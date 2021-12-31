@@ -13,6 +13,10 @@ export class PreferencesItemRefImpl<Key, Value> implements PreferencesItemRef<Ke
         return await this.collection.value(this.key);
     }
 
+    async lastUpdate(): Promise<number> {
+        return (await this.collection.item(this.key)).lastUpdate;
+    }
+
     set(value: Value, options?: PreferencesSetOptions) {
         return this.collection.set(this.key, value, options);
     }

@@ -1,3 +1,4 @@
+import {last} from "rxjs/operators";
 import {merge} from "./merge";
 import {PreferencesCollectionRefImpl} from "./PreferencesCollectionRefImpl";
 import {ContainerEventsManager} from "./ContainerEventsManager";
@@ -7,6 +8,7 @@ import {PreferencesItemImpl} from "./PreferencesItemImpl";
 
 interface StorageItem {
     value: any;
+    lastUpdate?: number;
 }
 
 export class StoragePreferencesContainer implements PreferencesContainer {
@@ -46,9 +48,9 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return null;
     }
 
-    private newItem(item: {collection: string, key: any, value: any}) {
+    private newItem(item: {collection: string, key: any, value: any, lastUpdate: number}) {
         if (item) {
-            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value));
+            return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value), item.lastUpdate);
         }
 
         return undefined;
@@ -66,8 +68,9 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
         if (item) {
 
-            const old = item.value;
+            item.lastUpdate = Date.now();
 
+            const old = item.value;
             item.value = deepClone(options && options.merge ? merge(options.merge === "deep", item.value, value) : value);
 
             this.setStorageItem(itemKey, item);
@@ -81,7 +84,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
             });
 
         } else {
-            item = {value: value};
+            item = {value: value, lastUpdate: Date.now()};
 
             this.setStorageItem(itemKey, item);
 
@@ -93,12 +96,12 @@ export class StoragePreferencesContainer implements PreferencesContainer {
             });
         }
 
-        return Promise.resolve(this.newItem({key, collection, value: item.value}));
+        return Promise.resolve(this.newItem({key, collection, value: item.value, lastUpdate: item.lastUpdate}));
     }
 
     get(collection: string, key: any) {
         const item = this.getStorageItem(this.storageKey(collection, key));
-        return Promise.resolve(this.newItem(item && {collection, key, value: item.value}));
+        return Promise.resolve(this.newItem(item && {collection, key, value: item.value, lastUpdate: item.lastUpdate}));
     }
 
     delete(collection: string, ...keys: any[]) {
@@ -123,7 +126,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                         oldValue: deepClone(item.value)
                     });
 
-                    deleted.push(this.newItem({collection, key, value: item.value}));
+                    deleted.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate}));
 
                     continue KEYS;
                 }
@@ -153,7 +156,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     oldValue: deepClone(item.value)
                 });
 
-                deleted.push(this.newItem({collection, key: collectionAndKey[1], value: item.value}));
+                deleted.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate}));
             }
         }
 
@@ -182,7 +185,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
                     if (itemKey === storageKey) {
                         const item = this.getStorageItem(storageKey);
-                        items.push(this.newItem({collection, key, value: item.value}));
+                        items.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate}));
                         continue KEYS;
                     }
                 }
@@ -196,7 +199,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
                 if (collectionAndKey && collectionAndKey[0] === collection) {
                     const item = this.getStorageItem(storageKey);
-                    items.push(this.newItem({collection, key: collectionAndKey[1], value: item.value}));
+                    items.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate}));
                 }
             }
         }
@@ -208,6 +211,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
         const storageKey = this.storageKey(collection, key);
         const rawItem = this.storage.getItem(storageKey);
+        const lastUpdate = Date.now();
 
         if (rawItem) {
 
@@ -226,10 +230,10 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     oldValue: (oldItem && deepClone(oldItem.value)) || null
                 });
 
-                this.setStorageItem(storageKey, {value: newValue});
+                this.setStorageItem(storageKey, {value: newValue, lastUpdate});
             }
 
-            return Promise.resolve(this.newItem({collection, key, value: newValue}));
+            return Promise.resolve(this.newItem({collection, key, value: newValue, lastUpdate}));
 
         } else {
             return Promise.reject(new Error("Key not exists"));
