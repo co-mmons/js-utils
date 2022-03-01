@@ -32,7 +32,7 @@ class CollectionItemsObserver extends rxjs_1.Observable {
         };
     }
     listener(event) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const items = yield this.collection.items();
             for (const subscriber of this.subscribers) {
                 subscriber.next(items.slice()

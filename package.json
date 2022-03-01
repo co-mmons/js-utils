@@ -15,19 +15,17 @@
     "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
   },
   "dependencies": {
-    "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
-    "reflect-metadata": "^0.1.13"
+    "@co.mmons/node-utils": "github:co-mmons/node-utils",
+    "reflect-metadata": "^0.1.13",
+    "fast-equals": "^3.0.0",
+    "tslib": "^2.0.0"
   },
-  "peerDependencies": {
+  "optionalDependencies": {
     "bignumber.js": "^9.0.0",
-    "fast-equals": "^2.0.0"
+    "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "bignumber.js": "^9.0.0",
-    "fast-equals": "^2.0.0",
-    "rxjs": "^6.5.4",
     "tsconfig-paths": "^3.9.0",
-    "tslib": "^1.10.0",
     "ttypescript": "^1.5.10",
     "typescript": "^4.4.4"
   },

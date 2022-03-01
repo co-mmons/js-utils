@@ -8,17 +8,17 @@ class PreferencesItemRefImpl {
         this.key = key;
     }
     delete() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return (yield this.collection.delete(this.key)).length === 1;
         });
     }
     value() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.collection.value(this.key);
         });
     }
     lastUpdate() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return (yield this.collection.item(this.key)).lastUpdate;
         });
     }
