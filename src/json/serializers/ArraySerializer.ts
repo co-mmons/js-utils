@@ -4,7 +4,6 @@ import {serializeImpl} from "../serializeImpl";
 import {Serializer} from "../Serializer";
 import {unserialize} from "../unserialize";
 import {unserializeImpl} from "../unserializeImpl";
-import {ObjectSerializer} from "./ObjectSerializer";
 
 export class ArraySerializer<T> extends Serializer<T[]> {
 

@@ -1,7 +1,5 @@
 import {Type} from "../../core";
-import {findTypeOrSerializerByName} from "../findTypeOrSerializerByName";
 import {findTypeSerializer} from "../findTypeSerializer";
-import {identifyType} from "../identifyType";
 import {SerializationOptions} from "../SerializationOptions";
 import {serializeImpl} from "../serializeImpl";
 import {Serializer} from "../Serializer";
