@@ -5,7 +5,7 @@ import {Serializer} from "../Serializer";
 import {unserialize} from "../unserialize";
 import {unserializeImpl} from "../unserializeImpl";
 
-export class ArraySerializer<T> extends Serializer<T[]> {
+export class ArraySerializer<T = any> extends Serializer<T[]> {
 
     constructor(valueTypeOrSerializer?: Type<T> | Serializer<T>) {
         super();

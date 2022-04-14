@@ -5,9 +5,9 @@
         for (const file of [
             // "test-subtype",
             // "test-type",
-            // "test-array",
+            "test-array",
             // "test-basic"
-            "test-transformer"
+            // "test-transformer"
             // "test-enum"
         ]) {
             console.log("---", file, "---");

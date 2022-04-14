@@ -1,7 +1,7 @@
 import { Type } from "../../core";
 import { SerializationOptions } from "../SerializationOptions";
 import { Serializer } from "../Serializer";
-export declare class ArraySerializer<T> extends Serializer<T[]> {
+export declare class ArraySerializer<T = any> extends Serializer<T[]> {
     constructor(valueTypeOrSerializer?: Type<T> | Serializer<T>);
     readonly typeOrSerializer: Type | Serializer;
     serialize(value: any, options?: SerializationOptions): any;

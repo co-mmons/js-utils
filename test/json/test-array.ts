@@ -1,4 +1,5 @@
-import {serializable, serialize, unserialize, property} from "@co.mmons/js-utils/json";
+import {serializable, serialize, unserialize, property, SerializationOptions} from "@co.mmons/js-utils/json";
+import {ArraySerializer} from "@co.mmons/js-utils/json/serializers";
 
 @serializable()
 class Ha1 {
@@ -13,16 +14,31 @@ class Ha extends Ha1 {
     gzz: Ha[];
 }
 
+class CustomArraySerializer extends ArraySerializer<any> {
+
+    serialize(value: any, options?: SerializationOptions): any {
+        return {"yees": value};
+    }
+
+    unserialize(json: any, options?: SerializationOptions): any {
+        return json.yees;
+    }
+}
+
 @serializable()
 export class A {
 
     @property(Ha1)
     aProp: Ha1[];
 
+    @property(new CustomArraySerializer)
+    bProp: string[];
+
     someFunction() {
         return true;
     }
 }
+
 
 export function test() {
 
@@ -30,6 +46,7 @@ export function test() {
     const ha = new Ha();
     ha.gzz = [new Ha(), new Ha()];
     a.aProp = [ha, new Ha1];
+    a.bProp = ["a", "b", "c"];
 
     console.log("a instance");
     console.dir(a, {depth: null});

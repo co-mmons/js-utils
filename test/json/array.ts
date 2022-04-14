@@ -5,7 +5,13 @@ class Model {
 
     @property(String)
     property: string;
+
+    @property(ArraySerializer.ofString)
+    array: string[]
 }
+
+const model = new Model();
+model.array = ["a", "b", "c"];
 
 let serializer = new ArraySerializer(Model);
 let array = [new Model(), new Model()];
