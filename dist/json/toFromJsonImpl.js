@@ -7,6 +7,7 @@ const getPrototypesTree_1 = require("./getPrototypesTree");
 const identifyType_1 = require("./identifyType");
 const serializeImpl_1 = require("./serializeImpl");
 const Serializer_1 = require("./Serializer");
+const serializers_1 = require("./serializers");
 const unserializeImpl_1 = require("./unserializeImpl");
 function toJsonImpl() {
     var _a;
@@ -34,9 +35,14 @@ function toJsonImpl() {
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
         if (Array.isArray(value)) {
             const serializer = config.propertyType instanceof Serializer_1.Serializer ? config.propertyType : (config.propertyType && (0, findTypeSerializer_1.findTypeSerializer)(config.propertyType, typesTree[0].__jsonTypes));
-            json[name] = [];
-            for (const i of value) {
-                json[name].push(serializer ? serializer.serialize(i, serializationOptions) : (0, serializeImpl_1.serializeImpl)(i, config.propertyType, serializationOptions));
+            if (serializer instanceof serializers_1.ArraySerializer) {
+                json[name] = serializer.serialize(value, serializationOptions);
+            }
+            else {
+                json[name] = [];
+                for (const i of value) {
+                    json[name].push(serializer ? serializer.serialize(i, serializationOptions) : (0, serializeImpl_1.serializeImpl)(i, config.propertyType, serializationOptions));
+                }
             }
         }
         else {
@@ -101,9 +107,14 @@ function fromJsonImpl(json) {
             }
             if (Array.isArray(value)) {
                 const serializer = config.propertyType instanceof Serializer_1.Serializer ? config.propertyType : (config.propertyType && (0, findTypeSerializer_1.findTypeSerializer)(config.propertyType, typesTree[0].__jsonTypes));
-                instance[propertyName] = [];
-                for (const i of value) {
-                    instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : (0, unserializeImpl_1.unserializeImpl)(i, config.propertyType, serializationOptions));
+                if (serializer instanceof serializers_1.ArraySerializer) {
+                    instance[propertyName] = serializer.unserialize(value, serializationOptions);
+                }
+                else {
+                    instance[propertyName] = [];
+                    for (const i of value) {
+                        instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : (0, unserializeImpl_1.unserializeImpl)(i, config.propertyType, serializationOptions));
+                    }
                 }
             }
             else {
