@@ -7,7 +7,7 @@ const getPrototypesTree_1 = require("./getPrototypesTree");
 const identifyType_1 = require("./identifyType");
 const serializeImpl_1 = require("./serializeImpl");
 const Serializer_1 = require("./Serializer");
-const serializers_1 = require("./serializers");
+const ArraySerializer_1 = require("./serializers/ArraySerializer");
 const unserializeImpl_1 = require("./unserializeImpl");
 function toJsonImpl() {
     var _a;
@@ -35,7 +35,7 @@ function toJsonImpl() {
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
         if (Array.isArray(value)) {
             const serializer = config.propertyType instanceof Serializer_1.Serializer ? config.propertyType : (config.propertyType && (0, findTypeSerializer_1.findTypeSerializer)(config.propertyType, typesTree[0].__jsonTypes));
-            if (serializer instanceof serializers_1.ArraySerializer) {
+            if (serializer instanceof ArraySerializer_1.ArraySerializer) {
                 json[name] = serializer.serialize(value, serializationOptions);
             }
             else {
@@ -107,7 +107,7 @@ function fromJsonImpl(json) {
             }
             if (Array.isArray(value)) {
                 const serializer = config.propertyType instanceof Serializer_1.Serializer ? config.propertyType : (config.propertyType && (0, findTypeSerializer_1.findTypeSerializer)(config.propertyType, typesTree[0].__jsonTypes));
-                if (serializer instanceof serializers_1.ArraySerializer) {
+                if (serializer instanceof ArraySerializer_1.ArraySerializer) {
                     instance[propertyName] = serializer.unserialize(value, serializationOptions);
                 }
                 else {

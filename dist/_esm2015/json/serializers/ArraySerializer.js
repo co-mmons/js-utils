@@ -1,7 +1,6 @@
 import { resolveForwardRef } from "../../core";
 import { serializeImpl } from "../serializeImpl";
 import { Serializer } from "../Serializer";
-import { unserialize } from "../unserialize";
 import { unserializeImpl } from "../unserializeImpl";
 export class ArraySerializer extends Serializer {
     constructor(valueTypeOrSerializer) {
@@ -48,7 +47,7 @@ export class ArraySerializer extends Serializer {
             return serializer.unserialize(json, options);
         }
         else {
-            return unserialize(json, this.typeOrSerializer, options);
+            return unserializeImpl(json, this.typeOrSerializer, options);
         }
     }
 }

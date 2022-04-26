@@ -1,3 +1,13 @@
+export { ArraySerializer } from "./serializers/ArraySerializer";
+export { BooleanSerializer } from "./serializers/BooleanSerializer";
+export { DateSerializer } from "./serializers/DateSerializer";
+export { EnumAsStringSerializer } from "./serializers/EnumAsStringSerializer";
+export { NumberSerializer } from "./serializers/NumberSerializer";
+export { ObjectAsMapSerializer } from "./serializers/ObjectAsMapSerializer";
+export { ObjectSerializer } from "./serializers/ObjectSerializer";
+export { Serializer } from "./Serializer";
+export { SetSerializer } from "./serializers/SetSerializer";
+export { StringSerializer } from "./serializers/StringSerializer";
 export { findTypeOrSerializerByName } from "./findTypeOrSerializerByName";
 export { globalType } from "./decorators/globalType";
 export { ignore } from "./decorators/ignore";
@@ -5,7 +15,6 @@ export { property } from "./decorators/property";
 export { registerGlobalProvider, registerGlobalProviders } from "./registerGlobalProvider";
 export { serializable } from "./decorators/serializable";
 export { serialize } from "./serialize";
-export { unserialize } from "./unserialize";
-export { Serializer } from "./Serializer";
 export { subtype } from "./decorators/subtype";
+export { unserialize } from "./unserialize";
 //# sourceMappingURL=index.js.map

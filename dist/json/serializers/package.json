@@ -1,6 +1,0 @@
-{
-    "name": "@co.mmons/js-utils/json/serializers",
-    "module": "../../_esm2015/json/serializers/index.js",
-    "esm2015": "../../_esm2015/json/serializers/index.js",
-    "sideEffects": false
-}

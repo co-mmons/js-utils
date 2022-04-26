@@ -1,5 +1,8 @@
 import { TimeZoneDate } from "../core/TimeZoneDate";
-import { BooleanSerializer, DateSerializer, NumberSerializer, StringSerializer } from "./serializers";
+import { BooleanSerializer } from "./serializers/BooleanSerializer";
+import { DateSerializer } from "./serializers/DateSerializer";
+import { NumberSerializer } from "./serializers/NumberSerializer";
+import { StringSerializer } from "./serializers/StringSerializer";
 export const globalProviders = [
     { type: Boolean, serializer: BooleanSerializer.instance },
     { type: Number, serializer: NumberSerializer.instance },

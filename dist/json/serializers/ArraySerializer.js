@@ -4,7 +4,6 @@ exports.ArraySerializer = void 0;
 const core_1 = require("../../core");
 const serializeImpl_1 = require("../serializeImpl");
 const Serializer_1 = require("../Serializer");
-const unserialize_1 = require("../unserialize");
 const unserializeImpl_1 = require("../unserializeImpl");
 class ArraySerializer extends Serializer_1.Serializer {
     constructor(valueTypeOrSerializer) {
@@ -51,7 +50,7 @@ class ArraySerializer extends Serializer_1.Serializer {
             return serializer.unserialize(json, options);
         }
         else {
-            return (0, unserialize_1.unserialize)(json, this.typeOrSerializer, options);
+            return (0, unserializeImpl_1.unserializeImpl)(json, this.typeOrSerializer, options);
         }
     }
 }

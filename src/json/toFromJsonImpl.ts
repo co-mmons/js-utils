@@ -6,7 +6,7 @@ import {identifyType} from "./identifyType";
 import {InternalType} from "./InternalType";
 import {serializeImpl} from "./serializeImpl";
 import {Serializer} from "./Serializer";
-import {ArraySerializer} from "./serializers";
+import {ArraySerializer} from "./serializers/ArraySerializer";
 import {unserializeImpl} from "./unserializeImpl";
 
 export function toJsonImpl(this: any) {

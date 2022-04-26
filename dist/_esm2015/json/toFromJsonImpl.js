@@ -4,7 +4,7 @@ import { getPrototypesTree } from "./getPrototypesTree";
 import { identifyType } from "./identifyType";
 import { serializeImpl } from "./serializeImpl";
 import { Serializer } from "./Serializer";
-import { ArraySerializer } from "./serializers";
+import { ArraySerializer } from "./serializers/ArraySerializer";
 import { unserializeImpl } from "./unserializeImpl";
 export function toJsonImpl() {
     var _a;

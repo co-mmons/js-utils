@@ -2,7 +2,6 @@ import {resolveForwardRef, Type} from "../../core";
 import {SerializationOptions} from "../SerializationOptions";
 import {serializeImpl} from "../serializeImpl";
 import {Serializer} from "../Serializer";
-import {unserialize} from "../unserialize";
 import {unserializeImpl} from "../unserializeImpl";
 
 export class ArraySerializer<T = any> extends Serializer<T[]> {
@@ -64,7 +63,7 @@ export class ArraySerializer<T = any> extends Serializer<T[]> {
             return serializer.unserialize(json, options);
 
         } else {
-            return unserialize(json, this.typeOrSerializer as any, options);
+            return unserializeImpl(json, this.typeOrSerializer as any, options);
         }
     }
 }
