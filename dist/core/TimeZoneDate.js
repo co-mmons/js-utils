@@ -12,7 +12,7 @@ class TimeZoneDate extends Date {
         this.timeZone = timeZone;
     }
     static fromJSON(json) {
-        if (typeof json === "object" && json && json["timeZone"] && json["date"]) {
+        if (typeof json === "object" && json && json["date"]) {
             return new TimeZoneDate(json["date"], json["timeZone"]);
         }
         else if (json instanceof Date) {
@@ -24,7 +24,7 @@ class TimeZoneDate extends Date {
     }
     toJSON() {
         const json = { "@type": "TimeZoneDate", date: super.toJSON() };
-        if (this.timeZone) {
+        if (this.timeZone && this.timeZone !== "current") {
             json["timeZone"] = this.timeZone;
         }
         return json;
