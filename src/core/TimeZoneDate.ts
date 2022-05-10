@@ -1,5 +1,8 @@
-type TimeZone = string | "current" | "local" | undefined | null;
+type TimeZone = string | "current" | undefined | null;
 
+/**
+ * @deprecated
+ */
 export class TimeZoneDate extends Date {
 
     static readonly jsonTypeName = "TimeZoneDate";
@@ -33,18 +36,13 @@ export class TimeZoneDate extends Date {
         this.timeZone = timeZone;
     }
 
-    /**
-     * Time zone or:
-     * * undefined, null or "current" if device time zone should be used when presenting date
-     * * "locale" if date/time should be treated as local no matter what time zone is set on the device
-     */
     timeZone: TimeZone;
 
     toJSON(): any {
 
         const json = {"@type": "TimeZoneDate", date: super.toJSON()};
 
-        if (this.timeZone && this.timeZone !== "current") {
+        if (this.timeZone) {
             json["timeZone"] = this.timeZone;
         }
 

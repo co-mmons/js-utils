@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeZoneDate = void 0;
+/**
+ * @deprecated
+ */
 class TimeZoneDate extends Date {
     constructor(dateOrEpoch, timeZone) {
         if (dateOrEpoch !== undefined) {
@@ -24,7 +27,7 @@ class TimeZoneDate extends Date {
     }
     toJSON() {
         const json = { "@type": "TimeZoneDate", date: super.toJSON() };
-        if (this.timeZone && this.timeZone !== "current") {
+        if (this.timeZone) {
             json["timeZone"] = this.timeZone;
         }
         return json;
