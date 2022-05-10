@@ -8,6 +8,7 @@ export { Equals, equals } from "./equals";
 export { Final } from "./Final";
 export { HtmlString } from "./HtmlString";
 export { LocalDate } from "./LocalDate";
+export { NoTimeDate } from "./NoTimeDate";
 export { TimeZoneDate } from "./TimeZoneDate";
 export { Timestamp, implementTimestampInDate } from "./Timestamp";
 export { compareDate } from "./compareDate";

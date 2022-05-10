@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DateSerializer = void 0;
 const LocalDate_1 = require("../../core/LocalDate");
 const TimeZoneDate_1 = require("../../core/TimeZoneDate");
+const NoTimeDate_1 = require("../../core/NoTimeDate");
 const Serializer_1 = require("../Serializer");
 /**
  * Serializer for Date type.
@@ -14,7 +15,7 @@ class DateSerializer extends Serializer_1.Serializer {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
-        else if (value instanceof TimeZoneDate_1.TimeZoneDate || value instanceof LocalDate_1.LocalDate) {
+        else if (value instanceof TimeZoneDate_1.TimeZoneDate || value instanceof LocalDate_1.LocalDate || value instanceof NoTimeDate_1.NoTimeDate) {
             return value.toJSON();
         }
         else if (value instanceof Date) {
@@ -49,11 +50,14 @@ class DateSerializer extends Serializer_1.Serializer {
         else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
             return value.toDate();
         }
-        else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && value.date) {
-            return new TimeZoneDate_1.TimeZoneDate(value.date, value.timeZone);
+        else if (typeof value === "object" && value["@type"] === NoTimeDate_1.NoTimeDate.jsonTypeName && value.date) {
+            return NoTimeDate_1.NoTimeDate.fromJSON(value.date);
         }
-        else if (typeof value === "object" && value["@type"] === "LocalDate" && value.date) {
-            return new LocalDate_1.LocalDate(value.date);
+        else if (typeof value === "object" && value["@type"] === TimeZoneDate_1.TimeZoneDate.jsonTypeName && value.date) {
+            return TimeZoneDate_1.TimeZoneDate.fromJSON(value);
+        }
+        else if (typeof value === "object" && value["@type"] === LocalDate_1.LocalDate.jsonTypeName && value.date) {
+            return LocalDate_1.LocalDate.fromJSON(value.date);
         }
         else if (typeof value === "object" && value["@type"] === "Date" && value.value) {
             return new Date(value.value);

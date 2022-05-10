@@ -1,5 +1,6 @@
 import { TimeZoneDate } from "../core/TimeZoneDate";
 import { LocalDate } from "../core/LocalDate";
+import { NoTimeDate } from "../core/NoTimeDate";
 import { BooleanSerializer } from "./serializers/BooleanSerializer";
 import { DateSerializer } from "./serializers/DateSerializer";
 import { NumberSerializer } from "./serializers/NumberSerializer";
@@ -8,6 +9,7 @@ export const globalProviders = [
     { type: Boolean, serializer: BooleanSerializer.instance },
     { type: Number, serializer: NumberSerializer.instance },
     { type: Date, name: "Date", serializer: DateSerializer.instance },
+    { type: NoTimeDate, name: NoTimeDate.jsonTypeName, serializer: DateSerializer.instance },
     { type: LocalDate, name: LocalDate.jsonTypeName, serializer: DateSerializer.instance },
     { type: TimeZoneDate, name: TimeZoneDate.jsonTypeName, serializer: DateSerializer.instance },
     { type: String, serializer: StringSerializer.instance }

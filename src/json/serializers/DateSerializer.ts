@@ -1,5 +1,6 @@
 import {LocalDate} from "../../core/LocalDate";
 import {TimeZoneDate} from "../../core/TimeZoneDate";
+import {NoTimeDate} from "../../core/NoTimeDate";
 import {SerializationOptions} from "../SerializationOptions";
 import {Serializer} from "../Serializer";
 
@@ -14,7 +15,7 @@ export class DateSerializer extends Serializer {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
 
-        } else if (value instanceof TimeZoneDate || value instanceof LocalDate) {
+        } else if (value instanceof TimeZoneDate || value instanceof LocalDate || value instanceof NoTimeDate) {
             return value.toJSON();
 
         } else if (value instanceof Date) {
@@ -51,11 +52,14 @@ export class DateSerializer extends Serializer {
         } else if (typeof value === "object" && typeof value.toDate === "function" && typeof value.toMillis === "function") {
             return value.toDate();
 
-        } else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && value.date) {
-            return new TimeZoneDate(value.date, value.timeZone);
+        } else if (typeof value === "object" && value["@type"] === NoTimeDate.jsonTypeName && value.date) {
+            return NoTimeDate.fromJSON(value.date);
 
-        } else if (typeof value === "object" && value["@type"] === "LocalDate" && value.date) {
-            return new LocalDate(value.date);
+        } else if (typeof value === "object" && value["@type"] === TimeZoneDate.jsonTypeName && value.date) {
+            return TimeZoneDate.fromJSON(value);
+
+        } else if (typeof value === "object" && value["@type"] === LocalDate.jsonTypeName && value.date) {
+            return LocalDate.fromJSON(value.date);
 
         } else if (typeof value === "object" && value["@type"] === "Date" && value.value) {
             return new Date(value.value);
