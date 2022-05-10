@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DateSerializer = void 0;
+const LocalDate_1 = require("../../core/LocalDate");
 const TimeZoneDate_1 = require("../../core/TimeZoneDate");
 const Serializer_1 = require("../Serializer");
 /**
@@ -13,7 +14,7 @@ class DateSerializer extends Serializer_1.Serializer {
         if (this.isUndefinedOrNull(value)) {
             return this.serializeUndefinedOrNull(value, options);
         }
-        else if (value instanceof TimeZoneDate_1.TimeZoneDate) {
+        else if (value instanceof TimeZoneDate_1.TimeZoneDate || value instanceof LocalDate_1.LocalDate) {
             return value.toJSON();
         }
         else if (value instanceof Date) {
@@ -51,11 +52,14 @@ class DateSerializer extends Serializer_1.Serializer {
         else if (typeof value === "object" && value["@type"] === "TimeZoneDate" && value.date) {
             return new TimeZoneDate_1.TimeZoneDate(value.date, value.timeZone);
         }
+        else if (typeof value === "object" && value["@type"] === "LocalDate" && value.date) {
+            return new LocalDate_1.LocalDate(value.date);
+        }
         else if (typeof value === "object" && value["@type"] === "Date" && value.value) {
             return new Date(value.value);
         }
         else if (!options || !options.ignoreErrors) {
-            throw new Error(`Cannot unserialize "${value}" to Date or TimeZoneDate`);
+            throw new Error(`Cannot unserialize "${value}" to Date, LocalDate or TimeZoneDate`);
         }
         else {
             return undefined;

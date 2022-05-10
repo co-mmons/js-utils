@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeZoneDate = void 0;
-/**
- * @deprecated
- */
 class TimeZoneDate extends Date {
     constructor(dateOrEpoch, timeZone) {
         if (dateOrEpoch !== undefined) {

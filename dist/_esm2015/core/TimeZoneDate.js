@@ -1,6 +1,3 @@
-/**
- * @deprecated
- */
 export class TimeZoneDate extends Date {
     constructor(dateOrEpoch, timeZone) {
         if (dateOrEpoch !== undefined) {

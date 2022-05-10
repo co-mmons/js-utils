@@ -1,7 +1,4 @@
 declare type TimeZone = string | "current" | undefined | null;
-/**
- * @deprecated
- */
 export declare class TimeZoneDate extends Date {
     static readonly jsonTypeName = "TimeZoneDate";
     static fromJSON(json: any): TimeZoneDate;
