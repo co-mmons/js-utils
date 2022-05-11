@@ -16,6 +16,23 @@ export class LocalDate extends Date {
         }
     }
 
+    constructor();
+
+    constructor(value: number | string | Date);
+
+    constructor(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number);
+
+    constructor(valueOrYear?: number | string | Date, month?, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number) {
+
+        if (typeof month === "number") {
+            super(Date.UTC(valueOrYear as number, month, date, hours, minutes, seconds, ms));
+        } else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
+            super(valueOrYear);
+        } else {
+            super();
+        }
+    }
+
     getFullYear(): number {
         return super.getUTCFullYear();
     }

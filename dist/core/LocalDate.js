@@ -6,6 +6,17 @@ exports.LocalDate = void 0;
  * It means, that UTC date/time will be shown in every time zone.
  */
 class LocalDate extends Date {
+    constructor(valueOrYear, month, date, hours, minutes, seconds, ms) {
+        if (typeof month === "number") {
+            super(Date.UTC(valueOrYear, month, date, hours, minutes, seconds, ms));
+        }
+        else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
+            super(valueOrYear);
+        }
+        else {
+            super();
+        }
+    }
     static fromJSON(json) {
         if (typeof json === "object" && json && json["date"]) {
             return new LocalDate(json["date"]);

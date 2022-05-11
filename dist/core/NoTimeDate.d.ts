@@ -4,6 +4,9 @@
 export declare class NoTimeDate extends Date {
     static readonly jsonTypeName = "NoTimeDate";
     static fromJSON(json: any): NoTimeDate;
+    constructor();
+    constructor(value: number | string | Date);
+    constructor(year: number, month: number, date: number);
     getFullYear(): number;
     getMonth(): number;
     getDate(): number;

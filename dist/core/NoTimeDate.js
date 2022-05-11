@@ -5,16 +5,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NoTimeDate = void 0;
 class NoTimeDate extends Date {
+    constructor(valueOrYear, month, date) {
+        if (typeof month === "number") {
+            super(Date.UTC(valueOrYear, month, date, 0, 0, 0, 0));
+        }
+        else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
+            super(valueOrYear);
+        }
+        else {
+            super();
+        }
+        this.setUTCHours(0, 0, 0, 0);
+    }
     static fromJSON(json) {
         if (typeof json === "object" && json && json["date"]) {
-            const d = new NoTimeDate(json["date"]);
-            d.setUTCHours(0, 0, 0, 0);
-            return d;
+            return new NoTimeDate(json["date"]);
         }
         else if (json instanceof Date || typeof json === "number") {
-            const d = new NoTimeDate(json);
-            d.setUTCHours(0, 0, 0, 0);
-            return d;
+            return new NoTimeDate(json);
         }
     }
     getFullYear() {

@@ -5,6 +5,9 @@
 export declare class LocalDate extends Date {
     static readonly jsonTypeName = "LocalDate";
     static fromJSON(json: any): LocalDate;
+    constructor();
+    constructor(value: number | string | Date);
+    constructor(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number);
     getFullYear(): number;
     getMonth(): number;
     getDate(): number;
