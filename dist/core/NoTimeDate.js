@@ -7,7 +7,9 @@ exports.NoTimeDate = void 0;
 class NoTimeDate extends Date {
     static fromJSON(json) {
         if (typeof json === "object" && json && json["date"]) {
-            return new NoTimeDate(json["date"]);
+            const d = new NoTimeDate(json["date"]);
+            d.setUTCHours(0, 0, 0, 0);
+            return d;
         }
         else if (json instanceof Date || typeof json === "number") {
             const d = new NoTimeDate(json);
