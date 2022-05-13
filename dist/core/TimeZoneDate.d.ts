@@ -7,6 +7,7 @@ export declare class TimeZoneDate extends Date {
     constructor(date: Date, timeZone?: TimeZone);
     constructor(isoDateString: string, timeZone?: TimeZone);
     timeZone: TimeZone;
+    toString(): any;
     toJSON(): any;
 }
 export {};

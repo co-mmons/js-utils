@@ -35,6 +35,10 @@ export class TimeZoneDate extends Date {
 
     timeZone: TimeZone;
 
+    toString() {
+        return new Intl.DateTimeFormat(undefined, {timeZone: this.timeZone, timeZoneName: "short"}).format(this);
+    }
+
     toJSON(): any {
 
         const json = {"@type": "TimeZoneDate", date: super.toJSON()};
