@@ -1,7 +1,7 @@
 import {Type} from "../core";
 import {globalProviders} from "./globalProviders";
 import {Serializer} from "./Serializer";
-import {TypeNameProvider, TypeNameSerializerProvider, TypeProviders} from "./TypeProvider";
+import {TypeNameProvider, TypeNameSerializerProvider, TypeProviders, TypeWithJsonTypeName} from "./TypeProvider";
 
 export function findTypeOrSerializerByName(name: string | {"@type": string}, typeProviders?: TypeProviders): Type | Serializer {
 
@@ -22,6 +22,10 @@ export function findTypeOrSerializerByName(name: string | {"@type": string}, typ
                     if (result) {
                         return result;
                     }
+
+                } else if ((provider as TypeWithJsonTypeName).jsonTypeName === name) {
+                    return provider as TypeWithJsonTypeName;
+
                 } else if ((provider as TypeNameProvider | TypeNameSerializerProvider).name === name) {
                     return (provider as TypeNameSerializerProvider).serializer || (provider as TypeNameProvider).type;
                 }
@@ -29,7 +33,9 @@ export function findTypeOrSerializerByName(name: string | {"@type": string}, typ
         }
 
         for (const provider of globalProviders) {
-            if (provider.name === name) {
+            if ((provider as TypeWithJsonTypeName).jsonTypeName === name) {
+                return provider as TypeWithJsonTypeName;
+            } else if (provider.name === name) {
                 return provider.serializer || provider.type;
             }
         }

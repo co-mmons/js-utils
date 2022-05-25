@@ -17,6 +17,9 @@ export interface InternalTypeProvider {
     name?: string;
     serializer?: Serializer;
 }
-export declare type TypeProvider = TypeSerializerProvider | TypeNameProvider | TypeNameSerializerProvider;
+export declare type TypeWithJsonTypeName = (Type & {
+    jsonTypeName: string;
+});
+export declare type TypeProvider = TypeSerializerProvider | TypeNameProvider | TypeNameSerializerProvider | TypeWithJsonTypeName;
 export declare type TypeProviders = Array<TypeProvider | TypeProvider[] | TypeProviders>;
 export declare type InternalTypeProviders = Array<InternalTypeProvider | InternalTypeProvider[] | TypeProviders>;

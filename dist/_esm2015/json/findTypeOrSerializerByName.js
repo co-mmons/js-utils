@@ -15,13 +15,19 @@ export function findTypeOrSerializerByName(name, typeProviders) {
                         return result;
                     }
                 }
+                else if (provider.jsonTypeName === name) {
+                    return provider;
+                }
                 else if (provider.name === name) {
                     return provider.serializer || provider.type;
                 }
             }
         }
         for (const provider of globalProviders) {
-            if (provider.name === name) {
+            if (provider.jsonTypeName === name) {
+                return provider;
+            }
+            else if (provider.name === name) {
                 return provider.serializer || provider.type;
             }
         }

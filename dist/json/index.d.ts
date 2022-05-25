@@ -10,7 +10,7 @@ export { SerializationOptions } from "./SerializationOptions";
 export { Serializer } from "./Serializer";
 export { SetSerializer } from "./serializers/SetSerializer";
 export { StringSerializer } from "./serializers/StringSerializer";
-export { TypeProviders, TypeProvider, TypeNameProvider, TypeSerializerProvider, TypeNameSerializerProvider } from "./TypeProvider";
+export { TypeProviders, TypeProvider, TypeNameProvider, TypeSerializerProvider, TypeNameSerializerProvider, TypeWithJsonTypeName } from "./TypeProvider";
 export { TypedJson } from "./TypedJson";
 export { findTypeOrSerializerByName } from "./findTypeOrSerializerByName";
 export { globalType } from "./decorators/globalType";
