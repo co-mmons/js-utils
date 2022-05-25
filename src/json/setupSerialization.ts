@@ -9,15 +9,15 @@ export function setupSerialization(type: Type) {
 
     if (!type.prototype.hasOwnProperty("toJSON")) {
         internalType.__jsonToJson = true;
-        type.prototype.toJSON = function () {
+        type.prototype.toJSON = function (options: any) {
             return toJsonImpl.call(this);
         }
     }
 
     if (!type.hasOwnProperty("fromJSON")) {
         internalType.__jsonFromJson = true;
-        internalType.fromJSON = function (json: any) {
-            return fromJsonImpl.call(this, json);
+        internalType.fromJSON = function (json: any, options: any) {
+            return fromJsonImpl.call(this, json, options);
         }
     }
 }

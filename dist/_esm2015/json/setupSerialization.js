@@ -4,14 +4,14 @@ export function setupSerialization(type) {
     internalType.__jsonSerialization = true;
     if (!type.prototype.hasOwnProperty("toJSON")) {
         internalType.__jsonToJson = true;
-        type.prototype.toJSON = function () {
+        type.prototype.toJSON = function (options) {
             return toJsonImpl.call(this);
         };
     }
     if (!type.hasOwnProperty("fromJSON")) {
         internalType.__jsonFromJson = true;
-        internalType.fromJSON = function (json) {
-            return fromJsonImpl.call(this, json);
+        internalType.fromJSON = function (json, options) {
+            return fromJsonImpl.call(this, json, options);
         };
     }
 }
