@@ -1,3 +1,4 @@
 import { AssignableType } from "../core";
-export declare function toJsonImpl(this: any): any;
-export declare function fromJsonImpl(this: AssignableType, json: any): any;
+import { SerializationOptions } from "./SerializationOptions";
+export declare function toJsonImpl(this: any, options?: SerializationOptions): any;
+export declare function fromJsonImpl(this: AssignableType, json: any, options?: SerializationOptions): any;

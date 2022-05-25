@@ -4,16 +4,17 @@ import {findTypeSerializer} from "./findTypeSerializer";
 import {getPrototypesTree} from "./getPrototypesTree";
 import {identifyType} from "./identifyType";
 import {InternalType} from "./InternalType";
+import {SerializationOptions} from "./SerializationOptions";
 import {serializeImpl} from "./serializeImpl";
 import {Serializer} from "./Serializer";
 import {ArraySerializer} from "./serializers/ArraySerializer";
 import {unserializeImpl} from "./unserializeImpl";
 
-export function toJsonImpl(this: any) {
+export function toJsonImpl(this: any, options?: SerializationOptions) {
 
     const prototypesTree = getPrototypesTree(this);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = {typeProviders: typesTree[0].__jsonTypes};
+    const serializationOptions = {typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
 
     let json: any = {};
 
@@ -43,7 +44,7 @@ export function toJsonImpl(this: any) {
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
 
         if (Array.isArray(value)) {
-            const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, typesTree[0].__jsonTypes));
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, serializationOptions.typeProviders));
 
             if (serializer instanceof ArraySerializer) {
                 json[name] = serializer.serialize(value, serializationOptions);
@@ -55,7 +56,7 @@ export function toJsonImpl(this: any) {
             }
         } else {
             const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
-            const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, typesTree[0].__jsonTypes);
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, serializationOptions.typeProviders);
             if (serializer) {
                 json[name] = serializer.serialize(value, serializationOptions);
             } else {
@@ -71,7 +72,7 @@ export function toJsonImpl(this: any) {
     return json;
 }
 
-export function fromJsonImpl(this: AssignableType, json: any) {
+export function fromJsonImpl(this: AssignableType, json: any, options?: SerializationOptions) {
 
     const internalType = this as InternalType;
 
@@ -96,7 +97,7 @@ export function fromJsonImpl(this: AssignableType, json: any) {
             if (matchedType && matchedType !== this) {
 
                 if (matchedType.hasOwnProperty("fromJSON")) {
-                    return matchedType.fromJSON(json);
+                    return matchedType.fromJSON(json, options);
                 }
 
                 instance = new matchedType;
@@ -111,7 +112,7 @@ export function fromJsonImpl(this: AssignableType, json: any) {
 
     const prototypesTree = getPrototypesTree(instance);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = {typeProviders: typesTree[0].__jsonTypes};
+    const serializationOptions = {typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
 
     const properties = getDeclaredProperties(instance, typesTree);
 
@@ -131,7 +132,7 @@ export function fromJsonImpl(this: AssignableType, json: any) {
             }
 
             if (Array.isArray(value)) {
-                const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, typesTree[0].__jsonTypes));
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, serializationOptions.typeProviders));
 
                 if (serializer instanceof ArraySerializer) {
                     instance[propertyName] = serializer.unserialize(value, serializationOptions);
@@ -144,7 +145,7 @@ export function fromJsonImpl(this: AssignableType, json: any) {
 
             } else {
                 const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
-                const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, typesTree[0].__jsonTypes);
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, serializationOptions.typeProviders);
                 instance[propertyName] = serializer ? serializer.unserialize(value, serializationOptions) : unserializeImpl(value, type, serializationOptions);
             }
 
