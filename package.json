@@ -27,7 +27,7 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^4.1.0",
     "ttypescript": "^1.5.10",
     "typescript": "^4.4.4"
   },
