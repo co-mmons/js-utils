@@ -21,7 +21,7 @@ export interface PreferencesItemEvent<Key = any, Value = any> {
     readonly oldValue: Value;
 }
 export interface PreferencesItem<Key = any, Value = any> {
-    readonly ref: PreferencesItemRef;
+    readonly ref: PreferencesItemRef<Key, Value>;
     readonly key: Key;
     readonly value: Value;
     readonly lastUpdate: number;
