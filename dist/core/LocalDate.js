@@ -22,11 +22,11 @@ class LocalDate extends Date {
         if (typeof json === "object" && json && json["date"]) {
             return new LocalDate(json["date"]);
         }
-        else if (json instanceof Date) {
+        else if (json instanceof Date || typeof json === "number" || typeof json === "string") {
             return new LocalDate(json);
         }
-        else if (typeof json === "number") {
-            return new LocalDate(json);
+        else {
+            throw new Error(`Cannot unserialize "${JSON.stringify(json)}" to LocalDate`);
         }
     }
     getFullYear() {

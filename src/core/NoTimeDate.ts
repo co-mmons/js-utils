@@ -10,8 +10,10 @@ export class NoTimeDate extends Date implements Clone<NoTimeDate> {
     static fromJSON(json: any) {
         if (typeof json === "object" && json && json["date"]) {
             return new NoTimeDate(json["date"]);
-        } else if (json instanceof Date || typeof json === "number") {
+        } else if (json instanceof Date || typeof json === "number" || typeof json === "string") {
             return new NoTimeDate(json);
+        } else {
+            throw new Error(`Cannot unserialize "${JSON.stringify(json)}" to NoTimeDate`);
         }
     }
 
