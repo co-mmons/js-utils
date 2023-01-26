@@ -1,9 +1,10 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoTimeDate = void 0;
 /**
  * A date, that points to absolute date - no time, no time zone, just year-month-date.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NoTimeDate = void 0;
+const clone_1 = require("./clone");
 class NoTimeDate extends Date {
     constructor(valueOrYear, month, date) {
         if (typeof month === "number") {
@@ -125,6 +126,9 @@ class NoTimeDate extends Date {
             weekday: undefined,
             era: undefined
         }).format(this);
+    }
+    [clone_1.clone]() {
+        return new NoTimeDate(this.getTime());
     }
     toString() {
         return this.toDateString();

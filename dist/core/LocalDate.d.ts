@@ -1,8 +1,9 @@
+import { clone, Clone } from "./clone";
 /**
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
  */
-export declare class LocalDate extends Date {
+export declare class LocalDate extends Date implements Clone<LocalDate> {
     static readonly jsonTypeName = "LocalDate";
     static fromJSON(json: any): LocalDate;
     constructor();
@@ -27,6 +28,7 @@ export declare class LocalDate extends Date {
     setFullYear(year: number, month?: number, date?: number): number;
     toDateString(): string;
     toTimeString(): string;
+    [clone](): LocalDate;
     toString(): string;
     toJSON(): any;
 }

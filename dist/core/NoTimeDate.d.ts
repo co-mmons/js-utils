@@ -1,7 +1,8 @@
 /**
  * A date, that points to absolute date - no time, no time zone, just year-month-date.
  */
-export declare class NoTimeDate extends Date {
+import { clone, Clone } from "./clone";
+export declare class NoTimeDate extends Date implements Clone<NoTimeDate> {
     static readonly jsonTypeName = "NoTimeDate";
     static fromJSON(json: any): NoTimeDate;
     constructor();
@@ -34,6 +35,7 @@ export declare class NoTimeDate extends Date {
     setFullYear(year: number, month?: number, date?: number): number;
     toDateString(): string;
     toTimeString(): string;
+    [clone](): NoTimeDate;
     toString(): string;
     toJSON(): any;
 }

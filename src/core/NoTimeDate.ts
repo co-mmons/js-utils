@@ -1,8 +1,9 @@
 /**
  * A date, that points to absolute date - no time, no time zone, just year-month-date.
  */
+import {clone, Clone} from "./clone";
 
-export class NoTimeDate extends Date {
+export class NoTimeDate extends Date implements Clone<NoTimeDate> {
 
     static readonly jsonTypeName = "NoTimeDate";
 
@@ -159,6 +160,10 @@ export class NoTimeDate extends Date {
             weekday: undefined,
             era: undefined
         }).format(this);
+    }
+
+    [clone]() {
+        return new NoTimeDate(this.getTime());
     }
 
     toString(): string {

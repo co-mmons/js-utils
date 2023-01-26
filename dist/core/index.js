@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.waitTill = exports.toString = exports.toFloat = exports.mapEntries = exports.isArrayContainsInstanceOf = exports.toInteger = exports.timeZoneOffset = exports.sleep = exports.resolveForwardRef = exports.forwardRef = exports.enumValues = exports.compareDate = exports.implementTimestampInDate = exports.TimeZoneDate = exports.NoTimeDate = exports.LocalDate = exports.HtmlString = exports.Final = exports.equals = exports.Enumerable = exports.Enum = exports.DateTimezone = exports.BitFlags = exports.BitFlagsMutable = exports.Type = exports.AssignableType = void 0;
+exports.clone = exports.waitTill = exports.toString = exports.toFloat = exports.mapEntries = exports.isArrayContainsInstanceOf = exports.toInteger = exports.timeZoneOffset = exports.sleep = exports.resolveForwardRef = exports.forwardRef = exports.enumValues = exports.compareDate = exports.implementTimestampInDate = exports.TimeZoneDate = exports.NoTimeDate = exports.LocalDate = exports.HtmlString = exports.Final = exports.equals = exports.Enumerable = exports.Enum = exports.DateTimezone = exports.BitFlags = exports.BitFlagsMutable = exports.Type = exports.AssignableType = void 0;
 var Type_1 = require("./Type");
 Object.defineProperty(exports, "AssignableType", { enumerable: true, get: function () { return Type_1.AssignableType; } });
 Object.defineProperty(exports, "Type", { enumerable: true, get: function () { return Type_1.Type; } });
@@ -48,4 +48,6 @@ Object.defineProperty(exports, "toFloat", { enumerable: true, get: function () {
 Object.defineProperty(exports, "toString", { enumerable: true, get: function () { return types_1.toString; } });
 var wait_1 = require("./wait");
 Object.defineProperty(exports, "waitTill", { enumerable: true, get: function () { return wait_1.waitTill; } });
+var clone_1 = require("./clone");
+Object.defineProperty(exports, "clone", { enumerable: true, get: function () { return clone_1.clone; } });
 //# sourceMappingURL=index.js.map

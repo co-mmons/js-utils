@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeZoneDate = void 0;
+const clone_1 = require("./clone");
 class TimeZoneDate extends Date {
     constructor(dateOrEpoch, timeZone) {
         if (dateOrEpoch !== undefined) {
@@ -21,6 +22,9 @@ class TimeZoneDate extends Date {
         else if (typeof json === "number") {
             return new TimeZoneDate(json);
         }
+    }
+    [clone_1.clone]() {
+        return new TimeZoneDate(this.getTime(), this.timeZone);
     }
     toString() {
         return new Intl.DateTimeFormat(undefined, { timeZone: this.timeZone, timeZoneName: "short" }).format(this);

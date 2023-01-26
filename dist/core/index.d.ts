@@ -19,3 +19,4 @@ export { sleep } from "./sleep";
 export { timeZoneOffset } from "./timeZoneOffset";
 export { toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString } from "./types";
 export { waitTill } from "./wait";
+export { clone, Clone } from "./clone";

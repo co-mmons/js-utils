@@ -1,5 +1,6 @@
+import { clone, Clone } from "./clone";
 declare type TimeZone = string | "current" | undefined | null;
-export declare class TimeZoneDate extends Date {
+export declare class TimeZoneDate extends Date implements Clone<TimeZoneDate> {
     static readonly jsonTypeName = "TimeZoneDate";
     static fromJSON(json: any): TimeZoneDate;
     constructor();
@@ -7,6 +8,7 @@ export declare class TimeZoneDate extends Date {
     constructor(date: Date, timeZone?: TimeZone);
     constructor(isoDateString: string, timeZone?: TimeZone);
     timeZone: TimeZone;
+    [clone](): TimeZoneDate;
     toString(): any;
     toJSON(): any;
 }

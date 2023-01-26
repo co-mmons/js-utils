@@ -1,4 +1,6 @@
-export class HtmlString extends String {
+import {clone, Clone} from "./clone";
+
+export class HtmlString extends String implements Clone<HtmlString> {
 
     static readonly jsonTypeName = "HtmlString";
 
@@ -10,6 +12,10 @@ export class HtmlString extends String {
         } else {
             throw new Error(`Cannot unserialize ${json} to HtmlString`);
         }
+    }
+
+    [clone]() {
+        return new HtmlString(this);
     }
 
     toJSON() {

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalDate = void 0;
+const clone_1 = require("./clone");
 /**
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
@@ -98,6 +99,9 @@ class LocalDate extends Date {
             weekday: undefined,
             era: undefined
         }).format(this);
+    }
+    [clone_1.clone]() {
+        return new LocalDate(this.getTime());
     }
     toString() {
         return new Intl.DateTimeFormat(undefined, { timeZone: "UTC", timeZoneName: undefined }).format(this);

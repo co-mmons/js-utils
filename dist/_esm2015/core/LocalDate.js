@@ -1,3 +1,4 @@
+import { clone } from "./clone";
 /**
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
@@ -95,6 +96,9 @@ export class LocalDate extends Date {
             weekday: undefined,
             era: undefined
         }).format(this);
+    }
+    [clone]() {
+        return new LocalDate(this.getTime());
     }
     toString() {
         return new Intl.DateTimeFormat(undefined, { timeZone: "UTC", timeZoneName: undefined }).format(this);

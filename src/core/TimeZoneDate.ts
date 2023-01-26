@@ -1,6 +1,8 @@
+import {clone, Clone} from "./clone";
+
 type TimeZone = string | "current" | undefined | null;
 
-export class TimeZoneDate extends Date {
+export class TimeZoneDate extends Date implements Clone<TimeZoneDate> {
 
     static readonly jsonTypeName = "TimeZoneDate";
 
@@ -34,6 +36,10 @@ export class TimeZoneDate extends Date {
     }
 
     timeZone: TimeZone;
+
+    [clone]() {
+        return new TimeZoneDate(this.getTime(), this.timeZone);
+    }
 
     toString() {
         return new Intl.DateTimeFormat(undefined, {timeZone: this.timeZone, timeZoneName: "short"}).format(this);

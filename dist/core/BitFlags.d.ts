@@ -1,4 +1,5 @@
-export declare class BitFlags {
+import { clone, Clone } from "./clone";
+export declare class BitFlags implements Clone<BitFlags> {
     constructor(value?: number);
     protected _value: number;
     get value(): number;
@@ -7,4 +8,5 @@ export declare class BitFlags {
     add(flag: number): BitFlags;
     remove(flag: number): BitFlags;
     toggle(flag: number): BitFlags;
+    [clone](): BitFlags;
 }

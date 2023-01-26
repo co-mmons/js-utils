@@ -1,4 +1,6 @@
-export class BitFlags {
+import {clone, Clone} from "./clone";
+
+export class BitFlags implements Clone<BitFlags> {
 
 	constructor(value?: number) {
 		this._value = value !== undefined && value !== null ? value : 0;
@@ -28,5 +30,9 @@ export class BitFlags {
 
 	toggle(flag: number) {
 		return new BitFlags(this._value ^ flag);
+	}
+
+	[clone]() {
+		return new BitFlags(this._value);
 	}
 }

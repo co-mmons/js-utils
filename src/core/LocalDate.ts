@@ -1,8 +1,10 @@
+import {clone, Clone} from "./clone";
+
 /**
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
  */
-export class LocalDate extends Date {
+export class LocalDate extends Date implements Clone<LocalDate> {
 
     static readonly jsonTypeName = "LocalDate";
 
@@ -121,6 +123,10 @@ export class LocalDate extends Date {
             weekday: undefined,
             era: undefined
         }).format(this);
+    }
+
+    [clone]() {
+        return new LocalDate(this.getTime());
     }
 
     toString(): string {
