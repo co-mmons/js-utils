@@ -32,7 +32,7 @@ function serializeImplWithSerializer(value: any, type: InternalType, typeSeriali
             } else if (newArray) {
                 serialized = serializeImpl(i, undefined, options);
             } else if (i.toJSON) {
-                serialized = i.toJSON();
+                serialized = i.toJSON(options);
             } else if (typeof i === "object") {
                 serialized = {};
                 for (const p of Object.keys(i)) {
