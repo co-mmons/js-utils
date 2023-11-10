@@ -31,7 +31,7 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
                 serialized = serializeImpl(i, undefined, options);
             }
             else if (i.toJSON) {
-                serialized = i.toJSON();
+                serialized = i.toJSON(options);
             }
             else if (typeof i === "object") {
                 serialized = {};
